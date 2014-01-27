@@ -203,6 +203,7 @@ bool matchToOfflineTaus(int isoOption, float eta_, float phi_, const edm::Event&
         if (isoOption == 3 && ipftau->pt() > 20 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byLooseCombinedIsolationDeltaBetaCorr3Hits") > 0.5 && ipftau->tauID("againstMuonLoose2") > 0.5) dR05 = (dR(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5 ? 1 : 0);
         if (isoOption == 4 && ipftau->pt() > 20 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byLooseCombinedIsolationDeltaBetaCorr3Hits") > 0.5 && ipftau->tauID("againstMuonMedium2") > 0.5) dR05 = (dR(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5 ? 1 : 0);
         if (isoOption == 5 && ipftau->pt() > 20 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byLooseCombinedIsolationDeltaBetaCorr3Hits") > 0.5 && ipftau->tauID("againstMuonTight2") > 0.5) dR05 = (dR(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5 ? 1 : 0);
+        if (isoOption == 6 && ipftau->pt() > 20 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("againstMuonLoose2") > 0.5) dR05 = (dR(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5 ? 1 : 0);
 
     }
 
@@ -310,6 +311,11 @@ MyTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
             //            Pt_Step3->Fill(itau->pt());
             //            Eta_Step3->Fill(itau->eta());
         }
+        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation && matchToOfflineTaus(6, itau->eta(), itau->phi(), iEvent, iSetup)) {
+            step9++;
+            //            Pt_Step3->Fill(itau->pt());
+            //            Eta_Step3->Fill(itau->eta());
+        }
 
 
     }
@@ -345,6 +351,10 @@ MyTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     }
     if (step8 > 0) {
         Histo_Denumerator->Fill(8);
+        //        Histo_Step4->Fill(step4);
+    }
+    if (step9 > 0) {
+        Histo_Denumerator->Fill(9);
         //        Histo_Step4->Fill(step4);
     }
 
