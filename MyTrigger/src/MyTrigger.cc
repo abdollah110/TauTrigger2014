@@ -251,6 +251,7 @@ MyTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     int step1 = 0;
     int step2 = 0;
     int step3 = 0;
+    int step4 = 0;
 
 
     for (; itau != jtau; ++itau) {
@@ -320,6 +321,7 @@ MyTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     int stepSV1 = 0;
     int stepSV2 = 0;
     int stepSV3 = 0;
+    int stepSV4 = 0;
     for (; itauSV != jtauSV; ++itauSV) {
 
         bool ptCutSV = itauSV->pt() > 20;
