@@ -261,6 +261,7 @@ MyTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     int step6 = 0;
     int step7 = 0;
     int step8 = 0;
+    int step9 = 0;
 
 
     for (; itau != jtau; ++itau) {
