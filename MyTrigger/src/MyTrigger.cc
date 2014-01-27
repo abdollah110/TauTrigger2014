@@ -9,7 +9,7 @@
 
  Implementation:
      [Notes on implementation]
-*/
+ */
 //
 // Original Author:  local user
 //         Created:  Thu Jan 16 15:23:21 CET 2014
@@ -43,50 +43,50 @@
 //
 
 class MyTrigger : public edm::EDAnalyzer {
-   public:
-      explicit MyTrigger(const edm::ParameterSet&);
-      ~MyTrigger();
+public:
+    explicit MyTrigger(const edm::ParameterSet&);
+    ~MyTrigger();
 
-      static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
+    static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
 
 
-   private:
-      virtual void beginJob() ;
-      virtual void analyze(const edm::Event&, const edm::EventSetup&);
-      virtual void endJob() ;
+private:
+    virtual void beginJob();
+    virtual void analyze(const edm::Event&, const edm::EventSetup&);
+    virtual void endJob();
 
-      virtual void beginRun(edm::Run const&, edm::EventSetup const&);
-      virtual void endRun(edm::Run const&, edm::EventSetup const&);
-      virtual void beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&);
-      virtual void endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&);
+    virtual void beginRun(edm::Run const&, edm::EventSetup const&);
+    virtual void endRun(edm::Run const&, edm::EventSetup const&);
+    virtual void beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&);
+    virtual void endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&);
 
-	  TH1D *demohisto;
-TH1D *demohisto_17;
-	  TH1D * Histo_tauPt;
-  TH1D * Histo_tauPt_20;
-TH1D * Histo_Denumerator;
-TH1D * Histo_DenumeratorSV;
-TH1D * Histo_Step1;
-TH1D * Histo_Step2;
-TH1D * Histo_Step3;
-TH1D * Histo_StepSV1;
-TH1D * Histo_StepSV2;
-TH1D * Histo_StepSV3;
-TH1D * Pt_Step1;
-TH1D * Eta_Step1;
-TH1D * Pt_Step2;
-TH1D * Eta_Step2;
-TH1D * Pt_Step3;
-TH1D * Eta_Step3;
+    TH1D *demohisto;
+    TH1D *demohisto_17;
+    TH1D * Histo_tauPt;
+    TH1D * Histo_tauPt_20;
+    TH1D * Histo_Denumerator;
+    TH1D * Histo_DenumeratorSV;
+    TH1D * Histo_Step1;
+    TH1D * Histo_Step2;
+    TH1D * Histo_Step3;
+    TH1D * Histo_StepSV1;
+    TH1D * Histo_StepSV2;
+    TH1D * Histo_StepSV3;
+    TH1D * Pt_Step1;
+    TH1D * Eta_Step1;
+    TH1D * Pt_Step2;
+    TH1D * Eta_Step2;
+    TH1D * Pt_Step3;
+    TH1D * Eta_Step3;
 
-TH1D * Pt_StepSV1;
-TH1D * Eta_StepSV1;
-TH1D * Pt_StepSV2;
-TH1D * Eta_StepSV2;
-TH1D * Pt_StepSV3;
-TH1D * Eta_StepSV3;
+    TH1D * Pt_StepSV1;
+    TH1D * Eta_StepSV1;
+    TH1D * Pt_StepSV2;
+    TH1D * Eta_StepSV2;
+    TH1D * Pt_StepSV3;
+    TH1D * Eta_StepSV3;
 
-      // ----------member data ---------------------------
+    // ----------member data ---------------------------
 };
 
 //
@@ -100,44 +100,41 @@ TH1D * Eta_StepSV3;
 //
 // constructors and destructor
 //
-MyTrigger::MyTrigger(const edm::ParameterSet& iConfig)
 
-{
-   //now do what ever initialization is needed
-      using namespace edm;
-	edm::Service<TFileService> fs;
-  demohisto = fs->make<TH1D>("MuPt" , "MuPt" , 50 , 0 , 250 );
- demohisto_17 = fs->make<TH1D>("MuPt_17" , "MuPt_17" , 50 , 0 , 250 );
-Histo_tauPt = fs->make<TH1D>("TauPt" , "TauPt" , 50 , 0 , 250 );	
-Histo_tauPt_20 = fs->make<TH1D>("TauPt_20" , "TauPt_20" , 50 , 0 , 250 );
-Histo_Denumerator= fs->make<TH1D>("TriggerRate" , "TriggerRate" , 5 , 0 , 5 );
-Histo_DenumeratorSV= fs->make<TH1D>("TriggerRateStdVtx" , "TriggerRateStdVtx" , 5 , 0 , 5 );
-Histo_Step1= fs->make<TH1D>("Step1-Multiplicity" , "Step1-Multiplicity" , 5 , 0 , 5 );
-Histo_Step2= fs->make<TH1D>("Step2-Multiplicity" , "Step2-Multiplicity" , 5 , 0 , 5 );
-Histo_Step3= fs->make<TH1D>("Step3-Multiplicity" , "Step3-Multiplicity" , 5 , 0 , 5 );
-Histo_StepSV1= fs->make<TH1D>("StepSV1-Multiplicity" , "StepSV1-Multiplicity" , 5 , 0 , 5 );
-Histo_StepSV2= fs->make<TH1D>("StepSV2-Multiplicity" , "StepSV2-Multiplicity" , 5 , 0 , 5 );
-Histo_StepSV3= fs->make<TH1D>("StepSV3-Multiplicity" , "StepSV3-Multiplicity" , 5 , 0 , 5 );
- Pt_StepSV1= fs->make<TH1D>("Pt_StepSV1" , "Pt_StepSV1" , 40 , 0 , 200 );
- Eta_StepSV1= fs->make<TH1D>("Eta_StepSV1" , "Eta_StepSV1" , 50 , -2.5 , 2.5 );
- Pt_StepSV2= fs->make<TH1D>("Pt_StepSV2" , "Pt_StepSV2" , 40 , 0 , 200 );
- Eta_StepSV2= fs->make<TH1D>("Eta_StepSV2" , "Eta_StepSV2" , 50 , -2.5 , 2.5 );
- Pt_StepSV3= fs->make<TH1D>("Pt_StepSV3" , "Pt_StepSV3" , 40 , 0 , 200 );
- Eta_StepSV3= fs->make<TH1D>("Eta_StepSV3" , "Eta_StepSV3" , 50 , -2.5 , 2.5 );
-         Pt_Step1= fs->make<TH1D>("Pt_Step1" , "Pt_Step1" , 40 , 0 , 200 );
- Eta_Step1= fs->make<TH1D>("Eta_Step1" , "Eta_Step1" , 50 , -2.5 , 2.5 );
- Pt_Step2= fs->make<TH1D>("Pt_Step2" , "Pt_Step2" , 40 , 0 , 200 );
- Eta_Step2= fs->make<TH1D>("Eta_Step2" , "Eta_Step2" , 50 , -2.5 , 2.5 );
- Pt_Step3= fs->make<TH1D>("Pt_Step3" , "Pt_Step3" , 40 , 0 , 200 );
- Eta_Step3= fs->make<TH1D>("Eta_Step3" , "Eta_Step3" , 50 , -2.5 , 2.5 );
+MyTrigger::MyTrigger(const edm::ParameterSet& iConfig) {
+    //now do what ever initialization is needed
+    using namespace edm;
+    edm::Service<TFileService> fs;
+    demohisto = fs->make<TH1D > ("MuPt", "MuPt", 50, 0, 250);
+    demohisto_17 = fs->make<TH1D > ("MuPt_17", "MuPt_17", 50, 0, 250);
+    Histo_tauPt = fs->make<TH1D > ("TauPt", "TauPt", 50, 0, 250);
+    Histo_tauPt_20 = fs->make<TH1D > ("TauPt_20", "TauPt_20", 50, 0, 250);
+    Histo_Denumerator = fs->make<TH1D > ("TriggerRate", "TriggerRate", 5, 0, 5);
+    Histo_DenumeratorSV = fs->make<TH1D > ("TriggerRateStdVtx", "TriggerRateStdVtx", 5, 0, 5);
+    Histo_Step1 = fs->make<TH1D > ("Step1-Multiplicity", "Step1-Multiplicity", 5, 0, 5);
+    Histo_Step2 = fs->make<TH1D > ("Step2-Multiplicity", "Step2-Multiplicity", 5, 0, 5);
+    Histo_Step3 = fs->make<TH1D > ("Step3-Multiplicity", "Step3-Multiplicity", 5, 0, 5);
+    Histo_StepSV1 = fs->make<TH1D > ("StepSV1-Multiplicity", "StepSV1-Multiplicity", 5, 0, 5);
+    Histo_StepSV2 = fs->make<TH1D > ("StepSV2-Multiplicity", "StepSV2-Multiplicity", 5, 0, 5);
+    Histo_StepSV3 = fs->make<TH1D > ("StepSV3-Multiplicity", "StepSV3-Multiplicity", 5, 0, 5);
+    Pt_StepSV1 = fs->make<TH1D > ("Pt_StepSV1", "Pt_StepSV1", 40, 0, 200);
+    Eta_StepSV1 = fs->make<TH1D > ("Eta_StepSV1", "Eta_StepSV1", 50, -2.5, 2.5);
+    Pt_StepSV2 = fs->make<TH1D > ("Pt_StepSV2", "Pt_StepSV2", 40, 0, 200);
+    Eta_StepSV2 = fs->make<TH1D > ("Eta_StepSV2", "Eta_StepSV2", 50, -2.5, 2.5);
+    Pt_StepSV3 = fs->make<TH1D > ("Pt_StepSV3", "Pt_StepSV3", 40, 0, 200);
+    Eta_StepSV3 = fs->make<TH1D > ("Eta_StepSV3", "Eta_StepSV3", 50, -2.5, 2.5);
+    Pt_Step1 = fs->make<TH1D > ("Pt_Step1", "Pt_Step1", 40, 0, 200);
+    Eta_Step1 = fs->make<TH1D > ("Eta_Step1", "Eta_Step1", 50, -2.5, 2.5);
+    Pt_Step2 = fs->make<TH1D > ("Pt_Step2", "Pt_Step2", 40, 0, 200);
+    Eta_Step2 = fs->make<TH1D > ("Eta_Step2", "Eta_Step2", 50, -2.5, 2.5);
+    Pt_Step3 = fs->make<TH1D > ("Pt_Step3", "Pt_Step3", 40, 0, 200);
+    Eta_Step3 = fs->make<TH1D > ("Eta_Step3", "Eta_Step3", 50, -2.5, 2.5);
 }
 
+MyTrigger::~MyTrigger() {
 
-MyTrigger::~MyTrigger()
-{
- 
-   // do anything here that needs to be done at desctruction time
-   // (e.g. close files, deallocate resources etc.)
+    // do anything here that needs to be done at desctruction time
+    // (e.g. close files, deallocate resources etc.)
 
 }
 
@@ -145,7 +142,6 @@ MyTrigger::~MyTrigger()
 //
 // member functions
 //
-
 
 float deltaPhi_(float a, float b) {
     float result = a - b;
@@ -160,37 +156,61 @@ float dR(float l1eta, float l1phi, float l2eta, float l2phi) {
     return sqrt(deta * deta + dphi * dphi);
 }
 
-bool hasOverLap(float eta_, float phi_, const edm::Event& iEvent , const edm::EventSetup& iSetup){
+bool hasOverLap(float eta_, float phi_, const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     using pat::Muon;
     using pat::MuonCollection;
     using namespace std;
     using namespace reco;
     using namespace edm;
     using namespace pat;
-   
+
     Handle<pat::MuonCollection> muonsHandle;
     iEvent.getByLabel("selectedMuons", muonsHandle);
     const MuonCollection & muons = *(muonsHandle.product());
     pat::MuonCollection::const_iterator imu = muons.begin();
     pat::MuonCollection::const_iterator jmu = muons.end();
 
-//const Provenance& prov = iEvent.getProvenance(muonsHandle.TauHLT());
-//const float& procName = prov.isolations_;
-  int ipfmu = 0;
-bool  dR05 = 0;
+    //const Provenance& prov = iEvent.getProvenance(muonsHandle.TauHLT());
+    //const float& procName = prov.isolations_;
+    int ipfmu = 0;
+    bool dR05 = 0;
     for (; imu != jmu; ++imu, ipfmu++) {
-if (imu->pt() > 17 && fabs(imu->eta()) < 2.1 && imu->userFloat("PFRelIsoDB04v2")< 0.15) dR05 = (dR(imu->eta(),imu->phi(),eta_,phi_) > 0.5 ? 1:0);
+        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1 && imu->userFloat("PFRelIsoDB04v2") < 0.15) dR05 = (dR(imu->eta(), imu->phi(), eta_, phi_) > 0.5 ? 1 : 0);
 
+    }
+
+    return dR05;
 }
 
-return dR05;
+bool matchToOfflineTaus(float eta_, float phi_, const edm::Event& iEvent, const edm::EventSetup& iSetup) {
+    using namespace std;
+    using namespace reco;
+    using namespace edm;
+    using namespace pat;
+
+
+    Handle<pat::TauCollection> pftausHandle;
+    iEvent.getByLabel("selectedTaus", pftausHandle);
+    const TauCollection &pftau = *(pftausHandle.product());
+    pat::TauCollection::const_iterator ipftau = pftau.begin();
+    pat::TauCollection::const_iterator jpftau = pftau.end();
+
+
+    bool dR05 = 0;
+    for (; ipftau != jpftau; ++ipftau) {
+        if (ipftau->pt() > 20 &&  ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byIsolation") > 0.5) dR05 = (dR(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5 ? 1 : 0);
+
+    }
+
+    return dR05;
+
 }
 
 
 // ------------ method called for each event  ------------
+
 void
-MyTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
-{
+MyTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     using pat::Muon;
     using pat::MuonCollection;
     using namespace std;
@@ -198,7 +218,27 @@ MyTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     using namespace edm;
     using namespace pat;
 
-   
+
+
+    //******************************************************
+    //  REquring at least 1 muon in the event
+    //******************************************************
+    Handle<pat::MuonCollection> muonsHandle;
+    iEvent.getByLabel("selectedMuons", muonsHandle);
+    const MuonCollection & muons = *(muonsHandle.product());
+    pat::MuonCollection::const_iterator imu = muons.begin();
+    pat::MuonCollection::const_iterator jmu = muons.end();
+
+    int ipfmu = 0;
+    for (; imu != jmu; ++imu) {
+        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1 && imu->userFloat("PFRelIsoDB04v2") < 0.15) ipfmu++;
+    }
+
+    //******************************************************
+    //  Making Loop over Taus
+    //******************************************************
+
+
     Handle<pat::TauCollection> tausHandle;
     iEvent.getByLabel("selectedHltPatTaus", tausHandle);
     const TauCollection &tau = *(tausHandle.product());
@@ -208,34 +248,67 @@ MyTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
 
 
-int step1 = 0;
-int step2 = 0;
-int step3 = 0;
+    int step1 = 0;
+    int step2 = 0;
+    int step3 = 0;
 
 
     for (; itau != jtau; ++itau) {
 
-bool ptCut = itau->pt() > 20;
-bool hasOverlapMu = hasOverLap(itau->eta(), itau->phi(), iEvent, iSetup);
-bool discByDecayModeFinding = (itau->tauID("decayModeFinding") > 0.5 ? true : false);
-bool discByIsolation = (itau->tauID("byIsolation") > 0.5 ? true : false);
+        bool ptCut = itau->pt() > 20;
+        bool muTauPair = ipfmu > 0;
+        bool hasOverlapMu = hasOverLap(itau->eta(), itau->phi(), iEvent, iSetup);
+        bool discByDecayModeFinding = (itau->tauID("decayModeFinding") > 0.5 ? true : false);
+        bool discByIsolation = (itau->tauID("byIsolation") > 0.5 ? true : false);
 
-if (ptCut && hasOverlapMu) {step1++; Pt_Step1->Fill(itau->pt());Eta_Step1->Fill(itau->eta()); }
-if (ptCut && hasOverlapMu && discByDecayModeFinding) {step2++; Pt_Step2->Fill(itau->pt());Eta_Step2->Fill(itau->eta()) ;}
-if (ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation) {step3++; Pt_Step3->Fill(itau->pt());Eta_Step3->Fill(itau->eta()) ;}
-}
+        if (muTauPair && ptCut && hasOverlapMu) {
+            step1++;
+            Pt_Step1->Fill(itau->pt());
+            Eta_Step1->Fill(itau->eta());
+        }
+        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding) {
+            step2++;
+            Pt_Step2->Fill(itau->pt());
+            Eta_Step2->Fill(itau->eta());
+        }
+        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation) {
+            step3++;
+            Pt_Step3->Fill(itau->pt());
+            Eta_Step3->Fill(itau->eta());
+        }
+        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation && matchToOfflineTaus(itau->eta(), itau->phi(), iEvent, iSetup)) {
+            step4++;
+//            Pt_Step3->Fill(itau->pt());
+//            Eta_Step3->Fill(itau->eta());
+        }
 
-Histo_Denumerator->Fill(0);
-if (step1 > 0) {Histo_Denumerator->Fill(1);Histo_Step1->Fill(step1);}
-if (step2 > 0) {Histo_Denumerator->Fill(2);Histo_Step2->Fill(step2);}
-if (step3 > 0) {Histo_Denumerator->Fill(3);Histo_Step3->Fill(step3);}
+        
+    }
+
+    Histo_Denumerator->Fill(0);
+    if (step1 > 0) {
+        Histo_Denumerator->Fill(1);
+        Histo_Step1->Fill(step1);
+    }
+    if (step2 > 0) {
+        Histo_Denumerator->Fill(2);
+        Histo_Step2->Fill(step2);
+    }
+    if (step3 > 0) {
+        Histo_Denumerator->Fill(3);
+        Histo_Step3->Fill(step3);
+    }
+    if (step4 > 0) {
+        Histo_Denumerator->Fill(4);
+//        Histo_Step4->Fill(step4);
+    }
 
 
 
-  
 
 
-  Handle<pat::TauCollection> tausHandleSV;
+
+    Handle<pat::TauCollection> tausHandleSV;
     iEvent.getByLabel("selectedHltPatTausStdVtx", tausHandleSV);
     const TauCollection &tauSV = *(tausHandleSV.product());
     pat::TauCollection::const_iterator itauSV = tauSV.begin();
@@ -244,36 +317,67 @@ if (step3 > 0) {Histo_Denumerator->Fill(3);Histo_Step3->Fill(step3);}
 
 
 
-int stepSV1 = 0;
-int stepSV2 = 0;
-int stepSV3 = 0;
+    int stepSV1 = 0;
+    int stepSV2 = 0;
+    int stepSV3 = 0;
     for (; itauSV != jtauSV; ++itauSV) {
 
-bool ptCutSV = itauSV->pt() > 20;
-bool hasOverlapMuSV = hasOverLap(itauSV->eta(), itauSV->phi(), iEvent, iSetup);
-bool discByDecayModeFindingSV = itauSV->tauID("decayModeFinding") > 0.5 ? true : false;
-bool discByIsolationSV = itauSV->tauID("byIsolation") > 0.5 ? true : false;
+        bool ptCutSV = itauSV->pt() > 20;
+        bool muTauPairSV = ipfmu > 0;
+        bool hasOverlapMuSV = hasOverLap(itauSV->eta(), itauSV->phi(), iEvent, iSetup);
+        bool discByDecayModeFindingSV = itauSV->tauID("decayModeFinding") > 0.5 ? true : false;
+        bool discByIsolationSV = itauSV->tauID("byIsolation") > 0.5 ? true : false;
 
-if (ptCutSV && hasOverlapMuSV) {stepSV1++; Pt_StepSV1->Fill(itauSV->pt());Eta_StepSV1->Fill(itauSV->eta()) ;}
-if (ptCutSV && hasOverlapMuSV && discByDecayModeFindingSV) {stepSV2++; Pt_StepSV2->Fill(itauSV->pt());Eta_StepSV2->Fill(itauSV->eta()) ;}
-if (ptCutSV && hasOverlapMuSV && discByDecayModeFindingSV && discByIsolationSV) {stepSV3++;Pt_StepSV3->Fill(itauSV->pt());Eta_StepSV3->Fill(itauSV->eta()); }
-}
-Histo_DenumeratorSV->Fill(0);
-if (stepSV1 > 0) {Histo_DenumeratorSV->Fill(1);Histo_StepSV1->Fill(stepSV1);}
-if (stepSV2 > 0) {Histo_DenumeratorSV->Fill(2);Histo_StepSV2->Fill(stepSV2);}
-if (stepSV3 > 0) {Histo_DenumeratorSV->Fill(3);Histo_StepSV3->Fill(stepSV3);}
+        if (muTauPairSV && ptCutSV && hasOverlapMuSV) {
+            stepSV1++;
+            Pt_StepSV1->Fill(itauSV->pt());
+            Eta_StepSV1->Fill(itauSV->eta());
+        }
+        if (muTauPairSV && ptCutSV && hasOverlapMuSV && discByDecayModeFindingSV) {
+            stepSV2++;
+            Pt_StepSV2->Fill(itauSV->pt());
+            Eta_StepSV2->Fill(itauSV->eta());
+        }
+        if (muTauPairSV && ptCutSV && hasOverlapMuSV && discByDecayModeFindingSV && discByIsolationSV) {
+            stepSV3++;
+            Pt_StepSV3->Fill(itauSV->pt());
+            Eta_StepSV3->Fill(itauSV->eta());
+        }
+        if (muTauPairSV && ptCutSV && hasOverlapMuSV && discByDecayModeFindingSV && discByIsolationSV &&matchToOfflineTaus(itauSV->eta(), itauSV->phi(), iEvent, iSetup)  ) {
+            stepSV4++;
+//            Pt_StepSV4->Fill(itauSV->pt());
+//            Eta_StepSV3->Fill(itauSV->eta());
+        }
+    }
+    Histo_DenumeratorSV->Fill(0);
+    if (stepSV1 > 0) {
+        Histo_DenumeratorSV->Fill(1);
+        Histo_StepSV1->Fill(stepSV1);
+    }
+    if (stepSV2 > 0) {
+        Histo_DenumeratorSV->Fill(2);
+        Histo_StepSV2->Fill(stepSV2);
+    }
+    if (stepSV3 > 0) {
+        Histo_DenumeratorSV->Fill(3);
+        Histo_StepSV3->Fill(stepSV3);
+    }
+    if (stepSV4 > 0) {
+        Histo_DenumeratorSV->Fill(4);
+//        Histo_StepSV3->Fill(stepSV3);
+    }
 
 
 
 
-/* 
-    Handle<pat::TauCollection> tausHandle;
-    iEvent.getByLabel("selectedHltPatTausStdVtx", tausHandle);
-    const TauCollection &tau = *(tausHandle.product());
-    pat::TauCollection::const_iterator itau = tau.begin();
-    pat::TauCollection::const_iterator jtau = tau.end();
+    /*
+        Handle<pat::TauCollection> tausHandle;
+        iEvent.getByLabel("selectedHltPatTausStdVtx", tausHandle);
+        const TauCollection &tau = *(tausHandle.product());
+        pat::TauCollection::const_iterator itau = tau.begin();
+        pat::TauCollection::const_iterator jtau = tau.end();
 
-*/
+     */
 
 
 
@@ -281,49 +385,50 @@ if (stepSV3 > 0) {Histo_DenumeratorSV->Fill(3);Histo_StepSV3->Fill(stepSV3);}
 
 
 // ------------ method called once each job just before starting event loop  ------------
-void 
-MyTrigger::beginJob()
-{
+
+void
+MyTrigger::beginJob() {
 }
 
 // ------------ method called once each job just after ending the event loop  ------------
-void 
-MyTrigger::endJob() 
-{
+
+void
+MyTrigger::endJob() {
 }
 
 // ------------ method called when starting to processes a run  ------------
-void 
-MyTrigger::beginRun(edm::Run const&, edm::EventSetup const&)
-{
+
+void
+MyTrigger::beginRun(edm::Run const&, edm::EventSetup const&) {
 }
 
 // ------------ method called when ending the processing of a run  ------------
-void 
-MyTrigger::endRun(edm::Run const&, edm::EventSetup const&)
-{
+
+void
+MyTrigger::endRun(edm::Run const&, edm::EventSetup const&) {
 }
 
 // ------------ method called when starting to processes a luminosity block  ------------
-void 
-MyTrigger::beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
-{
+
+void
+MyTrigger::beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&) {
 }
 
 // ------------ method called when ending the processing of a luminosity block  ------------
-void 
-MyTrigger::endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
-{
+
+void
+MyTrigger::endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&) {
 }
 
 // ------------ method fills 'descriptions' with the allowed parameters for the module  ------------
+
 void
 MyTrigger::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
-  //The following says we do not know what parameters are allowed so do no validation
-  // Please change this to state exactly what you do use, even if it is no parameters
-  edm::ParameterSetDescription desc;
-  desc.setUnknown();
-  descriptions.addDefault(desc);
+    //The following says we do not know what parameters are allowed so do no validation
+    // Please change this to state exactly what you do use, even if it is no parameters
+    edm::ParameterSetDescription desc;
+    desc.setUnknown();
+    descriptions.addDefault(desc);
 }
 
 //define this as a plug-in
