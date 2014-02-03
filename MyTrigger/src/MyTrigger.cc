@@ -299,27 +299,27 @@ MyTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 //            //            Pt_Step3->Fill(itau->pt());
 //            //            Eta_Step3->Fill(itau->eta());
 //        }
-        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation && matchToOfflineTaus(2, itau->eta(), itau->phi(), iEvent, iSetup)) {
+        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation &&  discByMuLoose && matchToOfflineTaus(2, itau->eta(), itau->phi(), iEvent, iSetup)) {
             step5++;
             //            Pt_Step3->Fill(itau->pt());
             //            Eta_Step3->Fill(itau->eta());
         }
-        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation && matchToOfflineTaus(3, itau->eta(), itau->phi(), iEvent, iSetup)) {
+        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation &&  discByMuLoose &&matchToOfflineTaus(3, itau->eta(), itau->phi(), iEvent, iSetup)) {
             step6++;
             //            Pt_Step3->Fill(itau->pt());
             //            Eta_Step3->Fill(itau->eta());
         }
-        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation && matchToOfflineTaus(4, itau->eta(), itau->phi(), iEvent, iSetup)) {
+        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation &&  discByMuLoose && matchToOfflineTaus(4, itau->eta(), itau->phi(), iEvent, iSetup)) {
             step7++;
             //            Pt_Step3->Fill(itau->pt());
             //            Eta_Step3->Fill(itau->eta());
         }
-        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation && matchToOfflineTaus(5, itau->eta(), itau->phi(), iEvent, iSetup)) {
+        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation &&  discByMuLoose && matchToOfflineTaus(5, itau->eta(), itau->phi(), iEvent, iSetup)) {
             step8++;
             //            Pt_Step3->Fill(itau->pt());
             //            Eta_Step3->Fill(itau->eta());
         }
-        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation && matchToOfflineTaus(6, itau->eta(), itau->phi(), iEvent, iSetup)) {
+        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation &&   discByMuLoose && matchToOfflineTaus(6, itau->eta(), itau->phi(), iEvent, iSetup)) {
             step9++;
             //            Pt_Step3->Fill(itau->pt());
             //            Eta_Step3->Fill(itau->eta());
