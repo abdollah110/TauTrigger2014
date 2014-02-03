@@ -291,8 +291,8 @@ MyTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         }
         if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation) {
             step3++;
-            Pt_Step4->Fill(itau->pt());
-            Eta_Step4->Fill(itau->eta());
+//            Pt_Step4->Fill(itau->pt());
+//            Eta_Step4->Fill(itau->eta());
         }
 //        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation && matchToOfflineTaus(1, itau->eta(), itau->phi(), iEvent, iSetup)) {
 //            step4++;
