@@ -271,6 +271,7 @@ MyTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         bool hasOverlapMu = hasOverLap(itau->eta(), itau->phi(), iEvent, iSetup);
         bool discByDecayModeFinding = (itau->tauID("decayModeFinding") > 0.5 ? true : false);
         bool discByIsolation = (itau->tauID("byIsolation") > 0.5 ? true : false);
+        bool discByMuLoose = (itau->tauID("byMuonLoose") > 0.5 ? true : false);
 
         if (muTauPair && ptCut && hasOverlapMu) {
             step1++;
