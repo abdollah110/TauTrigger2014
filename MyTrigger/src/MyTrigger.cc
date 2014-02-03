@@ -245,7 +245,8 @@ MyTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 
 
     Handle<pat::TauCollection> tausHandle;
-    iEvent.getByLabel("selectedHltPatTaus", tausHandle);
+//    iEvent.getByLabel("selectedHltPatTaus", tausHandle);
+    iEvent.getByLabel("selectedHltPatTausPxl2NP", tausHandle);
     const TauCollection &tau = *(tausHandle.product());
     pat::TauCollection::const_iterator itau = tau.begin();
     pat::TauCollection::const_iterator jtau = tau.end();
@@ -364,106 +365,106 @@ MyTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 
 
 
-
-    Handle<pat::TauCollection> tausHandleSV;
-    iEvent.getByLabel("selectedHltPatTausStdVtx", tausHandleSV);
-    const TauCollection &tauSV = *(tausHandleSV.product());
-    pat::TauCollection::const_iterator itauSV = tauSV.begin();
-    pat::TauCollection::const_iterator jtauSV = tauSV.end();
-
-
-
-
-    int stepSV1 = 0;
-    int stepSV2 = 0;
-    int stepSV3 = 0;
-    int stepSV4 = 0;
-    int stepSV5 = 0;
-    int stepSV6 = 0;
-    int stepSV7 = 0;
-    int stepSV8 = 0;
-    for (; itauSV != jtauSV; ++itauSV) {
-
-        bool ptCutSV = itauSV->pt() > 20;
-        bool muTauPairSV = ipfmu > 0;
-        bool hasOverlapMuSV = hasOverLap(itauSV->eta(), itauSV->phi(), iEvent, iSetup);
-        bool discByDecayModeFindingSV = itauSV->tauID("decayModeFinding") > 0.5 ? true : false;
-        bool discByIsolationSV = itauSV->tauID("byIsolation") > 0.5 ? true : false;
-
-        if (muTauPairSV && ptCutSV && hasOverlapMuSV) {
-            stepSV1++;
-            Pt_StepSV1->Fill(itauSV->pt());
-            Eta_StepSV1->Fill(itauSV->eta());
-        }
-        if (muTauPairSV && ptCutSV && hasOverlapMuSV && discByDecayModeFindingSV) {
-            stepSV2++;
-            Pt_StepSV2->Fill(itauSV->pt());
-            Eta_StepSV2->Fill(itauSV->eta());
-        }
-        if (muTauPairSV && ptCutSV && hasOverlapMuSV && discByDecayModeFindingSV && discByIsolationSV) {
-            stepSV3++;
-            Pt_StepSV3->Fill(itauSV->pt());
-            Eta_StepSV3->Fill(itauSV->eta());
-        }
-        if (muTauPairSV && ptCutSV && hasOverlapMuSV && discByDecayModeFindingSV && discByIsolationSV && matchToOfflineTaus(1, itauSV->eta(), itauSV->phi(), iEvent, iSetup)) {
-            stepSV4++;
-            //            Pt_StepSV4->Fill(itauSV->pt());
-            //            Eta_StepSV3->Fill(itauSV->eta());
-        }
-        if (muTauPairSV && ptCutSV && hasOverlapMuSV && discByDecayModeFindingSV && discByIsolationSV && matchToOfflineTaus(2, itauSV->eta(), itauSV->phi(), iEvent, iSetup)) {
-            stepSV5++;
-            //            Pt_StepSV4->Fill(itauSV->pt());
-            //            Eta_StepSV3->Fill(itauSV->eta());
-        }
-        if (muTauPairSV && ptCutSV && hasOverlapMuSV && discByDecayModeFindingSV && discByIsolationSV && matchToOfflineTaus(3, itauSV->eta(), itauSV->phi(), iEvent, iSetup)) {
-            stepSV6++;
-            //            Pt_StepSV4->Fill(itauSV->pt());
-            //            Eta_StepSV3->Fill(itauSV->eta());
-        }
-        if (muTauPairSV && ptCutSV && hasOverlapMuSV && discByDecayModeFindingSV && discByIsolationSV && matchToOfflineTaus(4, itauSV->eta(), itauSV->phi(), iEvent, iSetup)) {
-            stepSV7++;
-            //            Pt_StepSV4->Fill(itauSV->pt());
-            //            Eta_StepSV3->Fill(itauSV->eta());
-        }
-        if (muTauPairSV && ptCutSV && hasOverlapMuSV && discByDecayModeFindingSV && discByIsolationSV && matchToOfflineTaus(5, itauSV->eta(), itauSV->phi(), iEvent, iSetup)) {
-            stepSV8++;
-            //            Pt_StepSV4->Fill(itauSV->pt());
-            //            Eta_StepSV3->Fill(itauSV->eta());
-        }
-    }
-    Histo_DenumeratorSV->Fill(0);
-    if (stepSV1 > 0) {
-        Histo_DenumeratorSV->Fill(1);
-        Histo_StepSV1->Fill(stepSV1);
-    }
-    if (stepSV2 > 0) {
-        Histo_DenumeratorSV->Fill(2);
-        Histo_StepSV2->Fill(stepSV2);
-    }
-    if (stepSV3 > 0) {
-        Histo_DenumeratorSV->Fill(3);
-        Histo_StepSV3->Fill(stepSV3);
-    }
-    if (stepSV4 > 0) {
-        Histo_DenumeratorSV->Fill(4);
-        //        Histo_StepSV3->Fill(stepSV3);
-    }
-    if (stepSV5 > 0) {
-        Histo_DenumeratorSV->Fill(5);
-        //        Histo_StepSV3->Fill(stepSV3);
-    }
-    if (stepSV6 > 0) {
-        Histo_DenumeratorSV->Fill(6);
-        //        Histo_StepSV3->Fill(stepSV3);
-    }
-    if (stepSV7 > 0) {
-        Histo_DenumeratorSV->Fill(7);
-        //        Histo_StepSV3->Fill(stepSV3);
-    }
-    if (stepSV8 > 0) {
-        Histo_DenumeratorSV->Fill(8);
-        //        Histo_StepSV3->Fill(stepSV3);
-    }
+//
+//    Handle<pat::TauCollection> tausHandleSV;
+//    iEvent.getByLabel("selectedHltPatTausStdVtx", tausHandleSV);
+//    const TauCollection &tauSV = *(tausHandleSV.product());
+//    pat::TauCollection::const_iterator itauSV = tauSV.begin();
+//    pat::TauCollection::const_iterator jtauSV = tauSV.end();
+//
+//
+//
+//
+//    int stepSV1 = 0;
+//    int stepSV2 = 0;
+//    int stepSV3 = 0;
+//    int stepSV4 = 0;
+//    int stepSV5 = 0;
+//    int stepSV6 = 0;
+//    int stepSV7 = 0;
+//    int stepSV8 = 0;
+//    for (; itauSV != jtauSV; ++itauSV) {
+//
+//        bool ptCutSV = itauSV->pt() > 20;
+//        bool muTauPairSV = ipfmu > 0;
+//        bool hasOverlapMuSV = hasOverLap(itauSV->eta(), itauSV->phi(), iEvent, iSetup);
+//        bool discByDecayModeFindingSV = itauSV->tauID("decayModeFinding") > 0.5 ? true : false;
+//        bool discByIsolationSV = itauSV->tauID("byIsolation") > 0.5 ? true : false;
+//
+//        if (muTauPairSV && ptCutSV && hasOverlapMuSV) {
+//            stepSV1++;
+//            Pt_StepSV1->Fill(itauSV->pt());
+//            Eta_StepSV1->Fill(itauSV->eta());
+//        }
+//        if (muTauPairSV && ptCutSV && hasOverlapMuSV && discByDecayModeFindingSV) {
+//            stepSV2++;
+//            Pt_StepSV2->Fill(itauSV->pt());
+//            Eta_StepSV2->Fill(itauSV->eta());
+//        }
+//        if (muTauPairSV && ptCutSV && hasOverlapMuSV && discByDecayModeFindingSV && discByIsolationSV) {
+//            stepSV3++;
+//            Pt_StepSV3->Fill(itauSV->pt());
+//            Eta_StepSV3->Fill(itauSV->eta());
+//        }
+//        if (muTauPairSV && ptCutSV && hasOverlapMuSV && discByDecayModeFindingSV && discByIsolationSV && matchToOfflineTaus(1, itauSV->eta(), itauSV->phi(), iEvent, iSetup)) {
+//            stepSV4++;
+//            //            Pt_StepSV4->Fill(itauSV->pt());
+//            //            Eta_StepSV3->Fill(itauSV->eta());
+//        }
+//        if (muTauPairSV && ptCutSV && hasOverlapMuSV && discByDecayModeFindingSV && discByIsolationSV && matchToOfflineTaus(2, itauSV->eta(), itauSV->phi(), iEvent, iSetup)) {
+//            stepSV5++;
+//            //            Pt_StepSV4->Fill(itauSV->pt());
+//            //            Eta_StepSV3->Fill(itauSV->eta());
+//        }
+//        if (muTauPairSV && ptCutSV && hasOverlapMuSV && discByDecayModeFindingSV && discByIsolationSV && matchToOfflineTaus(3, itauSV->eta(), itauSV->phi(), iEvent, iSetup)) {
+//            stepSV6++;
+//            //            Pt_StepSV4->Fill(itauSV->pt());
+//            //            Eta_StepSV3->Fill(itauSV->eta());
+//        }
+//        if (muTauPairSV && ptCutSV && hasOverlapMuSV && discByDecayModeFindingSV && discByIsolationSV && matchToOfflineTaus(4, itauSV->eta(), itauSV->phi(), iEvent, iSetup)) {
+//            stepSV7++;
+//            //            Pt_StepSV4->Fill(itauSV->pt());
+//            //            Eta_StepSV3->Fill(itauSV->eta());
+//        }
+//        if (muTauPairSV && ptCutSV && hasOverlapMuSV && discByDecayModeFindingSV && discByIsolationSV && matchToOfflineTaus(5, itauSV->eta(), itauSV->phi(), iEvent, iSetup)) {
+//            stepSV8++;
+//            //            Pt_StepSV4->Fill(itauSV->pt());
+//            //            Eta_StepSV3->Fill(itauSV->eta());
+//        }
+//    }
+//    Histo_DenumeratorSV->Fill(0);
+//    if (stepSV1 > 0) {
+//        Histo_DenumeratorSV->Fill(1);
+//        Histo_StepSV1->Fill(stepSV1);
+//    }
+//    if (stepSV2 > 0) {
+//        Histo_DenumeratorSV->Fill(2);
+//        Histo_StepSV2->Fill(stepSV2);
+//    }
+//    if (stepSV3 > 0) {
+//        Histo_DenumeratorSV->Fill(3);
+//        Histo_StepSV3->Fill(stepSV3);
+//    }
+//    if (stepSV4 > 0) {
+//        Histo_DenumeratorSV->Fill(4);
+//        //        Histo_StepSV3->Fill(stepSV3);
+//    }
+//    if (stepSV5 > 0) {
+//        Histo_DenumeratorSV->Fill(5);
+//        //        Histo_StepSV3->Fill(stepSV3);
+//    }
+//    if (stepSV6 > 0) {
+//        Histo_DenumeratorSV->Fill(6);
+//        //        Histo_StepSV3->Fill(stepSV3);
+//    }
+//    if (stepSV7 > 0) {
+//        Histo_DenumeratorSV->Fill(7);
+//        //        Histo_StepSV3->Fill(stepSV3);
+//    }
+//    if (stepSV8 > 0) {
+//        Histo_DenumeratorSV->Fill(8);
+//        //        Histo_StepSV3->Fill(stepSV3);
+//    }
 
 
 
