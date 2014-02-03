@@ -289,8 +289,8 @@ MyTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
             Pt_Step3->Fill(itau->pt());
             Eta_Step3->Fill(itau->eta());
         }
-        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation) {
-            step3++;
+        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation && discByMuLoose) {
+            step4++;
 //            Pt_Step4->Fill(itau->pt());
 //            Eta_Step4->Fill(itau->eta());
         }
