@@ -231,7 +231,8 @@ MyTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     //******************************************************
     Handle<pat::MuonCollection> muonsHandle;
 //    iEvent.getByLabel("selectedMuons", muonsHandle);
-    iEvent.getByLabel("hltL3MuonCandidates", muonsHandle);
+//    iEvent.getByLabel("hltL3MuonCandidates", muonsHandle);
+    iEvent.getByLabel("hltMuons", muonsHandle);
     const MuonCollection & muons = *(muonsHandle.product());
     pat::MuonCollection::const_iterator imu = muons.begin();
     pat::MuonCollection::const_iterator jmu = muons.end();
