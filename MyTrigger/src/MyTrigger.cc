@@ -157,8 +157,8 @@ float dR(float l1eta, float l1phi, float l2eta, float l2phi) {
 }
 
 bool hasOverLap(float eta_, float phi_, const edm::Event& iEvent, const edm::EventSetup& iSetup) {
-    using pat::Muon;
-    using pat::MuonCollection;
+    using reco::Muon;
+    using reco::MuonCollection;
     using namespace std;
     using namespace reco;
     using namespace edm;
@@ -170,8 +170,8 @@ bool hasOverLap(float eta_, float phi_, const edm::Event& iEvent, const edm::Eve
     iEvent.getByLabel("hltMuons", muonsHandle);
     //    iEvent.getByLabel("hltL3MuonCandidates", muonsHandle);
     const MuonCollection & muons = *(muonsHandle.product());
-    pat::MuonCollection::const_iterator imu = muons.begin();
-    pat::MuonCollection::const_iterator jmu = muons.end();
+    reco::MuonCollection::const_iterator imu = muons.begin();
+    reco::MuonCollection::const_iterator jmu = muons.end();
 
     //const Provenance& prov = iEvent.getProvenance(muonsHandle.TauHLT());
     //const float& procName = prov.isolations_;
@@ -237,8 +237,8 @@ MyTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     iEvent.getByLabel("hltMuons", muonsHandle);
     //    iEvent.getByLabel("hltL3MuonCandidates", muonsHandle);
     const MuonCollection & muons = *(muonsHandle.product());
-    pat::MuonCollection::const_iterator imu = muons.begin();
-    pat::MuonCollection::const_iterator jmu = muons.end();
+    reco::MuonCollection::const_iterator imu = muons.begin();
+    reco::MuonCollection::const_iterator jmu = muons.end();
 
     int ipfmu = 0;
     for (; imu != jmu; ++imu) {
