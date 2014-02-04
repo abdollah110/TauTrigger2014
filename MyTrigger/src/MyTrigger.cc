@@ -219,8 +219,8 @@ bool matchToOfflineTaus(int isoOption, float eta_, float phi_, const edm::Event&
 
 void
 MyTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
-    using pat::Muon;
-    using pat::MuonCollection;
+    using reco::Muon;
+    using reco::MuonCollection;
     using namespace std;
     using namespace reco;
     using namespace edm;
