@@ -165,7 +165,8 @@ bool hasOverLap(float eta_, float phi_, const edm::Event& iEvent, const edm::Eve
     using namespace pat;
 
     Handle<pat::MuonCollection> muonsHandle;
-    iEvent.getByLabel("selectedMuons", muonsHandle);
+//    iEvent.getByLabel("selectedMuons", muonsHandle);
+    iEvent.getByLabel("hltL3MuonCandidates", muonsHandle);
     const MuonCollection & muons = *(muonsHandle.product());
     pat::MuonCollection::const_iterator imu = muons.begin();
     pat::MuonCollection::const_iterator jmu = muons.end();
@@ -229,7 +230,8 @@ MyTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     //  REquring at least 1 muon in the event
     //******************************************************
     Handle<pat::MuonCollection> muonsHandle;
-    iEvent.getByLabel("selectedMuons", muonsHandle);
+//    iEvent.getByLabel("selectedMuons", muonsHandle);
+    iEvent.getByLabel("hltL3MuonCandidates", muonsHandle);
     const MuonCollection & muons = *(muonsHandle.product());
     pat::MuonCollection::const_iterator imu = muons.begin();
     pat::MuonCollection::const_iterator jmu = muons.end();
