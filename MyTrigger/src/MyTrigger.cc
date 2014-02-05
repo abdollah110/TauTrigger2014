@@ -166,12 +166,20 @@ bool hasOverLap(float eta_, float phi_, const edm::Event& iEvent, const edm::Eve
 
     //    Handle<pat::MuonCollection> muonsHandle;
     //    iEvent.getByLabel("selectedMuons", muonsHandle);
-    Handle<reco::MuonCollection> muonsHandle;
+    Handle<reco::recoRecoChargedCandidates> muonsHandle;
     //    iEvent.getByLabel("hltMuons", muonsHandle);
     iEvent.getByLabel("hltL3MuonCandidates", muonsHandle);
-    const MuonCollection & muons = *(muonsHandle.product());
-    reco::MuonCollection::const_iterator imu = muons.begin();
-    reco::MuonCollection::const_iterator jmu = muons.end();
+    const recoRecoChargedCandidates & muons = *(muonsHandle.product());
+    reco::recoRecoChargedCandidates::const_iterator imu = muons.begin();
+    reco::recoRecoChargedCandidates::const_iterator jmu = muons.end();
+//    //    Handle<pat::MuonCollection> muonsHandle;
+//    //    iEvent.getByLabel("selectedMuons", muonsHandle);
+//    Handle<reco::MuonCollection> muonsHandle;
+//    //    iEvent.getByLabel("hltMuons", muonsHandle);
+//    iEvent.getByLabel("hltL3MuonCandidates", muonsHandle);
+//    const MuonCollection & muons = *(muonsHandle.product());
+//    reco::MuonCollection::const_iterator imu = muons.begin();
+//    reco::MuonCollection::const_iterator jmu = muons.end();
 
     //const Provenance& prov = iEvent.getProvenance(muonsHandle.TauHLT());
     //const float& procName = prov.isolations_;
@@ -234,18 +242,36 @@ MyTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     //******************************************************
     //    Handle<pat::MuonCollection> muonsHandle;
     //    iEvent.getByLabel("selectedMuons", muonsHandle);
-    Handle<reco::MuonCollection> muonsHandle;
+    Handle<reco::recoRecoChargedCandidates> muonsHandle;
     //    iEvent.getByLabel("hltMuons", muonsHandle);
     iEvent.getByLabel("hltL3MuonCandidates", muonsHandle);
-    const MuonCollection & muons = *(muonsHandle.product());
-    reco::MuonCollection::const_iterator imu = muons.begin();
-    reco::MuonCollection::const_iterator jmu = muons.end();
+    const recoRecoChargedCandidates & muons = *(muonsHandle.product());
+    reco::recoRecoChargedCandidates::const_iterator imu = muons.begin();
+    reco::recoRecoChargedCandidates::const_iterator jmu = muons.end();
 
     int ipfmu = 0;
     for (; imu != jmu; ++imu) {
         //        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1 && imu->userFloat("PFRelIsoDB04v2") < 0.15) ipfmu++;
         if (imu->pt() > 17 && fabs(imu->eta()) < 2.1) ipfmu++;
     }
+//
+//    //******************************************************
+//    //  REquring at least 1 muon in the event
+//    //******************************************************
+//    //    Handle<pat::MuonCollection> muonsHandle;
+//    //    iEvent.getByLabel("selectedMuons", muonsHandle);
+//    Handle<reco::recoRecoChargedCandidates> muonsHandle;
+//    //    iEvent.getByLabel("hltMuons", muonsHandle);
+//    iEvent.getByLabel("hltL3MuonCandidates", muonsHandle);
+//    const MuonCollection & muons = *(muonsHandle.product());
+//    reco::MuonCollection::const_iterator imu = muons.begin();
+//    reco::MuonCollection::const_iterator jmu = muons.end();
+//
+//    int ipfmu = 0;
+//    for (; imu != jmu; ++imu) {
+//        //        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1 && imu->userFloat("PFRelIsoDB04v2") < 0.15) ipfmu++;
+//        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1) ipfmu++;
+//    }
 
     //******************************************************
     //  Making Loop over Taus
