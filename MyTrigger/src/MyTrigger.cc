@@ -305,7 +305,7 @@ MyTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 
     for (; itau != jtau; ++itau) {
 
-        bool ptCut = itau->pt() > 20 && fabs(itau->pt()) < 2.3;
+        bool ptCut = itau->pt() > 20 && fabs(itau->eta()) < 2.3;
         bool muTauPair = ipfmu > 0;
         bool hasOverlapMu = hasOverLap(itau->eta(), itau->phi(), iEvent, iSetup);
         bool discByDecayModeFinding = (itau->tauID("decayModeFinding") > 0.5 ? true : false);
