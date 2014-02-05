@@ -186,11 +186,11 @@ bool hasOverLap(float eta_, float phi_, const edm::Event& iEvent, const edm::Eve
 
     //const Provenance& prov = iEvent.getProvenance(muonsHandle.TauHLT());
     //const float& procName = prov.isolations_;
-    int ipfmu = 0;
+
     bool dR05 = 0;
-    for (; imu != jmu; ++imu, ipfmu++) {
+    for (; imu != jmu; ++imu) {
         //        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1 && imu->userFloat("PFRelIsoDB04v2") < 0.15) dR05 = (dR(imu->eta(), imu->phi(), eta_, phi_) > 0.5 ? 1 : 0);
-        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1) dR05 = (dR(imu->eta(), imu->phi(), eta_, phi_) > 0.5 ? 1 : 0);
+        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1) dR05 = (dR(imu->eta(), imu->phi(), eta_, phi_) > 0.3 ? 1 : 0);
 
     }
 
@@ -244,10 +244,7 @@ MyTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     //******************************************************
     //  REquring at least 1 muon in the event
     //******************************************************
-    //    Handle<pat::MuonCollection> muonsHandle;
-    //    iEvent.getByLabel("selectedMuons", muonsHandle);
     Handle < std::vector < reco::RecoChargedCandidate >> muonsHandle;
-    //    iEvent.getByLabel("hltMuons", muonsHandle);
     iEvent.getByLabel("hltL3MuonCandidates", muonsHandle);
     const std::vector<reco::RecoChargedCandidate> & muons = *(muonsHandle.product());
     std::vector<reco::RecoChargedCandidate>::const_iterator imu = muons.begin();
@@ -255,7 +252,6 @@ MyTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 
     int ipfmu = 0;
     for (; imu != jmu; ++imu) {
-        //        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1 && imu->userFloat("PFRelIsoDB04v2") < 0.15) ipfmu++;
         if (imu->pt() > 17 && fabs(imu->eta()) < 2.1) ipfmu++;
     }
     //
@@ -306,7 +302,7 @@ MyTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     for (; itau != jtau; ++itau) {
 
         bool ptCut = itau->pt() > 20 && fabs(itau->eta()) < 2.3;
-        bool muTauPair = ipfmu > 0;
+//        bool muTauPair = ipfmu > 0;
         bool hasOverlapMu = hasOverLap(itau->eta(), itau->phi(), iEvent, iSetup);
         bool discByDecayModeFinding = (itau->tauID("decayModeFinding") > 0.5 ? true : false);
         //        bool discByIsolation = (itau->tauID("byIsolation") > 0.5 ? true : false);
@@ -328,7 +324,7 @@ MyTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
             Pt_Step3->Fill(itau->pt());
             Eta_Step3->Fill(itau->eta());
         }
-        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding  && discByMuLoose && discByIsolation) {
+        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByMuLoose && discByIsolation) {
             step4++;
             //            Pt_Step4->Fill(itau->pt());
             //            Eta_Step4->Fill(itau->eta());
