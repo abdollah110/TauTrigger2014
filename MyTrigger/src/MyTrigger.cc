@@ -161,7 +161,7 @@ bool hasOverLap(float eta_, float phi_, const edm::Event& iEvent, const edm::Eve
     using reco::Muon;
     using reco::MuonCollection;
     using reco::RecoChargedCandidate;
-//    using reco::RecoChargedCandidateCollection;
+    //    using reco::RecoChargedCandidateCollection;
     using namespace std;
     using namespace reco;
     using namespace edm;
@@ -169,20 +169,20 @@ bool hasOverLap(float eta_, float phi_, const edm::Event& iEvent, const edm::Eve
 
     //    Handle<pat::MuonCollection> muonsHandle;
     //    iEvent.getByLabel("selectedMuons", muonsHandle);
-    Handle<std::vector<reco::RecoChargedCandidate>> muonsHandle;
+    Handle < std::vector < reco::RecoChargedCandidate >> muonsHandle;
     //    iEvent.getByLabel("hltMuons", muonsHandle);
     iEvent.getByLabel("hltL3MuonCandidates", muonsHandle);
     const std::vector<reco::RecoChargedCandidate> & muons = *(muonsHandle.product());
     std::vector<reco::RecoChargedCandidate>::const_iterator imu = muons.begin();
     std::vector<reco::RecoChargedCandidate>::const_iterator jmu = muons.end();
-//    //    Handle<pat::MuonCollection> muonsHandle;
-//    //    iEvent.getByLabel("selectedMuons", muonsHandle);
-//    Handle<reco::MuonCollection> muonsHandle;
-//    //    iEvent.getByLabel("hltMuons", muonsHandle);
-//    iEvent.getByLabel("hltL3MuonCandidates", muonsHandle);
-//    const MuonCollection & muons = *(muonsHandle.product());
-//    reco::MuonCollection::const_iterator imu = muons.begin();
-//    reco::MuonCollection::const_iterator jmu = muons.end();
+    //    //    Handle<pat::MuonCollection> muonsHandle;
+    //    //    iEvent.getByLabel("selectedMuons", muonsHandle);
+    //    Handle<reco::MuonCollection> muonsHandle;
+    //    //    iEvent.getByLabel("hltMuons", muonsHandle);
+    //    iEvent.getByLabel("hltL3MuonCandidates", muonsHandle);
+    //    const MuonCollection & muons = *(muonsHandle.product());
+    //    reco::MuonCollection::const_iterator imu = muons.begin();
+    //    reco::MuonCollection::const_iterator jmu = muons.end();
 
     //const Provenance& prov = iEvent.getProvenance(muonsHandle.TauHLT());
     //const float& procName = prov.isolations_;
@@ -246,7 +246,7 @@ MyTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     //******************************************************
     //    Handle<pat::MuonCollection> muonsHandle;
     //    iEvent.getByLabel("selectedMuons", muonsHandle);
-    Handle<std::vector<reco::RecoChargedCandidate>> muonsHandle;
+    Handle < std::vector < reco::RecoChargedCandidate >> muonsHandle;
     //    iEvent.getByLabel("hltMuons", muonsHandle);
     iEvent.getByLabel("hltL3MuonCandidates", muonsHandle);
     const std::vector<reco::RecoChargedCandidate> & muons = *(muonsHandle.product());
@@ -258,24 +258,24 @@ MyTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         //        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1 && imu->userFloat("PFRelIsoDB04v2") < 0.15) ipfmu++;
         if (imu->pt() > 17 && fabs(imu->eta()) < 2.1) ipfmu++;
     }
-//
-//    //******************************************************
-//    //  REquring at least 1 muon in the event
-//    //******************************************************
-//    //    Handle<pat::MuonCollection> muonsHandle;
-//    //    iEvent.getByLabel("selectedMuons", muonsHandle);
-//    Handle<reco::recoRecoChargedCandidates> muonsHandle;
-//    //    iEvent.getByLabel("hltMuons", muonsHandle);
-//    iEvent.getByLabel("hltL3MuonCandidates", muonsHandle);
-//    const MuonCollection & muons = *(muonsHandle.product());
-//    reco::MuonCollection::const_iterator imu = muons.begin();
-//    reco::MuonCollection::const_iterator jmu = muons.end();
-//
-//    int ipfmu = 0;
-//    for (; imu != jmu; ++imu) {
-//        //        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1 && imu->userFloat("PFRelIsoDB04v2") < 0.15) ipfmu++;
-//        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1) ipfmu++;
-//    }
+    //
+    //    //******************************************************
+    //    //  REquring at least 1 muon in the event
+    //    //******************************************************
+    //    //    Handle<pat::MuonCollection> muonsHandle;
+    //    //    iEvent.getByLabel("selectedMuons", muonsHandle);
+    //    Handle<reco::recoRecoChargedCandidates> muonsHandle;
+    //    //    iEvent.getByLabel("hltMuons", muonsHandle);
+    //    iEvent.getByLabel("hltL3MuonCandidates", muonsHandle);
+    //    const MuonCollection & muons = *(muonsHandle.product());
+    //    reco::MuonCollection::const_iterator imu = muons.begin();
+    //    reco::MuonCollection::const_iterator jmu = muons.end();
+    //
+    //    int ipfmu = 0;
+    //    for (; imu != jmu; ++imu) {
+    //        //        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1 && imu->userFloat("PFRelIsoDB04v2") < 0.15) ipfmu++;
+    //        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1) ipfmu++;
+    //    }
 
     //******************************************************
     //  Making Loop over Taus
@@ -305,7 +305,7 @@ MyTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 
     for (; itau != jtau; ++itau) {
 
-        bool ptCut = itau->pt() > 20;
+        bool ptCut = itau->pt() > 20 && fabs(itau->pt()) < 2.3;
         bool muTauPair = ipfmu > 0;
         bool hasOverlapMu = hasOverLap(itau->eta(), itau->phi(), iEvent, iSetup);
         bool discByDecayModeFinding = (itau->tauID("decayModeFinding") > 0.5 ? true : false);
@@ -323,12 +323,12 @@ MyTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
             Pt_Step2->Fill(itau->pt());
             Eta_Step2->Fill(itau->eta());
         }
-        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation) {
+        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByMuLoose) {
             step3++;
             Pt_Step3->Fill(itau->pt());
             Eta_Step3->Fill(itau->eta());
         }
-        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation && discByMuLoose) {
+        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding  && discByMuLoose && discByIsolation) {
             step4++;
             //            Pt_Step4->Fill(itau->pt());
             //            Eta_Step4->Fill(itau->eta());
