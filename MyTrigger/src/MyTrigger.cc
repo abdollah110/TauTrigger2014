@@ -167,12 +167,12 @@ bool hasOverLap(float eta_, float phi_, const edm::Event& iEvent, const edm::Eve
 
     //    Handle<pat::MuonCollection> muonsHandle;
     //    iEvent.getByLabel("selectedMuons", muonsHandle);
-    Handle<reco::RecoChargedCandidates> muonsHandle;
+    Handle<RecoChargedCandidates> muonsHandle;
     //    iEvent.getByLabel("hltMuons", muonsHandle);
     iEvent.getByLabel("hltL3MuonCandidates", muonsHandle);
-    const reco::RecoChargedCandidates & muons = *(muonsHandle.product());
-    reco::RecoChargedCandidates::const_iterator imu = muons.begin();
-    reco::RecoChargedCandidates::const_iterator jmu = muons.end();
+    const RecoChargedCandidates & muons = *(muonsHandle.product());
+    RecoChargedCandidates::const_iterator imu = muons.begin();
+    RecoChargedCandidates::const_iterator jmu = muons.end();
 //    //    Handle<pat::MuonCollection> muonsHandle;
 //    //    iEvent.getByLabel("selectedMuons", muonsHandle);
 //    Handle<reco::MuonCollection> muonsHandle;
