@@ -36,7 +36,7 @@
 #include "PhysicsTools/PatUtils/interface/TriggerHelper.h"
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
-#include "DataFormats/RecoCandidate/interface/RecoCandidate.h"
+#include "DataFormats/RecoCandidate/interface/RecoChargedCandidate.h"
 #include "TH1.h"
 
 //
