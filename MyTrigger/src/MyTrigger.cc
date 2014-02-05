@@ -161,6 +161,7 @@ bool hasOverLap(float eta_, float phi_, const edm::Event& iEvent, const edm::Eve
     using reco::Muon;
     using reco::MuonCollection;
     using reco::RecoChargedCandidate;
+//    using reco::RecoChargedCandidateCollection;
     using namespace std;
     using namespace reco;
     using namespace edm;
@@ -168,10 +169,10 @@ bool hasOverLap(float eta_, float phi_, const edm::Event& iEvent, const edm::Eve
 
     //    Handle<pat::MuonCollection> muonsHandle;
     //    iEvent.getByLabel("selectedMuons", muonsHandle);
-    Handle<reco::RecoChargedCandidate> muonsHandle;
+    Handle<std::vector<reco::RecoChargedCandidate>> muonsHandle;
     //    iEvent.getByLabel("hltMuons", muonsHandle);
     iEvent.getByLabel("hltL3MuonCandidates", muonsHandle);
-    const RecoChargedCandidate & muons = *(muonsHandle.product());
+    const std::vector<reco::RecoChargedCandidate> & muons = *(muonsHandle.product());
     reco::RecoChargedCandidate::const_iterator imu = muons.begin();
     reco::RecoChargedCandidate::const_iterator jmu = muons.end();
 //    //    Handle<pat::MuonCollection> muonsHandle;
@@ -245,10 +246,10 @@ MyTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     //******************************************************
     //    Handle<pat::MuonCollection> muonsHandle;
     //    iEvent.getByLabel("selectedMuons", muonsHandle);
-    Handle<reco::RecoChargedCandidate> muonsHandle;
+    Handle<std::vector<reco::RecoChargedCandidate>> muonsHandle;
     //    iEvent.getByLabel("hltMuons", muonsHandle);
     iEvent.getByLabel("hltL3MuonCandidates", muonsHandle);
-    const RecoChargedCandidate & muons = *(muonsHandle.product());
+    const std::vector<reco::RecoChargedCandidate> & muons = *(muonsHandle.product());
     reco::RecoChargedCandidate::const_iterator imu = muons.begin();
     reco::RecoChargedCandidate::const_iterator jmu = muons.end();
 
