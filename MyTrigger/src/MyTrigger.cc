@@ -36,6 +36,7 @@
 #include "PhysicsTools/PatUtils/interface/TriggerHelper.h"
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
+#include "DataFormats/RecoCandidate/interface/RecoCandidate.h"
 #include "TH1.h"
 
 //
@@ -103,7 +104,6 @@ private:
 
 MyTrigger::MyTrigger(const edm::ParameterSet& iConfig) {
     //now do what ever initialization is needed
-    using reco::RecoChargedCandidates;
     using namespace edm;
     edm::Service<TFileService> fs;
     demohisto = fs->make<TH1D > ("MuPt", "MuPt", 50, 0, 250);
@@ -160,7 +160,7 @@ float dR(float l1eta, float l1phi, float l2eta, float l2phi) {
 bool hasOverLap(float eta_, float phi_, const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     using reco::Muon;
     using reco::MuonCollection;
-//    using reco::RecoChargedCandidates;
+    using reco::RecoChargedCandidates;
     using namespace std;
     using namespace reco;
     using namespace edm;
@@ -168,12 +168,12 @@ bool hasOverLap(float eta_, float phi_, const edm::Event& iEvent, const edm::Eve
 
     //    Handle<pat::MuonCollection> muonsHandle;
     //    iEvent.getByLabel("selectedMuons", muonsHandle);
-    Handle<RecoChargedCandidates> muonsHandle;
+    Handle<reco::RecoChargedCandidates> muonsHandle;
     //    iEvent.getByLabel("hltMuons", muonsHandle);
     iEvent.getByLabel("hltL3MuonCandidates", muonsHandle);
     const RecoChargedCandidates & muons = *(muonsHandle.product());
-    RecoChargedCandidates::const_iterator imu = muons.begin();
-    RecoChargedCandidates::const_iterator jmu = muons.end();
+    reco::RecoChargedCandidates::const_iterator imu = muons.begin();
+    reco::RecoChargedCandidates::const_iterator jmu = muons.end();
 //    //    Handle<pat::MuonCollection> muonsHandle;
 //    //    iEvent.getByLabel("selectedMuons", muonsHandle);
 //    Handle<reco::MuonCollection> muonsHandle;
@@ -232,7 +232,7 @@ void
 MyTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     using reco::Muon;
     using reco::MuonCollection;
-//    using reco::RecoChargedCandidates;
+    using reco::RecoChargedCandidates;
     using namespace std;
     using namespace reco;
     using namespace edm;
@@ -248,7 +248,7 @@ MyTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     Handle<reco::RecoChargedCandidates> muonsHandle;
     //    iEvent.getByLabel("hltMuons", muonsHandle);
     iEvent.getByLabel("hltL3MuonCandidates", muonsHandle);
-    const reco::RecoChargedCandidates & muons = *(muonsHandle.product());
+    const RecoChargedCandidates & muons = *(muonsHandle.product());
     reco::RecoChargedCandidates::const_iterator imu = muons.begin();
     reco::RecoChargedCandidates::const_iterator jmu = muons.end();
 
