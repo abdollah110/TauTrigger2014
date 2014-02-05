@@ -167,8 +167,8 @@ bool hasOverLap(float eta_, float phi_, const edm::Event& iEvent, const edm::Eve
     //    Handle<pat::MuonCollection> muonsHandle;
     //    iEvent.getByLabel("selectedMuons", muonsHandle);
     Handle<reco::MuonCollection> muonsHandle;
-    iEvent.getByLabel("hltMuons", muonsHandle);
-    //    iEvent.getByLabel("hltL3MuonCandidates", muonsHandle);
+    //    iEvent.getByLabel("hltMuons", muonsHandle);
+    iEvent.getByLabel("hltL3MuonCandidates", muonsHandle);
     const MuonCollection & muons = *(muonsHandle.product());
     reco::MuonCollection::const_iterator imu = muons.begin();
     reco::MuonCollection::const_iterator jmu = muons.end();
@@ -178,8 +178,8 @@ bool hasOverLap(float eta_, float phi_, const edm::Event& iEvent, const edm::Eve
     int ipfmu = 0;
     bool dR05 = 0;
     for (; imu != jmu; ++imu, ipfmu++) {
-//        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1 && imu->userFloat("PFRelIsoDB04v2") < 0.15) dR05 = (dR(imu->eta(), imu->phi(), eta_, phi_) > 0.5 ? 1 : 0);
-        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1 ) dR05 = (dR(imu->eta(), imu->phi(), eta_, phi_) > 0.5 ? 1 : 0);
+        //        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1 && imu->userFloat("PFRelIsoDB04v2") < 0.15) dR05 = (dR(imu->eta(), imu->phi(), eta_, phi_) > 0.5 ? 1 : 0);
+        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1) dR05 = (dR(imu->eta(), imu->phi(), eta_, phi_) > 0.5 ? 1 : 0);
 
     }
 
@@ -235,16 +235,16 @@ MyTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     //    Handle<pat::MuonCollection> muonsHandle;
     //    iEvent.getByLabel("selectedMuons", muonsHandle);
     Handle<reco::MuonCollection> muonsHandle;
-    iEvent.getByLabel("hltMuons", muonsHandle);
-    //    iEvent.getByLabel("hltL3MuonCandidates", muonsHandle);
+    //    iEvent.getByLabel("hltMuons", muonsHandle);
+    iEvent.getByLabel("hltL3MuonCandidates", muonsHandle);
     const MuonCollection & muons = *(muonsHandle.product());
     reco::MuonCollection::const_iterator imu = muons.begin();
     reco::MuonCollection::const_iterator jmu = muons.end();
 
     int ipfmu = 0;
     for (; imu != jmu; ++imu) {
-//        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1 && imu->userFloat("PFRelIsoDB04v2") < 0.15) ipfmu++;
-        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1 ) ipfmu++;
+        //        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1 && imu->userFloat("PFRelIsoDB04v2") < 0.15) ipfmu++;
+        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1) ipfmu++;
     }
 
     //******************************************************
