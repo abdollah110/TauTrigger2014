@@ -103,6 +103,7 @@ private:
 
 MyTrigger::MyTrigger(const edm::ParameterSet& iConfig) {
     //now do what ever initialization is needed
+    using reco::RecoChargedCandidates;
     using namespace edm;
     edm::Service<TFileService> fs;
     demohisto = fs->make<TH1D > ("MuPt", "MuPt", 50, 0, 250);
