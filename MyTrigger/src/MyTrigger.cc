@@ -159,6 +159,7 @@ float dR(float l1eta, float l1phi, float l2eta, float l2phi) {
 bool hasOverLap(float eta_, float phi_, const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     using reco::Muon;
     using reco::MuonCollection;
+    using reco::RecoChargedCandidates;
     using namespace std;
     using namespace reco;
     using namespace edm;
@@ -166,12 +167,12 @@ bool hasOverLap(float eta_, float phi_, const edm::Event& iEvent, const edm::Eve
 
     //    Handle<pat::MuonCollection> muonsHandle;
     //    iEvent.getByLabel("selectedMuons", muonsHandle);
-    Handle<reco::recoRecoChargedCandidates> muonsHandle;
+    Handle<reco::RecoChargedCandidates> muonsHandle;
     //    iEvent.getByLabel("hltMuons", muonsHandle);
     iEvent.getByLabel("hltL3MuonCandidates", muonsHandle);
-    const recoRecoChargedCandidates & muons = *(muonsHandle.product());
-    reco::recoRecoChargedCandidates::const_iterator imu = muons.begin();
-    reco::recoRecoChargedCandidates::const_iterator jmu = muons.end();
+    const RecoChargedCandidates & muons = *(muonsHandle.product());
+    reco::RecoChargedCandidates::const_iterator imu = muons.begin();
+    reco::RecoChargedCandidates::const_iterator jmu = muons.end();
 //    //    Handle<pat::MuonCollection> muonsHandle;
 //    //    iEvent.getByLabel("selectedMuons", muonsHandle);
 //    Handle<reco::MuonCollection> muonsHandle;
@@ -230,6 +231,7 @@ void
 MyTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     using reco::Muon;
     using reco::MuonCollection;
+    using reco::RecoChargedCandidates;
     using namespace std;
     using namespace reco;
     using namespace edm;
@@ -242,12 +244,12 @@ MyTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     //******************************************************
     //    Handle<pat::MuonCollection> muonsHandle;
     //    iEvent.getByLabel("selectedMuons", muonsHandle);
-    Handle<reco::recoRecoChargedCandidates> muonsHandle;
+    Handle<reco::RecoChargedCandidates> muonsHandle;
     //    iEvent.getByLabel("hltMuons", muonsHandle);
     iEvent.getByLabel("hltL3MuonCandidates", muonsHandle);
-    const recoRecoChargedCandidates & muons = *(muonsHandle.product());
-    reco::recoRecoChargedCandidates::const_iterator imu = muons.begin();
-    reco::recoRecoChargedCandidates::const_iterator jmu = muons.end();
+    const RecoChargedCandidates & muons = *(muonsHandle.product());
+    reco::RecoChargedCandidates::const_iterator imu = muons.begin();
+    reco::RecoChargedCandidates::const_iterator jmu = muons.end();
 
     int ipfmu = 0;
     for (; imu != jmu; ++imu) {
