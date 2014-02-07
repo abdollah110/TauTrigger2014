@@ -48,18 +48,18 @@ public:
     explicit MyTrigger(const edm::ParameterSet&);
     ~MyTrigger();
 
-    static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
+    //    static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
 
 
 private:
-    virtual void beginJob();
+    //    virtual void beginJob();
     virtual void analyze(const edm::Event&, const edm::EventSetup&);
-    virtual void endJob();
+    //    virtual void endJob();
 
-    virtual void beginRun(edm::Run const&, edm::EventSetup const&);
-    virtual void endRun(edm::Run const&, edm::EventSetup const&);
-    virtual void beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&);
-    virtual void endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&);
+    //    virtual void beginRun(edm::Run const&, edm::EventSetup const&);
+    //    virtual void endRun(edm::Run const&, edm::EventSetup const&);
+    //    virtual void beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&);
+    //    virtual void endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&);
 
     TH1D *demohisto;
     TH1D *demohisto_17;
@@ -302,8 +302,8 @@ MyTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     for (; itau != jtau; ++itau) {
 
         bool ptCut = itau->pt() > 20 && fabs(itau->eta()) < 2.3;
-//        bool muTauPair = ipfmu > 0;
-        bool muTauPair = 1> 0;
+        //        bool muTauPair = ipfmu > 0;
+        bool muTauPair = 1 > 0;
         bool hasOverlapMu = hasOverLap(itau->eta(), itau->phi(), iEvent, iSetup);
         bool discByDecayModeFinding = (itau->tauID("decayModeFinding") > 0.5 ? true : false);
         //        bool discByIsolation = (itau->tauID("byIsolation") > 0.5 ? true : false);
