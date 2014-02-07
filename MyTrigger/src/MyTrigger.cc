@@ -169,12 +169,20 @@ bool hasOverLap(float eta_, float phi_, const edm::Event& iEvent, const edm::Eve
 
     //    Handle<pat::MuonCollection> muonsHandle;
     //    iEvent.getByLabel("selectedMuons", muonsHandle);
-    Handle < std::vector < reco::RecoChargedCandidate >> muonsHandle;
-    //    iEvent.getByLabel("hltMuons", muonsHandle);
-    iEvent.getByLabel("hltL3MuonCandidates", muonsHandle);
-    const std::vector<reco::RecoChargedCandidate> & muons = *(muonsHandle.product());
-    std::vector<reco::RecoChargedCandidate>::const_iterator imu = muons.begin();
-    std::vector<reco::RecoChargedCandidate>::const_iterator jmu = muons.end();
+//    Handle < std::vector < reco::RecoChargedCandidate >> muonsHandle;
+//    //    iEvent.getByLabel("hltMuons", muonsHandle);
+//    iEvent.getByLabel("hltL3MuonCandidates", muonsHandle);
+//    const std::vector<reco::RecoChargedCandidate> & muons = *(muonsHandle.product());
+//    std::vector<reco::RecoChargedCandidate>::const_iterator imu = muons.begin();
+//    std::vector<reco::RecoChargedCandidate>::const_iterator jmu = muons.end();
+
+    typedef edm::View<reco::Candidate> CandidateView;
+    edm::Handle<CandidateView> hltMuons;
+    iEvent.getByLabel("hltL3MuonCandidates", hltMuons);
+    const reco::Candidate & muons = *(hltMuons.product());
+    reco::Candidate::const_iterator imu = muons.begin();
+    reco::Candidate::const_iterator jmu = muons.end();
+
     //    //    Handle<pat::MuonCollection> muonsHandle;
     //    //    iEvent.getByLabel("selectedMuons", muonsHandle);
     //    Handle<reco::MuonCollection> muonsHandle;
