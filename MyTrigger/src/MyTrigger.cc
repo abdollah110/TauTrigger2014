@@ -179,9 +179,9 @@ bool hasOverLap(float eta_, float phi_, const edm::Event& iEvent, const edm::Eve
     typedef edm::View<reco::Candidate> CandidateView;
     edm::Handle<CandidateView> hltMuons;
     iEvent.getByLabel("hltL3MuonCandidates", hltMuons);
-    const reco::Candidate & muons = *(hltMuons.product());
-    reco::Candidate::const_iterator imu = muons.begin();
-    reco::Candidate::const_iterator jmu = muons.end();
+//    const reco::Candidate & muons = *(hltMuons.product());
+//    reco::Candidate::const_iterator imu = muons.begin();
+//    reco::Candidate::const_iterator jmu = muons.end();
 
     //    //    Handle<pat::MuonCollection> muonsHandle;
     //    //    iEvent.getByLabel("selectedMuons", muonsHandle);
@@ -196,12 +196,18 @@ bool hasOverLap(float eta_, float phi_, const edm::Event& iEvent, const edm::Eve
     //const float& procName = prov.isolations_;
 
     bool dR05 = 0;
-    for (; imu != jmu; ++imu) {
+    for (int imu=0; imu < hltMuons.size(); ++imu) {
         //        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1 && imu->userFloat("PFRelIsoDB04v2") < 0.15) dR05 = (dR(imu->eta(), imu->phi(), eta_, phi_) > 0.5 ? 1 : 0);
 //        cout << imu->ChargedCandidateFromTrigRefConverter() << endl;
-        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1) dR05 = (dR(imu->eta(), imu->phi(), eta_, phi_) > 0.3 ? 1 : 0);
+        if (hltMuons[imu]->pt() > 17 && fabs(hltMuons[imu]->eta()) < 2.1) dR05 = (dR(hltMuons[imu]->eta(), hltMuons[imu]->phi(), eta_, phi_) > 0.3 ? 1 : 0);
 
     }
+//    for (; imu != jmu; ++imu) {
+//        //        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1 && imu->userFloat("PFRelIsoDB04v2") < 0.15) dR05 = (dR(imu->eta(), imu->phi(), eta_, phi_) > 0.5 ? 1 : 0);
+////        cout << imu->ChargedCandidateFromTrigRefConverter() << endl;
+//        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1) dR05 = (dR(imu->eta(), imu->phi(), eta_, phi_) > 0.3 ? 1 : 0);
+//
+//    }
 
     return dR05;
 }
