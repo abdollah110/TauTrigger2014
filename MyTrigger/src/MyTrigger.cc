@@ -188,9 +188,9 @@ bool hasOverLap(float eta_, float phi_, const edm::Event& iEvent, const edm::Eve
     //const float& procName = prov.isolations_;
 
     bool dR05 = 0;
-    cout<<imu->userFloat("ChargedCandidateFromTrigRefConverter")<<endl;
     for (; imu != jmu; ++imu) {
         //        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1 && imu->userFloat("PFRelIsoDB04v2") < 0.15) dR05 = (dR(imu->eta(), imu->phi(), eta_, phi_) > 0.5 ? 1 : 0);
+        cout << imu->userFloat("ChargedCandidateFromTrigRefConverter") << endl;
         if (imu->pt() > 17 && fabs(imu->eta()) < 2.1) dR05 = (dR(imu->eta(), imu->phi(), eta_, phi_) > 0.3 ? 1 : 0);
 
     }
