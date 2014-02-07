@@ -76,6 +76,10 @@ process.source = cms.Source("PoolSource",
                             )
                             )
 
+process.isolatedOnlineMuons = cms.EDProducer(
+     "ChargedCandidateFromTrigRefConverter",
+     triggerFilterMuonsSrc = cms.InputTag("hltL3crIsoL1sMu14erORMu16erL1f0L2f14QL3f17QL3crIsoRhoFiltered0p15")
+)
 process.demo = cms.EDAnalyzer('MyTrigger'
                               #rhoCenNeutralTight=cms.InputTag("kt6PFJetsCentralNeutralTight", "rho")
                               )
@@ -84,4 +88,4 @@ process.TFileService = cms.Service("TFileService",
                                    fileName=cms.string('Results1.root')
                                    )
 
-process.p = cms.Path(process.demo)
+process.p = cms.Path(process.isolatedOnlineMuons * process.demo)
