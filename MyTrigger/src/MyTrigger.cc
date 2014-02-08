@@ -171,7 +171,7 @@ bool hasOverLap(float eta_, float phi_, const edm::Event& iEvent, const edm::Eve
     //    iEvent.getByLabel("selectedMuons", muonsHandle);
     Handle < std::vector < reco::RecoChargedCandidate >> muonsHandle;
     //    iEvent.getByLabel("hltMuons", muonsHandle);
-    iEvent.getByLabel("hltL3MuonCandidates", muonsHandle);
+    iEvent.getByLabel("isolatedOnlineMuons", muonsHandle);
     const std::vector<reco::RecoChargedCandidate> & muons = *(muonsHandle.product());
     std::vector<reco::RecoChargedCandidate>::const_iterator imu = muons.begin();
     std::vector<reco::RecoChargedCandidate>::const_iterator jmu = muons.end();
@@ -191,7 +191,7 @@ bool hasOverLap(float eta_, float phi_, const edm::Event& iEvent, const edm::Eve
 //    cout<<imu->userFloat("PFRelIsoDB0ChargedCandidateFromTrigRefConverter
     for (; imu != jmu; ++imu) {
         //        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1 && imu->userFloat("PFRelIsoDB04v2") < 0.15) dR05 = (dR(imu->eta(), imu->phi(), eta_, phi_) > 0.5 ? 1 : 0);
-                if (imu->pt() > 17 && fabs(imu->eta()) < 2.1 && imu->isolatedOnlineMuons() < 0.15) dR05 = (dR(imu->eta(), imu->phi(), eta_, phi_) > 0.5 ? 1 : 0);
+                if (imu->pt() > 17 && fabs(imu->eta()) < 2.1) dR05 = (dR(imu->eta(), imu->phi(), eta_, phi_) > 0.5 ? 1 : 0);
 //        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1) dR05 = (dR(imu->eta(), imu->phi(), eta_, phi_) > 0.3 ? 1 : 0);
 
     }
@@ -247,7 +247,7 @@ MyTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     //  REquring at least 1 muon in the event
     //******************************************************
     Handle < std::vector < reco::RecoChargedCandidate >> muonsHandle;
-    iEvent.getByLabel("hltL3MuonCandidates", muonsHandle);
+    iEvent.getByLabel("isolatedOnlineMuons", muonsHandle);
     const std::vector<reco::RecoChargedCandidate> & muons = *(muonsHandle.product());
     std::vector<reco::RecoChargedCandidate>::const_iterator imu = muons.begin();
     std::vector<reco::RecoChargedCandidate>::const_iterator jmu = muons.end();
