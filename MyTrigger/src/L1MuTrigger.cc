@@ -87,6 +87,8 @@ private:
     TH1D * Pt_StepSV3;
     TH1D * Eta_StepSV3;
     edm::InputTag L1TauSource_;
+    edm::InputTag L1MuSource_;
+    edm::InputTag srcHLTCaloTowers_;
 
     // ----------member data ---------------------------
 };
@@ -131,7 +133,9 @@ L1MuTrigger::L1MuTrigger(const edm::ParameterSet& iConfig) {
     Eta_Step2 = fs->make<TH1D > ("Eta_Step2", "Eta_Step2", 50, -2.5, 2.5);
     Pt_Step3 = fs->make<TH1D > ("Pt_Step3", "Pt_Step3", 40, 0, 200);
     Eta_Step3 = fs->make<TH1D > ("Eta_Step3", "Eta_Step3", 50, -2.5, 2.5);
-    L1TauSource_ = iConfig.getParameter<edm::InputTag > ("L1TauSource");
+    L1MuSource_ = iConfig.getParameter<edm::InputTag > ("srcL1Muus");
+    L1TauSource_ = iConfig.getParameter<edm::InputTag > ("srcL1Taus");
+    srcHLTCaloTowers_ = iConfig.getParameter<edm::InputTag > ("srcHLTCaloTowers");
 }
 
 L1MuTrigger::~L1MuTrigger() {
@@ -289,11 +293,14 @@ L1MuTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 
 
     Handle < vector < l1extra::L1MuonParticle >> muonsHandle;
-    iEvent.getByLabel("l1extraParticles", muonsHandle);
+    iEvent.getByLabel(L1MuSource_, muonsHandle);
 
 
     for (vector<l1extra::L1MuonParticle>::const_iterator mu = muonsHandle->begin(); mu != muonsHandle->end(); mu++) {
-        cout << "Mu Pt is   " << mu->pt() << endl;
+
+
+
+//        cout << "Mu Pt is   " << mu->pt() << endl;
     }
 
     Handle < vector < l1extra::L1JetParticle >> tausHandle;
@@ -302,7 +309,7 @@ L1MuTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 
 
     for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
-        cout << "tauPt is    " << tau->pt() << endl;
+//        cout << "tauPt is    " << tau->pt() << endl;
     }
 
 
