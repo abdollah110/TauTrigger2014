@@ -130,6 +130,7 @@ L1MuTrigger::L1MuTrigger(const edm::ParameterSet& iConfig) {
     Eta_Step2 = fs->make<TH1D > ("Eta_Step2", "Eta_Step2", 50, -2.5, 2.5);
     Pt_Step3 = fs->make<TH1D > ("Pt_Step3", "Pt_Step3", 40, 0, 200);
     Eta_Step3 = fs->make<TH1D > ("Eta_Step3", "Eta_Step3", 50, -2.5, 2.5);
+    edm::InputTag L1TauSource_ = iConfig.getParameter<edm::InputTag > ("L1TauSource");
 }
 
 L1MuTrigger::~L1MuTrigger() {
@@ -291,16 +292,16 @@ L1MuTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 
 
     for (vector<l1extra::L1MuonParticle>::const_iterator mu = muonsHandle->begin(); mu != muonsHandle->end(); mu++) {
-        cout <<"Mu Pt is   " <<mu->pt() << endl;
+        cout << "Mu Pt is   " << mu->pt() << endl;
     }
 
     Handle < vector < l1extra::L1JetParticle >> tausHandle;
-    iEvent.getByLabel("l1extraParticles:Tau", tausHandle);
+    iEvent.getByLabel(L1TauSource_, tausHandle);
 
 
 
     for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
-        cout <<"tauPt is    " <<tau->pt() << endl;
+        cout << "tauPt is    " << tau->pt() << endl;
     }
 
 

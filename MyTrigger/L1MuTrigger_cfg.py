@@ -21,6 +21,7 @@ process.source = cms.Source("PoolSource",
 #                                             )
 process.demo = cms.EDAnalyzer('L1MuTrigger'
                               #rhoCenNeutralTight=cms.InputTag("kt6PFJetsCentralNeutralTight", "rho")
+                              L1TauSource=cms.InputTag("l1extraParticles", "Tau")
                               )
 
 process.TFileService = cms.Service("TFileService",
