@@ -296,7 +296,7 @@ L1MuTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     Handle < vector < l1extra::L1MuonParticle >> muonsHandle;
     iEvent.getByLabel(L1MuSource_, muonsHandle);
 
-    Handle < vector<CaloTowers::Sorted> > CaloTowerHandle;
+    Handle <CaloTowersSorted> CaloTowerHandle;
     iEvent.getByLabel(srcHLTCaloTowers_, CaloTowerHandle);
 
 
