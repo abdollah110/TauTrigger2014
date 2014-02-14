@@ -90,6 +90,8 @@ private:
     edm::InputTag L1TauSource_;
     edm::InputTag L1MuSource_;
     edm::InputTag srcHLTCaloTowers_;
+    edm::InputTagsrcL1UpgradeTaus_;
+    edm::InputTagsrcL1UpgradeIsoTaus_;
 
     // ----------member data ---------------------------
 };
@@ -137,6 +139,8 @@ L1MuTrigger::L1MuTrigger(const edm::ParameterSet& iConfig) {
     L1MuSource_ = iConfig.getParameter<edm::InputTag > ("srcL1Mus");
     L1TauSource_ = iConfig.getParameter<edm::InputTag > ("srcL1Taus");
     srcHLTCaloTowers_ = iConfig.getParameter<edm::InputTag > ("srcHLTCaloTowers");
+    srcL1UpgradeTaus_ = iConfig.getParameter<edm::InputTag > ("srcL1UpgradeTaus");
+    srcL1UpgradeIsoTaus_ = iConfig.getParameter<edm::InputTag > ("srcL1UpgradeIsoTaus");
 }
 
 L1MuTrigger::~L1MuTrigger() {
@@ -296,10 +300,17 @@ L1MuTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     Handle < vector < l1extra::L1MuonParticle >> muonsHandle;
     iEvent.getByLabel(L1MuSource_, muonsHandle);
 
-    //    Handle <reco::CaloTowersSorted> CaloTowerHandle;
     edm::Handle < edm::SortedCollection<CaloTower, edm::StrictWeakOrdering<CaloTower> >> CaloTowerHandle;
     iEvent.getByLabel(srcHLTCaloTowers_, CaloTowerHandle);
 
+    Handle < vector < l1extra::L1JetParticle >> tausHandle;
+    iEvent.getByLabel(L1TauSource_, tausHandle);
+
+    Handle < vector < l1extra::L1JetParticle >> tausUpgradeHandle;
+    iEvent.getByLabel(srcL1UpgradeTaus_, tausUpgradeHandle);
+
+    Handle < vector < l1extra::L1JetParticle >> tausUpgradeIsoHandle;
+    iEvent.getByLabel(srcL1UpgradeIsoTaus_, tausUpgradeIsoHandle);
 
     for (vector<l1extra::L1MuonParticle>::const_iterator mu = muonsHandle->begin(); mu != muonsHandle->end(); mu++) {
         cout << "Mu Pt is   " << mu->pt() << endl;
@@ -315,17 +326,17 @@ L1MuTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         cout << "isolation02   " << isolation02 << endl;
         cout << "isolation03   " << isolation03 << endl;
         cout << "isolation04   " << isolation04 << endl;
-    }
+
+
+        bool PassTau = false;
+        for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
+
+            if (tau->pt() > 20) PassTau = true;
+        }
 
 
 
-    Handle < vector < l1extra::L1JetParticle >> tausHandle;
-    iEvent.getByLabel(L1TauSource_, tausHandle);
 
-
-
-    for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
-        //        cout << "tauPt is    " << tau->pt() << endl;
     }
 
 

@@ -23,7 +23,9 @@ process.demo = cms.EDAnalyzer('L1MuTrigger',
                               #rhoCenNeutralTight=cms.InputTag("kt6PFJetsCentralNeutralTight", "rho")
                               srcL1Mus=cms.InputTag("l1extraParticles"),
                               srcL1Taus=cms.InputTag("l1extraParticles", "Tau"),
-                              srcHLTCaloTowers = cms.InputTag('hltTowerMakerForPF')
+                              srcHLTCaloTowers = cms.InputTag('hltTowerMakerForPF'),
+                              srcL1UpgradeTaus = cms.InputTag('UCT2015Producer', 'RelaxedTauUnpacked'),
+                              srcL1UpgradeIsoTaus = cms.InputTag('UCT2015Producer', 'IsolatedTauUnpacked')
                               )
 
 process.TFileService = cms.Service("TFileService",
