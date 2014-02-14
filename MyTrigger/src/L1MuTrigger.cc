@@ -86,6 +86,7 @@ private:
     TH1D * Eta_StepSV2;
     TH1D * Pt_StepSV3;
     TH1D * Eta_StepSV3;
+    edm::InputTag L1TauSource_;
 
     // ----------member data ---------------------------
 };
@@ -130,7 +131,7 @@ L1MuTrigger::L1MuTrigger(const edm::ParameterSet& iConfig) {
     Eta_Step2 = fs->make<TH1D > ("Eta_Step2", "Eta_Step2", 50, -2.5, 2.5);
     Pt_Step3 = fs->make<TH1D > ("Pt_Step3", "Pt_Step3", 40, 0, 200);
     Eta_Step3 = fs->make<TH1D > ("Eta_Step3", "Eta_Step3", 50, -2.5, 2.5);
-    edm::InputTag L1TauSource_ = iConfig.getParameter<edm::InputTag > ("L1TauSource");
+    L1TauSource_ = iConfig.getParameter<edm::InputTag > ("L1TauSource");
 }
 
 L1MuTrigger::~L1MuTrigger() {
