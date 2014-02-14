@@ -33,6 +33,7 @@
 
 #include "DataFormats/PatCandidates/interface/Muon.h"
 #include "DataFormats/PatCandidates/interface/Tau.h"
+#include "DataFormats/CaloTowers/interface/CaloTower.h"
 #include "PhysicsTools/PatUtils/interface/TriggerHelper.h"
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
