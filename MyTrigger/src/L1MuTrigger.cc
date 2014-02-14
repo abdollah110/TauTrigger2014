@@ -303,7 +303,7 @@ L1MuTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 
     for (vector<l1extra::L1MuonParticle>::const_iterator mu = muonsHandle->begin(); mu != muonsHandle->end(); mu++) {
         cout << "Mu Pt is   " << mu->pt() << endl;
-        for (<std::vector <const CaloTower*>>::const_iterator tower = CaloTowerHandle->begin(); tower != CaloTowerHandle->end(); tower++) {
+        for (vector<const CaloTower*>::const_iterator tower = CaloTowerHandle->begin(); tower != CaloTowerHandle->end(); tower++) {
             cout << "CaloTower Pt is   " << tower->pt() << endl;
         }
     }
