@@ -91,8 +91,8 @@ private:
     edm::InputTag L1TauSource_;
     edm::InputTag L1MuSource_;
     edm::InputTag srcHLTCaloTowers_;
-    edm::InputTagsrcL1UpgradeTaus_;
-    edm::InputTagsrcL1UpgradeIsoTaus_;
+    edm::InputTag srcL1UpgradeTaus_;
+    edm::InputTag srcL1UpgradeIsoTaus_;
 
     // ----------member data ---------------------------
 };
