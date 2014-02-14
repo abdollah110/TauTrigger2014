@@ -307,10 +307,10 @@ L1MuTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     Handle < vector < l1extra::L1JetParticle >> tausHandle;
     iEvent.getByLabel(L1TauSource_, tausHandle);
 
-    Handle < vector < UCTCandidates::L1JetParticle >> tausUpgradeHandle;
+    Handle < vector < UCTCandidate::L1JetParticle >> tausUpgradeHandle;
     iEvent.getByLabel(srcL1UpgradeTaus_, tausUpgradeHandle);
 
-    Handle < vector < UCTCandidates::L1JetParticle >> tausUpgradeIsoHandle;
+    Handle < vector < UCTCandidate::L1JetParticle >> tausUpgradeIsoHandle;
     iEvent.getByLabel(srcL1UpgradeIsoTaus_, tausUpgradeIsoHandle);
 
     for (vector<l1extra::L1MuonParticle>::const_iterator mu = muonsHandle->begin(); mu != muonsHandle->end(); mu++) {
