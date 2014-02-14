@@ -19,7 +19,7 @@ process.source = cms.Source("PoolSource",
 #                                             "ChargedCandidateFromTrigRefConverter",
 #                                             triggerFilterMuonsSrc=cms.InputTag("hltL3crIsoL1sMu14erORMu16erL1f0L2f14QL3f17QL3crIsoRhoFiltered0p15")
 #                                             )
-process.demo = cms.EDAnalyzer('L1MuTrigger'
+process.demo = cms.EDAnalyzer('L1MuTrigger',
                               #rhoCenNeutralTight=cms.InputTag("kt6PFJetsCentralNeutralTight", "rho")
                               L1TauSource=cms.InputTag("l1extraParticles", "Tau")
                               )
