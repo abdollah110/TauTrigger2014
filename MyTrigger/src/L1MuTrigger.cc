@@ -296,17 +296,28 @@ L1MuTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     Handle < vector < l1extra::L1MuonParticle >> muonsHandle;
     iEvent.getByLabel(L1MuSource_, muonsHandle);
 
-//    Handle <reco::CaloTowersSorted> CaloTowerHandle;
-    edm::Handle<edm::SortedCollection<CaloTower,edm::StrictWeakOrdering<CaloTower> >> CaloTowerHandle;
+    //    Handle <reco::CaloTowersSorted> CaloTowerHandle;
+    edm::Handle < edm::SortedCollection<CaloTower, edm::StrictWeakOrdering<CaloTower> >> CaloTowerHandle;
     iEvent.getByLabel(srcHLTCaloTowers_, CaloTowerHandle);
 
 
     for (vector<l1extra::L1MuonParticle>::const_iterator mu = muonsHandle->begin(); mu != muonsHandle->end(); mu++) {
         cout << "Mu Pt is   " << mu->pt() << endl;
-        for (SortedCollection<CaloTower,edm::StrictWeakOrdering<CaloTower>>::const_iterator tower = CaloTowerHandle->begin(); tower != CaloTowerHandle->end(); tower++) {
-            cout << "CaloTower Pt is   " << tower->pt() << endl;
+        float isolation02 = 0;
+        float isolation03 = 0;
+        float isolation04 = 0;
+        for (SortedCollection < CaloTower, edm::StrictWeakOrdering < CaloTower >> ::const_iterator tower = CaloTowerHandle->begin(); tower != CaloTowerHandle->end(); tower++) {
+            if (dR2(tower->eta(), tower->phi(), mu->eta(), mu->phi()) < 0.2) isolation02 += tower->pt();
+            if (dR2(tower->eta(), tower->phi(), mu->eta(), mu->phi()) < 0.3) isolation03 += tower->pt();
+            if (dR2(tower->eta(), tower->phi(), mu->eta(), mu->phi()) < 0.4) isolation04 += tower->pt();
+
         }
+        cout << "isolation02   " << isolation02 << endl;
+        cout << "isolation03   " << isolation03 << endl;
+        cout << "isolation04   " << isolation04 << endl;
     }
+
+
 
     Handle < vector < l1extra::L1JetParticle >> tausHandle;
     iEvent.getByLabel(L1TauSource_, tausHandle);
