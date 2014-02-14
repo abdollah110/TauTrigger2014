@@ -38,6 +38,7 @@
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
 #include "DataFormats/RecoCandidate/interface/RecoChargedCandidate.h"
+#include"/afs/cern.ch/work/a/abdollah/scratch1/CMSSW_5_3_14_patch2_trg2/src/L1Trigger/UCT2015/interface/UCTCandidate.h"
 #include "TH1.h"
 
 //
@@ -306,10 +307,10 @@ L1MuTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     Handle < vector < l1extra::L1JetParticle >> tausHandle;
     iEvent.getByLabel(L1TauSource_, tausHandle);
 
-    Handle < vector < l1extra::L1JetParticle >> tausUpgradeHandle;
+    Handle < vector < UCTCandidates::L1JetParticle >> tausUpgradeHandle;
     iEvent.getByLabel(srcL1UpgradeTaus_, tausUpgradeHandle);
 
-    Handle < vector < l1extra::L1JetParticle >> tausUpgradeIsoHandle;
+    Handle < vector < UCTCandidates::L1JetParticle >> tausUpgradeIsoHandle;
     iEvent.getByLabel(srcL1UpgradeIsoTaus_, tausUpgradeIsoHandle);
 
     for (vector<l1extra::L1MuonParticle>::const_iterator mu = muonsHandle->begin(); mu != muonsHandle->end(); mu++) {
