@@ -38,7 +38,7 @@
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
 #include "DataFormats/RecoCandidate/interface/RecoChargedCandidate.h"
-#include"/afs/cern.ch/work/a/abdollah/scratch1/CMSSW_5_3_14_patch2_trg2/src/L1Trigger/UCT2015/interface/UCTCandidate.h"
+#include "L1Trigger/UCT2015/interface/UCTCandidate.h"
 #include "TH1.h"
 
 //
