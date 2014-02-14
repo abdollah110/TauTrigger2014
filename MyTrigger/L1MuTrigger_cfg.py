@@ -27,5 +27,5 @@ process.TFileService = cms.Service("TFileService",
                                    fileName=cms.string('Results1.root')
                                    )
 
-process.p = cms.Path( process.demo)
+process.p = cms.Path(process.demo)
 #process.p = cms.Path(process.isolatedOnlineMuons * process.demo)
