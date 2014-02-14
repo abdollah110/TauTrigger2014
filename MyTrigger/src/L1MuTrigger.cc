@@ -297,13 +297,13 @@ L1MuTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     iEvent.getByLabel(L1MuSource_, muonsHandle);
 
 //    Handle <reco::CaloTowersSorted> CaloTowerHandle;
-    edm::Handle<std::vector<reco::CaloTower> > CaloTowerHandle;
+    edm::Handle<edm::SortedCollection<CaloTower,edm::StrictWeakOrdering<CaloTower> >> CaloTowerHandle;
     iEvent.getByLabel(srcHLTCaloTowers_, CaloTowerHandle);
 
 
     for (vector<l1extra::L1MuonParticle>::const_iterator mu = muonsHandle->begin(); mu != muonsHandle->end(); mu++) {
         cout << "Mu Pt is   " << mu->pt() << endl;
-        for (vector<reco::CaloTower>::const_iterator tower = CaloTowerHandle->begin(); tower != CaloTowerHandle->end(); tower++) {
+        for (SortedCollection<CaloTower,edm::StrictWeakOrdering<CaloTower>>::const_iterator tower = CaloTowerHandle->begin(); tower != CaloTowerHandle->end(); tower++) {
             cout << "CaloTower Pt is   " << tower->pt() << endl;
         }
     }
