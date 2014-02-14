@@ -295,12 +295,15 @@ L1MuTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     Handle < vector < l1extra::L1MuonParticle >> muonsHandle;
     iEvent.getByLabel(L1MuSource_, muonsHandle);
 
+    Handle < CaloTowersSorted > CaloTowerHandle;
+    iEvent.getByLabel(srcHLTCaloTowers_, CaloTowerHandle);
+
 
     for (vector<l1extra::L1MuonParticle>::const_iterator mu = muonsHandle->begin(); mu != muonsHandle->end(); mu++) {
-
-
-
-//        cout << "Mu Pt is   " << mu->pt() << endl;
+        cout << "Mu Pt is   " << mu->pt() << endl;
+        for (CaloTowersSorted::const_iterator tower = CaloTowerHandle->begin(); tower != CaloTowerHandle->end(); tower++) {
+            cout << "CaloTower Pt is   " << tower->pt() << endl;
+        }
     }
 
     Handle < vector < l1extra::L1JetParticle >> tausHandle;
@@ -309,7 +312,7 @@ L1MuTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 
 
     for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
-//        cout << "tauPt is    " << tau->pt() << endl;
+        //        cout << "tauPt is    " << tau->pt() << endl;
     }
 
 
