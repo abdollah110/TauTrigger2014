@@ -134,7 +134,7 @@ L1MuTrigger::L1MuTrigger(const edm::ParameterSet& iConfig) {
     Eta_Step2 = fs->make<TH1D > ("Eta_Step2", "Eta_Step2", 50, -2.5, 2.5);
     Pt_Step3 = fs->make<TH1D > ("Pt_Step3", "Pt_Step3", 40, 0, 200);
     Eta_Step3 = fs->make<TH1D > ("Eta_Step3", "Eta_Step3", 50, -2.5, 2.5);
-    L1MuSource_ = iConfig.getParameter<edm::InputTag > ("srcL1Muus");
+    L1MuSource_ = iConfig.getParameter<edm::InputTag > ("srcL1Mus");
     L1TauSource_ = iConfig.getParameter<edm::InputTag > ("srcL1Taus");
     srcHLTCaloTowers_ = iConfig.getParameter<edm::InputTag > ("srcHLTCaloTowers");
 }
