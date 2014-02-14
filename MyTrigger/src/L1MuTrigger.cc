@@ -188,11 +188,11 @@ bool hasOverLap(float eta_, float phi_, const edm::Event& iEvent, const edm::Eve
     //const float& procName = prov.isolations_;
 
     bool dR05 = 0;
-//    cout<<imu->userFloat("PFRelIsoDB0ChargedCandidateFromTrigRefConverter
+    //    cout<<imu->userFloat("PFRelIsoDB0ChargedCandidateFromTrigRefConverter
     for (; imu != jmu; ++imu) {
         //        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1 && imu->userFloat("PFRelIsoDB04v2") < 0.15) dR05 = (dR(imu->eta(), imu->phi(), eta_, phi_) > 0.5 ? 1 : 0);
-                if (imu->pt() > 17 && fabs(imu->eta()) < 2.1) dR05 = (dR(imu->eta(), imu->phi(), eta_, phi_) > 0.4 ? 1 : 0);
-//        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1) dR05 = (dR(imu->eta(), imu->phi(), eta_, phi_) > 0.3 ? 1 : 0);
+        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1) dR05 = (dR(imu->eta(), imu->phi(), eta_, phi_) > 0.4 ? 1 : 0);
+        //        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1) dR05 = (dR(imu->eta(), imu->phi(), eta_, phi_) > 0.3 ? 1 : 0);
 
     }
 
@@ -246,16 +246,16 @@ L1MuTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     //******************************************************
     //  REquring at least 1 muon in the event
     //******************************************************
-//    Handle < std::vector < reco::RecoChargedCandidate >> muonsHandle;
-//    iEvent.getByLabel("isolatedOnlineMuons", muonsHandle);
-//    const std::vector<reco::RecoChargedCandidate> & muons = *(muonsHandle.product());
-//    std::vector<reco::RecoChargedCandidate>::const_iterator imu = muons.begin();
-//    std::vector<reco::RecoChargedCandidate>::const_iterator jmu = muons.end();
-//
-//    int ipfmu = 0;
-//    for (; imu != jmu; ++imu) {
-//        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1) ipfmu++;
-//    }
+    //    Handle < std::vector < reco::RecoChargedCandidate >> muonsHandle;
+    //    iEvent.getByLabel("isolatedOnlineMuons", muonsHandle);
+    //    const std::vector<reco::RecoChargedCandidate> & muons = *(muonsHandle.product());
+    //    std::vector<reco::RecoChargedCandidate>::const_iterator imu = muons.begin();
+    //    std::vector<reco::RecoChargedCandidate>::const_iterator jmu = muons.end();
+    //
+    //    int ipfmu = 0;
+    //    for (; imu != jmu; ++imu) {
+    //        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1) ipfmu++;
+    //    }
     //
     //    //******************************************************
     //    //  REquring at least 1 muon in the event
@@ -282,272 +282,275 @@ L1MuTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     //******************************************************
     //  REquring at least 1 muon in the event
     //******************************************************
-    
-    Handle<vector<l1extra::L1MuonParticle>> muonsHandle;
-    iEvent.getByLabel("l1extraParticles", muonsHandle);
-//    const MuonCollection & muons = *(muonsHandle.product());
-//    reco::MuonCollection::const_iterator imu = muons.begin();
-//    reco::MuonCollection::const_iterator jmu = muons.end();
-
-    
-    for(int i = 0 ; i <muonsHandle.size();i++ ){
-        cout<< muonsHandle[i].pt()<<endl;
-    }
-
-   /*
-
-    Handle<pat::TauCollection> tausHandle;
-    //    iEvent.getByLabel("selectedHltPatTaus", tausHandle);
-    iEvent.getByLabel("selectedHltPatTausPxl2NP", tausHandle);
-    const TauCollection &tau = *(tausHandle.product());
-    pat::TauCollection::const_iterator itau = tau.begin();
-    pat::TauCollection::const_iterator jtau = tau.end();
 
 
+ 
+
+        Handle < vector < l1extra::L1MuonParticle >> muonsHandle;
+        iEvent.getByLabel("l1extraParticles", muonsHandle);
+        //    const MuonCollection & muons = *(muonsHandle.product());
+        //    reco::MuonCollection::const_iterator imu = muons.begin();
+        //    reco::MuonCollection::const_iterator jmu = muons.end();
 
 
-    int step1 = 0;
-    int step2 = 0;
-    int step3 = 0;
-    int step4 = 0;
-    int step5 = 0;
-    int step6 = 0;
-    int step7 = 0;
-    int step8 = 0;
-    int step9 = 0;
-
-
-    for (; itau != jtau; ++itau) {
-
-        bool ptCut = itau->pt() > 20 && fabs(itau->eta()) < 2.3;
-        //        bool muTauPair = ipfmu > 0;
-        bool muTauPair = 1 > 0;
-        bool hasOverlapMu = hasOverLap(itau->eta(), itau->phi(), iEvent, iSetup);
-        bool discByDecayModeFinding = (itau->tauID("decayModeFinding") > 0.5 ? true : false);
-        //        bool discByIsolation = (itau->tauID("byIsolation") > 0.5 ? true : false);
-        bool discByIsolation = (itau->tauID("byTrkIsolation") < 3.0 ? true : false);
-        bool discByIsolation5hits = (itau->tauID("byTrkIsolation5hits") < 3.0 ? true : false);
-        bool discByMuLoose = (itau->tauID("againstMuonLoose") > 0.5 ? true : false);
-
-        if (muTauPair && ptCut && hasOverlapMu) {
-            step1++;
-            Pt_Step1->Fill(itau->pt());
-            Eta_Step1->Fill(itau->eta());
+        for (vector<l1extra::L1MuonParticle>::const_iterator mu = muonsHandle->begin(); mu != muonsHandle->end(); mu++) {
+            cout << mu->pt() << endl;
         }
-        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding) {
-            step2++;
-            Pt_Step2->Fill(itau->pt());
-            Eta_Step2->Fill(itau->eta());
-        }
-        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByMuLoose) {
-            step3++;
-            Pt_Step3->Fill(itau->pt());
-            Eta_Step3->Fill(itau->eta());
-        }
-        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByMuLoose && discByIsolation) {
-            step4++;
-            //            Pt_Step4->Fill(itau->pt());
-            //            Eta_Step4->Fill(itau->eta());
-        }
-        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByMuLoose && discByIsolation5hits) {
-            step5++;
-            //            Pt_Step4->Fill(itau->pt());
-            //            Eta_Step4->Fill(itau->eta());
-        }
-        //        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation && matchToOfflineTaus(1, itau->eta(), itau->phi(), iEvent, iSetup)) {
-        //            step4++;
-        //            //            Pt_Step3->Fill(itau->pt());
-        //            //            Eta_Step3->Fill(itau->eta());
+
+        /*
+
+         Handle<pat::TauCollection> tausHandle;
+         //    iEvent.getByLabel("selectedHltPatTaus", tausHandle);
+         iEvent.getByLabel("selectedHltPatTausPxl2NP", tausHandle);
+         const TauCollection &tau = *(tausHandle.product());
+         pat::TauCollection::const_iterator itau = tau.begin();
+         pat::TauCollection::const_iterator jtau = tau.end();
+
+
+
+
+         int step1 = 0;
+         int step2 = 0;
+         int step3 = 0;
+         int step4 = 0;
+         int step5 = 0;
+         int step6 = 0;
+         int step7 = 0;
+         int step8 = 0;
+         int step9 = 0;
+
+
+         for (; itau != jtau; ++itau) {
+
+             bool ptCut = itau->pt() > 20 && fabs(itau->eta()) < 2.3;
+             //        bool muTauPair = ipfmu > 0;
+             bool muTauPair = 1 > 0;
+             bool hasOverlapMu = hasOverLap(itau->eta(), itau->phi(), iEvent, iSetup);
+             bool discByDecayModeFinding = (itau->tauID("decayModeFinding") > 0.5 ? true : false);
+             //        bool discByIsolation = (itau->tauID("byIsolation") > 0.5 ? true : false);
+             bool discByIsolation = (itau->tauID("byTrkIsolation") < 3.0 ? true : false);
+             bool discByIsolation5hits = (itau->tauID("byTrkIsolation5hits") < 3.0 ? true : false);
+             bool discByMuLoose = (itau->tauID("againstMuonLoose") > 0.5 ? true : false);
+
+             if (muTauPair && ptCut && hasOverlapMu) {
+                 step1++;
+                 Pt_Step1->Fill(itau->pt());
+                 Eta_Step1->Fill(itau->eta());
+             }
+             if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding) {
+                 step2++;
+                 Pt_Step2->Fill(itau->pt());
+                 Eta_Step2->Fill(itau->eta());
+             }
+             if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByMuLoose) {
+                 step3++;
+                 Pt_Step3->Fill(itau->pt());
+                 Eta_Step3->Fill(itau->eta());
+             }
+             if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByMuLoose && discByIsolation) {
+                 step4++;
+                 //            Pt_Step4->Fill(itau->pt());
+                 //            Eta_Step4->Fill(itau->eta());
+             }
+             if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByMuLoose && discByIsolation5hits) {
+                 step5++;
+                 //            Pt_Step4->Fill(itau->pt());
+                 //            Eta_Step4->Fill(itau->eta());
+             }
+             //        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation && matchToOfflineTaus(1, itau->eta(), itau->phi(), iEvent, iSetup)) {
+             //            step4++;
+             //            //            Pt_Step3->Fill(itau->pt());
+             //            //            Eta_Step3->Fill(itau->eta());
+             //        }
+             if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation && discByMuLoose && matchToOfflineTaus(6, itau->eta(), itau->phi(), iEvent, iSetup)) {
+                 step6++;
+                 //            Pt_Step3->Fill(itau->pt());
+                 //            Eta_Step3->Fill(itau->eta());
+             }
+             if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation && discByMuLoose && matchToOfflineTaus(2, itau->eta(), itau->phi(), iEvent, iSetup)) {
+                 step7++;
+                 //            Pt_Step3->Fill(itau->pt());
+                 //            Eta_Step3->Fill(itau->eta());
+             }
+     //        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation && discByMuLoose && matchToOfflineTaus(4, itau->eta(), itau->phi(), iEvent, iSetup)) {
+     //            step7++;
+     //            //            Pt_Step3->Fill(itau->pt());
+     //            //            Eta_Step3->Fill(itau->eta());
+     //        }
+     ////        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation && discByMuLoose && matchToOfflineTaus(5, itau->eta(), itau->phi(), iEvent, iSetup)) {
+     //            step8++;
+     //            //            Pt_Step3->Fill(itau->pt());
+     //            //            Eta_Step3->Fill(itau->eta());
+     //        }
+     //        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation && discByMuLoose && matchToOfflineTaus(6, itau->eta(), itau->phi(), iEvent, iSetup)) {
+     //            step9++;
+     //            //            Pt_Step3->Fill(itau->pt());
+     //            //            Eta_Step3->Fill(itau->eta());
+     //        }
+
+
+         }
+
+         Histo_Denumerator->Fill(0);
+         if (step1 > 0) {
+             Histo_Denumerator->Fill(1);
+             Histo_Step1->Fill(step1);
+         }
+         if (step2 > 0) {
+             Histo_Denumerator->Fill(2);
+             Histo_Step2->Fill(step2);
+         }
+         if (step3 > 0) {
+             Histo_Denumerator->Fill(3);
+             Histo_Step3->Fill(step3);
+         }
+         if (step4 > 0) {
+             Histo_Denumerator->Fill(4);
+             //        Histo_Step4->Fill(step4);
+         }
+         if (step5 > 0) {
+             Histo_Denumerator->Fill(5);
+             //        Histo_Step4->Fill(step4);
+         }
+         if (step6 > 0) {
+             Histo_Denumerator->Fill(6);
+             //        Histo_Step4->Fill(step4);
+         }
+         if (step7 > 0) {
+             Histo_Denumerator->Fill(7);
+             //        Histo_Step4->Fill(step4);
+         }
+         if (step8 > 0) {
+             Histo_Denumerator->Fill(8);
+             //        Histo_Step4->Fill(step4);
+         }
+         if (step9 > 0) {
+             Histo_Denumerator->Fill(9);
+             //        Histo_Step4->Fill(step4);
+         }
+
+         */
+
+
+
+        //
+        //    Handle<pat::TauCollection> tausHandleSV;
+        //    iEvent.getByLabel("selectedHltPatTausStdVtx", tausHandleSV);
+        //    const TauCollection &tauSV = *(tausHandleSV.product());
+        //    pat::TauCollection::const_iterator itauSV = tauSV.begin();
+        //    pat::TauCollection::const_iterator jtauSV = tauSV.end();
+        //
+        //
+        //
+        //
+        //    int stepSV1 = 0;
+        //    int stepSV2 = 0;
+        //    int stepSV3 = 0;
+        //    int stepSV4 = 0;
+        //    int stepSV5 = 0;
+        //    int stepSV6 = 0;
+        //    int stepSV7 = 0;
+        //    int stepSV8 = 0;
+        //    for (; itauSV != jtauSV; ++itauSV) {
+        //
+        //        bool ptCutSV = itauSV->pt() > 20;
+        //        bool muTauPairSV = ipfmu > 0;
+        //        bool hasOverlapMuSV = hasOverLap(itauSV->eta(), itauSV->phi(), iEvent, iSetup);
+        //        bool discByDecayModeFindingSV = itauSV->tauID("decayModeFinding") > 0.5 ? true : false;
+        //        bool discByIsolationSV = itauSV->tauID("byIsolation") > 0.5 ? true : false;
+        //
+        //        if (muTauPairSV && ptCutSV && hasOverlapMuSV) {
+        //            stepSV1++;
+        //            Pt_StepSV1->Fill(itauSV->pt());
+        //            Eta_StepSV1->Fill(itauSV->eta());
         //        }
-        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation && discByMuLoose && matchToOfflineTaus(6, itau->eta(), itau->phi(), iEvent, iSetup)) {
-            step6++;
-            //            Pt_Step3->Fill(itau->pt());
-            //            Eta_Step3->Fill(itau->eta());
-        }
-        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation && discByMuLoose && matchToOfflineTaus(2, itau->eta(), itau->phi(), iEvent, iSetup)) {
-            step7++;
-            //            Pt_Step3->Fill(itau->pt());
-            //            Eta_Step3->Fill(itau->eta());
-        }
-//        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation && discByMuLoose && matchToOfflineTaus(4, itau->eta(), itau->phi(), iEvent, iSetup)) {
-//            step7++;
-//            //            Pt_Step3->Fill(itau->pt());
-//            //            Eta_Step3->Fill(itau->eta());
-//        }
-////        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation && discByMuLoose && matchToOfflineTaus(5, itau->eta(), itau->phi(), iEvent, iSetup)) {
-//            step8++;
-//            //            Pt_Step3->Fill(itau->pt());
-//            //            Eta_Step3->Fill(itau->eta());
-//        }
-//        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation && discByMuLoose && matchToOfflineTaus(6, itau->eta(), itau->phi(), iEvent, iSetup)) {
-//            step9++;
-//            //            Pt_Step3->Fill(itau->pt());
-//            //            Eta_Step3->Fill(itau->eta());
-//        }
+        //        if (muTauPairSV && ptCutSV && hasOverlapMuSV && discByDecayModeFindingSV) {
+        //            stepSV2++;
+        //            Pt_StepSV2->Fill(itauSV->pt());
+        //            Eta_StepSV2->Fill(itauSV->eta());
+        //        }
+        //        if (muTauPairSV && ptCutSV && hasOverlapMuSV && discByDecayModeFindingSV && discByIsolationSV) {
+        //            stepSV3++;
+        //            Pt_StepSV3->Fill(itauSV->pt());
+        //            Eta_StepSV3->Fill(itauSV->eta());
+        //        }
+        //        if (muTauPairSV && ptCutSV && hasOverlapMuSV && discByDecayModeFindingSV && discByIsolationSV && matchToOfflineTaus(1, itauSV->eta(), itauSV->phi(), iEvent, iSetup)) {
+        //            stepSV4++;
+        //            //            Pt_StepSV4->Fill(itauSV->pt());
+        //            //            Eta_StepSV3->Fill(itauSV->eta());
+        //        }
+        //        if (muTauPairSV && ptCutSV && hasOverlapMuSV && discByDecayModeFindingSV && discByIsolationSV && matchToOfflineTaus(2, itauSV->eta(), itauSV->phi(), iEvent, iSetup)) {
+        //            stepSV5++;
+        //            //            Pt_StepSV4->Fill(itauSV->pt());
+        //            //            Eta_StepSV3->Fill(itauSV->eta());
+        //        }
+        //        if (muTauPairSV && ptCutSV && hasOverlapMuSV && discByDecayModeFindingSV && discByIsolationSV && matchToOfflineTaus(3, itauSV->eta(), itauSV->phi(), iEvent, iSetup)) {
+        //            stepSV6++;
+        //            //            Pt_StepSV4->Fill(itauSV->pt());
+        //            //            Eta_StepSV3->Fill(itauSV->eta());
+        //        }
+        //        if (muTauPairSV && ptCutSV && hasOverlapMuSV && discByDecayModeFindingSV && discByIsolationSV && matchToOfflineTaus(4, itauSV->eta(), itauSV->phi(), iEvent, iSetup)) {
+        //            stepSV7++;
+        //            //            Pt_StepSV4->Fill(itauSV->pt());
+        //            //            Eta_StepSV3->Fill(itauSV->eta());
+        //        }
+        //        if (muTauPairSV && ptCutSV && hasOverlapMuSV && discByDecayModeFindingSV && discByIsolationSV && matchToOfflineTaus(5, itauSV->eta(), itauSV->phi(), iEvent, iSetup)) {
+        //            stepSV8++;
+        //            //            Pt_StepSV4->Fill(itauSV->pt());
+        //            //            Eta_StepSV3->Fill(itauSV->eta());
+        //        }
+        //    }
+        //    Histo_DenumeratorSV->Fill(0);
+        //    if (stepSV1 > 0) {
+        //        Histo_DenumeratorSV->Fill(1);
+        //        Histo_StepSV1->Fill(stepSV1);
+        //    }
+        //    if (stepSV2 > 0) {
+        //        Histo_DenumeratorSV->Fill(2);
+        //        Histo_StepSV2->Fill(stepSV2);
+        //    }
+        //    if (stepSV3 > 0) {
+        //        Histo_DenumeratorSV->Fill(3);
+        //        Histo_StepSV3->Fill(stepSV3);
+        //    }
+        //    if (stepSV4 > 0) {
+        //        Histo_DenumeratorSV->Fill(4);
+        //        //        Histo_StepSV3->Fill(stepSV3);
+        //    }
+        //    if (stepSV5 > 0) {
+        //        Histo_DenumeratorSV->Fill(5);
+        //        //        Histo_StepSV3->Fill(stepSV3);
+        //    }
+        //    if (stepSV6 > 0) {
+        //        Histo_DenumeratorSV->Fill(6);
+        //        //        Histo_StepSV3->Fill(stepSV3);
+        //    }
+        //    if (stepSV7 > 0) {
+        //        Histo_DenumeratorSV->Fill(7);
+        //        //        Histo_StepSV3->Fill(stepSV3);
+        //    }
+        //    if (stepSV8 > 0) {
+        //        Histo_DenumeratorSV->Fill(8);
+        //        //        Histo_StepSV3->Fill(stepSV3);
+        //    }
+
+
+
+
+        /*
+            Handle<pat::TauCollection> tausHandle;
+            iEvent.getByLabel("selectedHltPatTausStdVtx", tausHandle);
+            const TauCollection &tau = *(tausHandle.product());
+            pat::TauCollection::const_iterator itau = tau.begin();
+            pat::TauCollection::const_iterator jtau = tau.end();
+
+         */
+
 
 
     }
 
-    Histo_Denumerator->Fill(0);
-    if (step1 > 0) {
-        Histo_Denumerator->Fill(1);
-        Histo_Step1->Fill(step1);
-    }
-    if (step2 > 0) {
-        Histo_Denumerator->Fill(2);
-        Histo_Step2->Fill(step2);
-    }
-    if (step3 > 0) {
-        Histo_Denumerator->Fill(3);
-        Histo_Step3->Fill(step3);
-    }
-    if (step4 > 0) {
-        Histo_Denumerator->Fill(4);
-        //        Histo_Step4->Fill(step4);
-    }
-    if (step5 > 0) {
-        Histo_Denumerator->Fill(5);
-        //        Histo_Step4->Fill(step4);
-    }
-    if (step6 > 0) {
-        Histo_Denumerator->Fill(6);
-        //        Histo_Step4->Fill(step4);
-    }
-    if (step7 > 0) {
-        Histo_Denumerator->Fill(7);
-        //        Histo_Step4->Fill(step4);
-    }
-    if (step8 > 0) {
-        Histo_Denumerator->Fill(8);
-        //        Histo_Step4->Fill(step4);
-    }
-    if (step9 > 0) {
-        Histo_Denumerator->Fill(9);
-        //        Histo_Step4->Fill(step4);
-    }
-
-*/
 
 
-
-    //
-    //    Handle<pat::TauCollection> tausHandleSV;
-    //    iEvent.getByLabel("selectedHltPatTausStdVtx", tausHandleSV);
-    //    const TauCollection &tauSV = *(tausHandleSV.product());
-    //    pat::TauCollection::const_iterator itauSV = tauSV.begin();
-    //    pat::TauCollection::const_iterator jtauSV = tauSV.end();
-    //
-    //
-    //
-    //
-    //    int stepSV1 = 0;
-    //    int stepSV2 = 0;
-    //    int stepSV3 = 0;
-    //    int stepSV4 = 0;
-    //    int stepSV5 = 0;
-    //    int stepSV6 = 0;
-    //    int stepSV7 = 0;
-    //    int stepSV8 = 0;
-    //    for (; itauSV != jtauSV; ++itauSV) {
-    //
-    //        bool ptCutSV = itauSV->pt() > 20;
-    //        bool muTauPairSV = ipfmu > 0;
-    //        bool hasOverlapMuSV = hasOverLap(itauSV->eta(), itauSV->phi(), iEvent, iSetup);
-    //        bool discByDecayModeFindingSV = itauSV->tauID("decayModeFinding") > 0.5 ? true : false;
-    //        bool discByIsolationSV = itauSV->tauID("byIsolation") > 0.5 ? true : false;
-    //
-    //        if (muTauPairSV && ptCutSV && hasOverlapMuSV) {
-    //            stepSV1++;
-    //            Pt_StepSV1->Fill(itauSV->pt());
-    //            Eta_StepSV1->Fill(itauSV->eta());
-    //        }
-    //        if (muTauPairSV && ptCutSV && hasOverlapMuSV && discByDecayModeFindingSV) {
-    //            stepSV2++;
-    //            Pt_StepSV2->Fill(itauSV->pt());
-    //            Eta_StepSV2->Fill(itauSV->eta());
-    //        }
-    //        if (muTauPairSV && ptCutSV && hasOverlapMuSV && discByDecayModeFindingSV && discByIsolationSV) {
-    //            stepSV3++;
-    //            Pt_StepSV3->Fill(itauSV->pt());
-    //            Eta_StepSV3->Fill(itauSV->eta());
-    //        }
-    //        if (muTauPairSV && ptCutSV && hasOverlapMuSV && discByDecayModeFindingSV && discByIsolationSV && matchToOfflineTaus(1, itauSV->eta(), itauSV->phi(), iEvent, iSetup)) {
-    //            stepSV4++;
-    //            //            Pt_StepSV4->Fill(itauSV->pt());
-    //            //            Eta_StepSV3->Fill(itauSV->eta());
-    //        }
-    //        if (muTauPairSV && ptCutSV && hasOverlapMuSV && discByDecayModeFindingSV && discByIsolationSV && matchToOfflineTaus(2, itauSV->eta(), itauSV->phi(), iEvent, iSetup)) {
-    //            stepSV5++;
-    //            //            Pt_StepSV4->Fill(itauSV->pt());
-    //            //            Eta_StepSV3->Fill(itauSV->eta());
-    //        }
-    //        if (muTauPairSV && ptCutSV && hasOverlapMuSV && discByDecayModeFindingSV && discByIsolationSV && matchToOfflineTaus(3, itauSV->eta(), itauSV->phi(), iEvent, iSetup)) {
-    //            stepSV6++;
-    //            //            Pt_StepSV4->Fill(itauSV->pt());
-    //            //            Eta_StepSV3->Fill(itauSV->eta());
-    //        }
-    //        if (muTauPairSV && ptCutSV && hasOverlapMuSV && discByDecayModeFindingSV && discByIsolationSV && matchToOfflineTaus(4, itauSV->eta(), itauSV->phi(), iEvent, iSetup)) {
-    //            stepSV7++;
-    //            //            Pt_StepSV4->Fill(itauSV->pt());
-    //            //            Eta_StepSV3->Fill(itauSV->eta());
-    //        }
-    //        if (muTauPairSV && ptCutSV && hasOverlapMuSV && discByDecayModeFindingSV && discByIsolationSV && matchToOfflineTaus(5, itauSV->eta(), itauSV->phi(), iEvent, iSetup)) {
-    //            stepSV8++;
-    //            //            Pt_StepSV4->Fill(itauSV->pt());
-    //            //            Eta_StepSV3->Fill(itauSV->eta());
-    //        }
-    //    }
-    //    Histo_DenumeratorSV->Fill(0);
-    //    if (stepSV1 > 0) {
-    //        Histo_DenumeratorSV->Fill(1);
-    //        Histo_StepSV1->Fill(stepSV1);
-    //    }
-    //    if (stepSV2 > 0) {
-    //        Histo_DenumeratorSV->Fill(2);
-    //        Histo_StepSV2->Fill(stepSV2);
-    //    }
-    //    if (stepSV3 > 0) {
-    //        Histo_DenumeratorSV->Fill(3);
-    //        Histo_StepSV3->Fill(stepSV3);
-    //    }
-    //    if (stepSV4 > 0) {
-    //        Histo_DenumeratorSV->Fill(4);
-    //        //        Histo_StepSV3->Fill(stepSV3);
-    //    }
-    //    if (stepSV5 > 0) {
-    //        Histo_DenumeratorSV->Fill(5);
-    //        //        Histo_StepSV3->Fill(stepSV3);
-    //    }
-    //    if (stepSV6 > 0) {
-    //        Histo_DenumeratorSV->Fill(6);
-    //        //        Histo_StepSV3->Fill(stepSV3);
-    //    }
-    //    if (stepSV7 > 0) {
-    //        Histo_DenumeratorSV->Fill(7);
-    //        //        Histo_StepSV3->Fill(stepSV3);
-    //    }
-    //    if (stepSV8 > 0) {
-    //        Histo_DenumeratorSV->Fill(8);
-    //        //        Histo_StepSV3->Fill(stepSV3);
-    //    }
-
-
-
-
-    /*
-        Handle<pat::TauCollection> tausHandle;
-        iEvent.getByLabel("selectedHltPatTausStdVtx", tausHandle);
-        const TauCollection &tau = *(tausHandle.product());
-        pat::TauCollection::const_iterator itau = tau.begin();
-        pat::TauCollection::const_iterator jtau = tau.end();
-
-     */
-
-
-
-}
-
-
-
-//define this as a plug-in
-DEFINE_FWK_MODULE(L1MuTrigger);
+    //define this as a plug-in
+    DEFINE_FWK_MODULE(L1MuTrigger);
