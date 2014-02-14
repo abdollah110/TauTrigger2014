@@ -12,33 +12,32 @@ process.source = cms.Source("PoolSource",
                             #$        'file:/user_mnt/user/abdollah/SingleMu/SingleMu-SkimmedHLTMu17-Run2012D-22Jan2013-v1-RAWAOD-PatTuple/6d4df2e925a381a14364673d1f4bb5f0/patTuple_10_1_EwT.root'
 
 
-
-                            'file:/tmp/abdollah/patTuple_10_1_GbK.root',
-                            'file:/tmp/abdollah/patTuple_11_1_agD.root',
-                            'file:/tmp/abdollah/patTuple_12_1_ooX.root',
-                            'file:/tmp/abdollah/patTuple_13_1_3Fd.root',
-                            'file:/tmp/abdollah/patTuple_14_1_pKM.root',
-                            'file:/tmp/abdollah/patTuple_15_1_EyL.root',
-                            'file:/tmp/abdollah/patTuple_17_1_cTP.root',
-                            'file:/tmp/abdollah/patTuple_19_1_vJU.root',
-                            'file:/tmp/abdollah/patTuple_1_1_FSH.root',
-                            'file:/tmp/abdollah/patTuple_20_1_1Ts.root',
-                            'file:/tmp/abdollah/patTuple_21_1_fUF.root',
-                            'file:/tmp/abdollah/patTuple_22_1_s3l.root',
-                            'file:/tmp/abdollah/patTuple_23_1_pfR.root',
-                            'file:/tmp/abdollah/patTuple_24_1_rsH.root',
-                            'file:/tmp/abdollah/patTuple_25_1_0qn.root',
-                            'file:/tmp/abdollah/patTuple_26_1_B5L.root',
-                            'file:/tmp/abdollah/patTuple_27_1_hIV.root',
-                            'file:/tmp/abdollah/patTuple_28_1_PqW.root',
-                            'file:/tmp/abdollah/patTuple_2_1_sul.root',
-                            'file:/tmp/abdollah/patTuple_3_1_8dl.root',
-                            'file:/tmp/abdollah/patTuple_4_1_b7M.root',
-                            'file:/tmp/abdollah/patTuple_5_1_0ZU.root',
-                            'file:/tmp/abdollah/patTuple_6_1_uIE.root',
-                            'file:/tmp/abdollah/patTuple_7_1_RMK.root',
-                            'file:/tmp/abdollah/patTuple_8_1_84N.root',
-                            'file:/tmp/abdollah/patTuple_9_1_Grb.root',
+                            'root://eoscms//eos/cms/store/user/abdollah/TauTrigger2014/SingleHLTMu17_v2/patTuple_10_1_GbK.root',
+                            'root://eoscms//eos/cms/store/user/abdollah/TauTrigger2014/SingleHLTMu17_v2/patTuple_11_1_agD.root',
+                            'root://eoscms//eos/cms/store/user/abdollah/TauTrigger2014/SingleHLTMu17_v2/patTuple_12_1_ooX.root',
+                            'root://eoscms//eos/cms/store/user/abdollah/TauTrigger2014/SingleHLTMu17_v2/patTuple_13_1_3Fd.root',
+                            'root://eoscms//eos/cms/store/user/abdollah/TauTrigger2014/SingleHLTMu17_v2/patTuple_14_1_pKM.root',
+                            'root://eoscms//eos/cms/store/user/abdollah/TauTrigger2014/SingleHLTMu17_v2/patTuple_15_1_EyL.root',
+                            'root://eoscms//eos/cms/store/user/abdollah/TauTrigger2014/SingleHLTMu17_v2/patTuple_17_1_cTP.root',
+                            'root://eoscms//eos/cms/store/user/abdollah/TauTrigger2014/SingleHLTMu17_v2/patTuple_19_1_vJU.root',
+                            'root://eoscms//eos/cms/store/user/abdollah/TauTrigger2014/SingleHLTMu17_v2/patTuple_1_1_FSH.root',
+                            'root://eoscms//eos/cms/store/user/abdollah/TauTrigger2014/SingleHLTMu17_v2/patTuple_20_1_1Ts.root',
+                            'root://eoscms//eos/cms/store/user/abdollah/TauTrigger2014/SingleHLTMu17_v2/patTuple_21_1_fUF.root',
+                            'root://eoscms//eos/cms/store/user/abdollah/TauTrigger2014/SingleHLTMu17_v2/patTuple_22_1_s3l.root',
+                            'root://eoscms//eos/cms/store/user/abdollah/TauTrigger2014/SingleHLTMu17_v2/patTuple_23_1_pfR.root',
+                            'root://eoscms//eos/cms/store/user/abdollah/TauTrigger2014/SingleHLTMu17_v2/patTuple_24_1_rsH.root',
+                            'root://eoscms//eos/cms/store/user/abdollah/TauTrigger2014/SingleHLTMu17_v2/patTuple_25_1_0qn.root',
+                            'root://eoscms//eos/cms/store/user/abdollah/TauTrigger2014/SingleHLTMu17_v2/patTuple_26_1_B5L.root',
+                            'root://eoscms//eos/cms/store/user/abdollah/TauTrigger2014/SingleHLTMu17_v2/patTuple_27_1_hIV.root',
+                            'root://eoscms//eos/cms/store/user/abdollah/TauTrigger2014/SingleHLTMu17_v2/patTuple_28_1_PqW.root',
+                            'root://eoscms//eos/cms/store/user/abdollah/TauTrigger2014/SingleHLTMu17_v2/patTuple_2_1_sul.root',
+                            'root://eoscms//eos/cms/store/user/abdollah/TauTrigger2014/SingleHLTMu17_v2/patTuple_3_1_8dl.root',
+                            'root://eoscms//eos/cms/store/user/abdollah/TauTrigger2014/SingleHLTMu17_v2/patTuple_4_1_b7M.root',
+                            'root://eoscms//eos/cms/store/user/abdollah/TauTrigger2014/SingleHLTMu17_v2/patTuple_5_1_0ZU.root',
+                            'root://eoscms//eos/cms/store/user/abdollah/TauTrigger2014/SingleHLTMu17_v2/patTuple_6_1_uIE.root',
+                            'root://eoscms//eos/cms/store/user/abdollah/TauTrigger2014/SingleHLTMu17_v2/patTuple_7_1_RMK.root',
+                            'root://eoscms//eos/cms/store/user/abdollah/TauTrigger2014/SingleHLTMu17_v2/patTuple_8_1_84N.root',
+                            'root://eoscms//eos/cms/store/user/abdollah/TauTrigger2014/SingleHLTMu17_v2/patTuple_9_1_Grb.root',
 
 
 
@@ -77,9 +76,9 @@ process.source = cms.Source("PoolSource",
                             )
 
 process.isolatedOnlineMuons = cms.EDProducer(
-     "ChargedCandidateFromTrigRefConverter",
-     triggerFilterMuonsSrc = cms.InputTag("hltL3crIsoL1sMu14erORMu16erL1f0L2f14QL3f17QL3crIsoRhoFiltered0p15")
-)
+                                             "ChargedCandidateFromTrigRefConverter",
+                                             triggerFilterMuonsSrc=cms.InputTag("hltL3crIsoL1sMu14erORMu16erL1f0L2f14QL3f17QL3crIsoRhoFiltered0p15")
+                                             )
 process.demo = cms.EDAnalyzer('MyTrigger'
                               #rhoCenNeutralTight=cms.InputTag("kt6PFJetsCentralNeutralTight", "rho")
                               )
