@@ -144,20 +144,20 @@ L1MuTrigger::~L1MuTrigger() {
 // member functions
 //
 
-float deltaPhi_(float a, float b) {
+float deltaPhi_2(float a, float b) {
     float result = a - b;
     while (result > M_PI) result -= 2 * M_PI;
     while (result <= -M_PI) result += 2 * M_PI;
     return fabs(result);
 }
 
-float dR(float l1eta, float l1phi, float l2eta, float l2phi) {
+float dR2(float l1eta, float l1phi, float l2eta, float l2phi) {
     float deta = l1eta - l2eta;
-    float dphi = deltaPhi_(l1phi, l2phi);
+    float dphi = deltaPhi_2(l1phi, l2phi);
     return sqrt(deta * deta + dphi * dphi);
 }
 
-bool hasOverLap(float eta_, float phi_, const edm::Event& iEvent, const edm::EventSetup& iSetup) {
+bool hasOverLap2(float eta_, float phi_, const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     using reco::Muon;
     using reco::MuonCollection;
     using reco::RecoChargedCandidate;
@@ -191,7 +191,7 @@ bool hasOverLap(float eta_, float phi_, const edm::Event& iEvent, const edm::Eve
     //    cout<<imu->userFloat("PFRelIsoDB0ChargedCandidateFromTrigRefConverter
     for (; imu != jmu; ++imu) {
         //        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1 && imu->userFloat("PFRelIsoDB04v2") < 0.15) dR05 = (dR(imu->eta(), imu->phi(), eta_, phi_) > 0.5 ? 1 : 0);
-        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1) dR05 = (dR(imu->eta(), imu->phi(), eta_, phi_) > 0.4 ? 1 : 0);
+        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1) dR05 = (dR2(imu->eta(), imu->phi(), eta_, phi_) > 0.4 ? 1 : 0);
         //        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1) dR05 = (dR(imu->eta(), imu->phi(), eta_, phi_) > 0.3 ? 1 : 0);
 
     }
@@ -199,34 +199,34 @@ bool hasOverLap(float eta_, float phi_, const edm::Event& iEvent, const edm::Eve
     return dR05;
 }
 
-bool matchToOfflineTaus(int isoOption, float eta_, float phi_, const edm::Event& iEvent, const edm::EventSetup& iSetup) {
-    using namespace std;
-    using namespace reco;
-    using namespace edm;
-    using namespace pat;
-
-
-    Handle<pat::TauCollection> pftausHandle;
-    iEvent.getByLabel("selectedTaus", pftausHandle);
-    const TauCollection &pftau = *(pftausHandle.product());
-    pat::TauCollection::const_iterator ipftau = pftau.begin();
-    pat::TauCollection::const_iterator jpftau = pftau.end();
-
-
-    bool dR05 = 0;
-    for (; ipftau != jpftau; ++ipftau) {
-        if (isoOption == 1 && ipftau->pt() > 20 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byLooseCombinedIsolationDeltaBetaCorr") > 0.5) dR05 = (dR(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5 ? 1 : 0);
-        if (isoOption == 2 && ipftau->pt() > 20 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byLooseCombinedIsolationDeltaBetaCorr3Hits") > 0.5) dR05 = (dR(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5 ? 1 : 0);
-        if (isoOption == 3 && ipftau->pt() > 20 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byLooseCombinedIsolationDeltaBetaCorr3Hits") > 0.5 && ipftau->tauID("againstMuonLoose3") > 0.5) dR05 = (dR(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5 ? 1 : 0);
-        if (isoOption == 4 && ipftau->pt() > 20 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byLooseCombinedIsolationDeltaBetaCorr3Hits") > 0.5 && ipftau->tauID("againstMuonMedium3") > 0.5) dR05 = (dR(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5 ? 1 : 0);
-        if (isoOption == 5 && ipftau->pt() > 20 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byLooseCombinedIsolationDeltaBetaCorr3Hits") > 0.5 && ipftau->tauID("againstMuonTight3") > 0.5) dR05 = (dR(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5 ? 1 : 0);
-        if (isoOption == 6 && ipftau->pt() > 20 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("againstMuonLoose3") > 0.5) dR05 = (dR(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5 ? 1 : 0);
-
-    }
-
-    return dR05;
-
-}
+//bool matchToOfflineTaus2(int isoOption, float eta_, float phi_, const edm::Event& iEvent, const edm::EventSetup& iSetup) {
+//    using namespace std;
+//    using namespace reco;
+//    using namespace edm;
+//    using namespace pat;
+//
+//
+//    Handle<pat::TauCollection> pftausHandle;
+//    iEvent.getByLabel("selectedTaus", pftausHandle);
+//    const TauCollection &pftau = *(pftausHandle.product());
+//    pat::TauCollection::const_iterator ipftau = pftau.begin();
+//    pat::TauCollection::const_iterator jpftau = pftau.end();
+//
+//
+//    bool dR05 = 0;
+//    for (; ipftau != jpftau; ++ipftau) {
+//        if (isoOption == 1 && ipftau->pt() > 20 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byLooseCombinedIsolationDeltaBetaCorr") > 0.5) dR05 = (dR(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5 ? 1 : 0);
+//        if (isoOption == 2 && ipftau->pt() > 20 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byLooseCombinedIsolationDeltaBetaCorr3Hits") > 0.5) dR05 = (dR(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5 ? 1 : 0);
+//        if (isoOption == 3 && ipftau->pt() > 20 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byLooseCombinedIsolationDeltaBetaCorr3Hits") > 0.5 && ipftau->tauID("againstMuonLoose3") > 0.5) dR05 = (dR(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5 ? 1 : 0);
+//        if (isoOption == 4 && ipftau->pt() > 20 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byLooseCombinedIsolationDeltaBetaCorr3Hits") > 0.5 && ipftau->tauID("againstMuonMedium3") > 0.5) dR05 = (dR(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5 ? 1 : 0);
+//        if (isoOption == 5 && ipftau->pt() > 20 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byLooseCombinedIsolationDeltaBetaCorr3Hits") > 0.5 && ipftau->tauID("againstMuonTight3") > 0.5) dR05 = (dR(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5 ? 1 : 0);
+//        if (isoOption == 6 && ipftau->pt() > 20 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("againstMuonLoose3") > 0.5) dR05 = (dR(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5 ? 1 : 0);
+//
+//    }
+//
+//    return dR05;
+//
+//}
 
 
 // ------------ method called for each event  ------------
