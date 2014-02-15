@@ -335,6 +335,17 @@ L1MuTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
             if (tau->pt() > 20) PassTau = true;
         }
 
+        bool PassuctTau = false;
+        for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
+
+            if (ucttau->pt() > 20) PassuctTau = true;
+        }
+        bool PassuctIsoTau = false;
+        for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++) {
+
+            if (uctIsotau->pt() > 20) PassuctIsoTau = true;
+        }
+
 
 
 
