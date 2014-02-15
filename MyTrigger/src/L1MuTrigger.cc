@@ -307,13 +307,15 @@ L1MuTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     Handle < vector < l1extra::L1JetParticle >> tausHandle;
     iEvent.getByLabel(L1TauSource_, tausHandle);
 
-    Handle < vector<UCTCandidate>> tausUpgradeHandle;
+    Handle < vector < UCTCandidate >> tausUpgradeHandle;
     iEvent.getByLabel(srcL1UpgradeTaus_, tausUpgradeHandle);
 
-    Handle < vector<UCTCandidate>> tausUpgradeIsoHandle;
+    Handle < vector < UCTCandidate >> tausUpgradeIsoHandle;
     iEvent.getByLabel(srcL1UpgradeIsoTaus_, tausUpgradeIsoHandle);
 
+    int step1 = 0;
     for (vector<l1extra::L1MuonParticle>::const_iterator mu = muonsHandle->begin(); mu != muonsHandle->end(); mu++) {
+        step1++;
         cout << "Mu Pt is   " << mu->pt() << endl;
         float isolation02 = 0;
         float isolation03 = 0;
@@ -350,7 +352,7 @@ L1MuTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 
 
     }
-
+    Histo_Denumerator->Fill(step1);
 
 
 
