@@ -139,18 +139,7 @@ L1MuTrigger::~L1MuTrigger() {
 // member functions
 //
 
-float deltaPhi_2(float a, float b) {
-    float result = a - b;
-    while (result > M_PI) result -= 2 * M_PI;
-    while (result <= -M_PI) result += 2 * M_PI;
-    return fabs(result);
-}
 
-float dR2(float l1eta, float l1phi, float l2eta, float l2phi) {
-    float deta = l1eta - l2eta;
-    float dphi = deltaPhi_2(l1phi, l2phi);
-    return sqrt(deta * deta + dphi * dphi);
-}
 
 bool hasOverLap2(float eta_, float phi_, const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     using reco::Muon;
