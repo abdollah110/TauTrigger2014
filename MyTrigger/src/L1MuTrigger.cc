@@ -40,6 +40,7 @@
 #include "DataFormats/RecoCandidate/interface/RecoChargedCandidate.h"
 #include "L1Trigger/UCT2015/interface/UCTCandidate.h"
 #include "TH1.h"
+#include "makeHisto.h"
 
 //
 // class declaration
@@ -353,6 +354,7 @@ L1MuTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 
     }
     Histo_Denumerator->Fill(step1);
+    plotFill("XXX",10,10,0,10);
 
 
 
