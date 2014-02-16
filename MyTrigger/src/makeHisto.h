@@ -69,5 +69,17 @@ void plotFill(string name, float x, float y, int nx, float nxmin, float nxmax, i
 //        (ittau->px + Met.front().px)*(ittau->px + Met.front().px) -
 //        (ittau->py + Met.front().py)*(ittau->py + Met.front().py));
 
+float deltaPhi_2(float a, float b) {
+    float result = a - b;
+    while (result > M_PI) result -= 2 * M_PI;
+    while (result <= -M_PI) result += 2 * M_PI;
+    return fabs(result);
+}
+
+float dR2(float l1eta, float l1phi, float l2eta, float l2phi) {
+    float deta = l1eta - l2eta;
+    float dphi = deltaPhi_2(l1phi, l2phi);
+    return sqrt(deta * deta + dphi * dphi);
+}
 #endif	/* _JETVETO_H */
 
