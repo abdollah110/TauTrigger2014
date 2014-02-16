@@ -40,6 +40,7 @@
 #include "DataFormats/RecoCandidate/interface/RecoChargedCandidate.h"
 #include "L1Trigger/UCT2015/interface/UCTCandidate.h"
 #include "TH1.h"
+#include "makeHisto.h"
 
 //
 // class declaration
