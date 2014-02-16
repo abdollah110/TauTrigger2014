@@ -360,7 +360,7 @@ L1MuTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 
     }
     Histo_Denumerator->Fill(step1);
-    plotFill("XXX", 10, 10, 0, 10);
+    plotFill("XXX", 5, 10, 0, 10);
 
 
 
