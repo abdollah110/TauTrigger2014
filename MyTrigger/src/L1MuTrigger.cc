@@ -158,47 +158,7 @@ L1MuTrigger::~L1MuTrigger() {
 
 
 
-bool hasOverLap2(float eta_, float phi_, const edm::Event& iEvent, const edm::EventSetup& iSetup) {
-    using reco::Muon;
-    using reco::MuonCollection;
-    using reco::RecoChargedCandidate;
-    //    using reco::RecoChargedCandidateCollection;
-    using namespace std;
-    using namespace reco;
-    using namespace edm;
-    using namespace pat;
 
-    //    Handle<pat::MuonCollection> muonsHandle;
-    //    iEvent.getByLabel("selectedMuons", muonsHandle);
-    Handle < std::vector < reco::RecoChargedCandidate >> muonsHandle;
-    //    iEvent.getByLabel("hltMuons", muonsHandle);
-    iEvent.getByLabel("isolatedOnlineMuons", muonsHandle);
-    const std::vector<reco::RecoChargedCandidate> & muons = *(muonsHandle.product());
-    std::vector<reco::RecoChargedCandidate>::const_iterator imu = muons.begin();
-    std::vector<reco::RecoChargedCandidate>::const_iterator jmu = muons.end();
-    //    //    Handle<pat::MuonCollection> muonsHandle;
-    //    //    iEvent.getByLabel("selectedMuons", muonsHandle);
-    //    Handle<reco::MuonCollection> muonsHandle;
-    //    //    iEvent.getByLabel("hltMuons", muonsHandle);
-    //    iEvent.getByLabel("hltL3MuonCandidates", muonsHandle);
-    //    const MuonCollection & muons = *(muonsHandle.product());
-    //    reco::MuonCollection::const_iterator imu = muons.begin();
-    //    reco::MuonCollection::const_iterator jmu = muons.end();
-
-    //const Provenance& prov = iEvent.getProvenance(muonsHandle.TauHLT());
-    //const float& procName = prov.isolations_;
-
-    bool dR05 = 0;
-    //    cout<<imu->userFloat("PFRelIsoDB0ChargedCandidateFromTrigRefConverter
-    for (; imu != jmu; ++imu) {
-        //        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1 && imu->userFloat("PFRelIsoDB04v2") < 0.15) dR05 = (dR(imu->eta(), imu->phi(), eta_, phi_) > 0.5 ? 1 : 0);
-        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1) dR05 = (dR2(imu->eta(), imu->phi(), eta_, phi_) > 0.4 ? 1 : 0);
-        //        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1) dR05 = (dR(imu->eta(), imu->phi(), eta_, phi_) > 0.3 ? 1 : 0);
-
-    }
-
-    return dR05;
-}
 
 //bool matchToOfflineTaus2(int isoOption, float eta_, float phi_, const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 //    using namespace std;
