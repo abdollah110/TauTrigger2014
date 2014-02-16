@@ -40,7 +40,6 @@
 #include "DataFormats/RecoCandidate/interface/RecoChargedCandidate.h"
 #include "L1Trigger/UCT2015/interface/UCTCandidate.h"
 #include "TH1.h"
-#include "makeHisto.h"
 
 //
 // class declaration
@@ -64,7 +63,31 @@ private:
     //    virtual void beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&);
     //    virtual void endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&);
 
+    TH1D *demohisto;
+    TH1D *demohisto_17;
+    TH1D * Histo_tauPt;
+    TH1D * Histo_tauPt_20;
+    TH1D * Histo_Denumerator;
+    TH1D * Histo_DenumeratorSV;
+    TH1D * Histo_Step1;
+    TH1D * Histo_Step2;
+    TH1D * Histo_Step3;
+    TH1D * Histo_StepSV1;
+    TH1D * Histo_StepSV2;
+    TH1D * Histo_StepSV3;
+    TH1D * Pt_Step1;
+    TH1D * Eta_Step1;
+    TH1D * Pt_Step2;
+    TH1D * Eta_Step2;
+    TH1D * Pt_Step3;
+    TH1D * Eta_Step3;
 
+    TH1D * Pt_StepSV1;
+    TH1D * Eta_StepSV1;
+    TH1D * Pt_StepSV2;
+    TH1D * Eta_StepSV2;
+    TH1D * Pt_StepSV3;
+    TH1D * Eta_StepSV3;
     edm::InputTag L1TauSource_;
     edm::InputTag L1MuSource_;
     edm::InputTag srcHLTCaloTowers_;
@@ -90,10 +113,30 @@ L1MuTrigger::L1MuTrigger(const edm::ParameterSet& iConfig) {
     //now do what ever initialization is needed
     using namespace edm;
     edm::Service<TFileService> fs;
-    myMap1 = new std::map<std::string, TH1F*>();
-
-
-
+    demohisto = fs->make<TH1D > ("MuPt", "MuPt", 50, 0, 250);
+    demohisto_17 = fs->make<TH1D > ("MuPt_17", "MuPt_17", 50, 0, 250);
+    Histo_tauPt = fs->make<TH1D > ("TauPt", "TauPt", 50, 0, 250);
+    Histo_tauPt_20 = fs->make<TH1D > ("TauPt_20", "TauPt_20", 50, 0, 250);
+    Histo_Denumerator = fs->make<TH1D > ("TriggerRate", "TriggerRate", 10, 0, 10);
+    Histo_DenumeratorSV = fs->make<TH1D > ("TriggerRateStdVtx", "TriggerRateStdVtx", 10, 0, 10);
+    Histo_Step1 = fs->make<TH1D > ("Step1-Multiplicity", "Step1-Multiplicity", 10, 0, 10);
+    Histo_Step2 = fs->make<TH1D > ("Step2-Multiplicity", "Step2-Multiplicity", 10, 0, 10);
+    Histo_Step3 = fs->make<TH1D > ("Step3-Multiplicity", "Step3-Multiplicity", 10, 0, 10);
+    Histo_StepSV1 = fs->make<TH1D > ("StepSV1-Multiplicity", "StepSV1-Multiplicity", 10, 0, 10);
+    Histo_StepSV2 = fs->make<TH1D > ("StepSV2-Multiplicity", "StepSV2-Multiplicity", 10, 0, 10);
+    Histo_StepSV3 = fs->make<TH1D > ("StepSV3-Multiplicity", "StepSV3-Multiplicity", 10, 0, 10);
+    Pt_StepSV1 = fs->make<TH1D > ("Pt_StepSV1", "Pt_StepSV1", 40, 0, 200);
+    Eta_StepSV1 = fs->make<TH1D > ("Eta_StepSV1", "Eta_StepSV1", 50, -2.5, 2.5);
+    Pt_StepSV2 = fs->make<TH1D > ("Pt_StepSV2", "Pt_StepSV2", 40, 0, 200);
+    Eta_StepSV2 = fs->make<TH1D > ("Eta_StepSV2", "Eta_StepSV2", 50, -2.5, 2.5);
+    Pt_StepSV3 = fs->make<TH1D > ("Pt_StepSV3", "Pt_StepSV3", 40, 0, 200);
+    Eta_StepSV3 = fs->make<TH1D > ("Eta_StepSV3", "Eta_StepSV3", 50, -2.5, 2.5);
+    Pt_Step1 = fs->make<TH1D > ("Pt_Step1", "Pt_Step1", 40, 0, 200);
+    Eta_Step1 = fs->make<TH1D > ("Eta_Step1", "Eta_Step1", 50, -2.5, 2.5);
+    Pt_Step2 = fs->make<TH1D > ("Pt_Step2", "Pt_Step2", 40, 0, 200);
+    Eta_Step2 = fs->make<TH1D > ("Eta_Step2", "Eta_Step2", 50, -2.5, 2.5);
+    Pt_Step3 = fs->make<TH1D > ("Pt_Step3", "Pt_Step3", 40, 0, 200);
+    Eta_Step3 = fs->make<TH1D > ("Eta_Step3", "Eta_Step3", 50, -2.5, 2.5);
     L1MuSource_ = iConfig.getParameter<edm::InputTag > ("srcL1Mus");
     L1TauSource_ = iConfig.getParameter<edm::InputTag > ("srcL1Taus");
     srcHLTCaloTowers_ = iConfig.getParameter<edm::InputTag > ("srcHLTCaloTowers");
@@ -105,11 +148,6 @@ L1MuTrigger::~L1MuTrigger() {
 
     // do anything here that needs to be done at desctruction time
     // (e.g. close files, deallocate resources etc.)
-    map<string, TH1F*>::const_iterator iMap1 = myMap1->begin();
-    map<string, TH1F*>::const_iterator jMap1 = myMap1->end();
-
-    for (; iMap1 != jMap1; ++iMap1)
-        nplot1(iMap1->first)->Write();
 
 }
 
@@ -303,8 +341,7 @@ L1MuTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 
 
     }
-//    Histo_Denumerator->Fill(step1);
-    plotFill("XXX", 5, 10, 0, 10);
+    Histo_Denumerator->Fill(step1);
 
 
 
