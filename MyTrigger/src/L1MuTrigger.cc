@@ -114,6 +114,7 @@ L1MuTrigger::L1MuTrigger(const edm::ParameterSet& iConfig) {
     //now do what ever initialization is needed
     using namespace edm;
     edm::Service<TFileService> fs;
+    myMap1 = new std::map<std::string, TH1F*>();
     demohisto = fs->make<TH1D > ("MuPt", "MuPt", 50, 0, 250);
     demohisto_17 = fs->make<TH1D > ("MuPt_17", "MuPt_17", 50, 0, 250);
     Histo_tauPt = fs->make<TH1D > ("TauPt", "TauPt", 50, 0, 250);
@@ -149,6 +150,11 @@ L1MuTrigger::~L1MuTrigger() {
 
     // do anything here that needs to be done at desctruction time
     // (e.g. close files, deallocate resources etc.)
+    map<string, TH1F*>::const_iterator iMap1 = myMap1->begin();
+    map<string, TH1F*>::const_iterator jMap1 = myMap1->end();
+
+    for (; iMap1 != jMap1; ++iMap1)
+        nplot1(iMap1->first)->Write();
 
 }
 
@@ -354,7 +360,7 @@ L1MuTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 
     }
     Histo_Denumerator->Fill(step1);
-//    plotFill("XXX",10,10,0,10);
+    plotFill("XXX", 10, 10, 0, 10);
 
 
 
