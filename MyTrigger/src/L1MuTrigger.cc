@@ -61,6 +61,10 @@ private:
     TH1D *demohisto;
     TH1D * rate_L1JetParticle;
     TH1D * rate_after_L1JetParticle;
+    TH1D * rate_after_UCTCandidateIso;
+    TH1D * rate_after_UCTCandidate;
+    TH1D * rate_UCTCandidateIso;
+    TH1D * rate_UCTCandidate;
 
 
     edm::InputTag L1TauSource_;
@@ -93,6 +97,10 @@ L1MuTrigger::L1MuTrigger(const edm::ParameterSet& iConfig) {
     demohisto = fs->make<TH1D > ("demo", "demo", 50, 0, 50);
     rate_L1JetParticle = fs->make<TH1D > ("rate_L1JetParticle", "", 100, 0, 100);
     rate_after_L1JetParticle = fs->make<TH1D > ("rate_after_L1JetParticle", "", 100, 0, 100);
+    rate_after_UCTCandidateIso = fs->make<TH1D > ("rate_after_UCTCandidateIso", "", 100, 0, 100);
+    rate_after_UCTCandidate = fs->make<TH1D > ("rate_after_UCTCandidate", "", 100, 0, 100);
+    rate_UCTCandidateIso = fs->make<TH1D > ("rate_UCTCandidateIso", "", 100, 0, 100);
+    rate_UCTCandidate = fs->make<TH1D > ("rate_UCTCandidate", "", 100, 0, 100);
 
 
 
@@ -178,33 +186,39 @@ L1MuTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         cout << "isolation04   " << isolation04 << endl;
 
 
-        bool PassTau = false;
+    }
 
-        for (int ii = 0; ii < 100; ii++) {
-            for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
-                rate_L1JetParticle->Fill(ii);
-                if (tau->pt() > ii)
-                    rate_after_L1JetParticle->Fill(ii);
-            }
+
+    for (int ii = 0; ii < 100; ii++) {
+
+
+        for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
+            rate_L1JetParticle->Fill(ii);
+            if (tau->pt() > ii)
+                rate_after_L1JetParticle->Fill(ii);
         }
 
-        bool PassuctTau = false;
         for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
-
-            if (ucttau->pt() > 20) PassuctTau = true;
+            rate_UCTCandidate->Fill(ii);
+            if (ucttau->pt() > ii)
+                rate_after_UCTCandidate->Fill(ii);
         }
-        bool PassuctIsoTau = false;
+
         for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++) {
-
-            if (uctIsotau->pt() > 20) PassuctIsoTau = true;
+            rate_UCTCandidateIso->Fill(ii);
+            if (uctIsotau->pt() > ii)
+                rate_after_UCTCandidateIso->Fill(ii);
         }
-
-
 
 
     }
+
+
+
+
+
     //    Histo_Denumerator->Fill(step1);
-    plotFill("XXX", 6, 10, 0, 10);
+    //    plotFill("XXX", 6, 10, 0, 10);
 
 
 
