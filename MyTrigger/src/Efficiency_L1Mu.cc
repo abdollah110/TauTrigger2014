@@ -125,14 +125,15 @@ bool matchToGenTau(float ieta, float iphi, const edm::Event& iEvent, const edm::
     using namespace reco;
     using namespace edm;
     using namespace pat;
+    using reco::GenParticle;
 
 
-    Handle < vector < reco::GenParticles >> genTausHandle;
+    Handle < reco::GenParticleCollection> genTausHandle;
     iEvent.getByLabel("srcGenParticle_", genTausHandle);
 
 
     bool dR05 = false;
-    for (vector<reco::GenParticles>::const_iterator genPar = genTausHandle->begin(); genPar != genTausHandle->end(); genPar++) {
+    for (reco::GenParticleCollection::const_iterator genPar = genTausHandle->begin(); genPar != genTausHandle->end(); genPar++) {
         if (genPar->pdgId() == 15 && dR2(genPar->eta(), genPar->phi(), ieta, iphi) < 0.5)
             dR05 = true;
     }
