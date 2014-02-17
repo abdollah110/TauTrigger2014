@@ -62,6 +62,9 @@ private:
     virtual bool matchToOfflineTausEff(float ieta, float iphi, const edm::Event& iEvent, const edm::EventSetup& iSetup);
 
     TH1D *demohisto;
+    TH1D *l1extraParticles;
+    TH1D *RelaxedTauUnpacked;
+    TH1D *IsolatedTauUnpacked;
 
 
     edm::InputTag srcGenParticle_;
@@ -93,6 +96,9 @@ Efficiency_L1Mu::Efficiency_L1Mu(const edm::ParameterSet& iConfig) {
     myMap1 = new std::map<std::string, TH1F*>();
 
     demohisto = fs->make<TH1D > ("demo", "demo", 50, 0, 50);
+    l1extraParticles = fs->make<TH1D > ("l1extraParticles", "", 50, 0, 100);
+    RelaxedTauUnpacked = fs->make<TH1D > ("RelaxedTauUnpacked", "", 50, 0, 100);
+    IsolatedTauUnpacked = fs->make<TH1D > ("IsolatedTauUnpacked", "", 50, 0, 100);
 
 
 
@@ -122,7 +128,7 @@ Efficiency_L1Mu::~Efficiency_L1Mu() {
 // member functions
 //
 
-bool  Efficiency_L1Mu::matchToGenTau(float ieta, float iphi, const edm::Event& iEvent, const edm::EventSetup& iSetup) {
+bool Efficiency_L1Mu::matchToGenTau(float ieta, float iphi, const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     using namespace std;
     using namespace reco;
     using namespace edm;
@@ -202,7 +208,7 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
     int step1 = 0;
     for (vector<l1extra::L1MuonParticle>::const_iterator mu = muonsHandle->begin(); mu != muonsHandle->end(); mu++) {
         step1++;
-//        cout << step1 << "   Mu Pt is   " << mu->pt() << "   Mu eta is   " << mu->eta() << "   Mu Phi is   " << mu->phi() << endl;
+        //        cout << step1 << "   Mu Pt is   " << mu->pt() << "   Mu eta is   " << mu->eta() << "   Mu Phi is   " << mu->phi() << endl;
         float isolation02 = 0;
         float isolation03 = 0;
         float isolation04 = 0;
@@ -221,7 +227,8 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
         for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
 
             if (matchToOfflineTausEff(tau->eta(), tau->phi(), iEvent, iSetup))
-                plotFill("l1extraParticles", tau->pt(),50, 0, 100);
+                l1extraParticles->Fill(tau->pt());
+            //                plotFill("l1extraParticles", tau->pt(),50, 0, 100);
 
 
 
@@ -229,13 +236,15 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
 
         for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
             if (matchToOfflineTausEff(ucttau->eta(), ucttau->phi(), iEvent, iSetup))
-                plotFill("RelaxedTauUnpacked", ucttau->pt(),50, 0, 100);
+                RelaxedTauUnpacked->Fill(ucttau->pt());
+            //                plotFill("RelaxedTauUnpacked", ucttau->pt(),50, 0, 100);
 
 
         }
         for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++) {
             if (matchToOfflineTausEff(uctIsotau->eta(), uctIsotau->phi(), iEvent, iSetup))
-                plotFill("IsolatedTauUnpacked", uctIsotau->pt(),50, 0, 100);
+                IsolatedTauUnpacked->Fill(uctIsotau->pt());
+            //                plotFill("IsolatedTauUnpacked", uctIsotau->pt(),50, 0, 100);
 
 
         }
