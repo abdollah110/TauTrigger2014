@@ -30,7 +30,7 @@ process.source = cms.Source("PoolSource",
                             'root://eoscms//eos/cms/store/cmst3/user/manzoni/TauPOG/11feb/ZTauTau_first4PixelVtx_sorted4power/patTuple_6_1_AIB.root',
                             'root://eoscms//eos/cms/store/cmst3/user/manzoni/TauPOG/11feb/ZTauTau_first4PixelVtx_sorted4power/patTuple_7_1_fLA.root',
                             'root://eoscms//eos/cms/store/cmst3/user/manzoni/TauPOG/11feb/ZTauTau_first4PixelVtx_sorted4power/patTuple_8_1_ehq.root',
-                            'root://eoscms//eos/cms/store/cmst3/user/manzoni/TauPOG/11feb/ZTauTau_first4PixelVtx_sorted4power/patTuple_9_1_UZ5.root',
+                            'root://eoscms//eos/cms/store/cmst3/user/manzoni/TauPOG/11feb/ZTauTau_first4PixelVtx_sorted4power/patTuple_9_1_UZ5.root'
 
                             )
                             )
