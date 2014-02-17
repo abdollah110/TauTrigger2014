@@ -128,7 +128,7 @@ bool matchToGenTau(float ieta, float iphi, const edm::Event& iEvent, const edm::
     using reco::GenParticle;
 
 
-    Handle < reco::GenParticleCollection> genTausHandle;
+    Handle < vector<reco::GenParticleCollection>> genTausHandle;
     iEvent.getByLabel("srcGenParticle_", genTausHandle);
 
 
