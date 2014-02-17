@@ -132,15 +132,15 @@ bool matchToGenTau(float ieta, float iphi, const edm::Event& iEvent, const edm::
     iEvent.getByLabel("srcGenParticle_", genTausHandle);
 
 
-    bool dR05 = false;
+    bool dR03 = false;
     for (reco::GenParticleCollection::const_iterator genPar = genTausHandle->begin(); genPar != genTausHandle->end(); genPar++) {
-        if (abs(genPar->pdgId()) == 15 && dR2(genPar->eta(), genPar->phi(), ieta, iphi) < 0.5)
+        if (abs(genPar->pdgId()) == 15 && dR2(genPar->eta(), genPar->phi(), ieta, iphi) < 0.3)
             dR05 = true;
     }
-    return dR05;
+    return dR03;
 }
 
-bool matchToOfflineTausEff(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
+bool matchToOfflineTausEff(float ieta, float iphi, const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     using namespace std;
     using namespace reco;
     using namespace edm;
@@ -156,7 +156,7 @@ bool matchToOfflineTausEff(const edm::Event& iEvent, const edm::EventSetup& iSet
 
     bool thereIsAGoodTau = false;
     for (; ipftau != jpftau; ++ipftau) {
-        if (matchToGenTau(ipftau->eta(), ipftau->phi(), iEvent, iSetup) && ipftau->pt() > 20 && fabs(ipftau->eta()) < 2.3 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits") > 0.5 && ipftau->tauID("againstMuonTight") > 0.5 && ipftau->tauID("againstElectronLoose") > 0.5)
+        if (matchToGenTau(ipftau->eta(), ipftau->phi(), iEvent, iSetup) && ipftau->pt() > 20 && fabs(ipftau->eta()) < 2.3 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits") > 0.5 && ipftau->tauID("againstMuonTight") > 0.5 && ipftau->tauID("againstElectronLoose") > 0.5 && dR2(ipftau->eta(), ipftau->phi(), ieta, iphi) < 0.3)
             thereIsAGoodTau = true;
     }
     return thereIsAGoodTau;
@@ -210,28 +210,32 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
             if (dR2(tower->eta(), tower->phi(), mu->eta(), mu->phi()) < 0.4) isolation04 += tower->pt();
 
         }
-        cout << "isolation02   " << isolation02 << endl;
-        cout << "isolation03   " << isolation03 << endl;
-        cout << "isolation04   " << isolation04 << endl;
+        //        cout << "isolation02   " << isolation02 << endl;
+        //        cout << "isolation03   " << isolation03 << endl;
+        //        cout << "isolation04   " << isolation04 << endl;
 
 
         bool PassTau = false;
         for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
 
-            if (tau->pt() > 20) PassTau = true;
+            if (matchToOfflineTausEff(tau->eta(), tau->phi(), iEvent, iSetup))
+                plotFill("l1extraParticles", 50, 0, 100);
+
 
 
         }
 
-        bool PassuctTau = false;
         for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
+            if (matchToOfflineTausEff(ucttau->eta(), ucttau->phi(), iEvent, iSetup))
+                plotFill("RelaxedTauUnpacked", 50, 0, 100);
 
-            if (ucttau->pt() > 20) PassuctTau = true;
+
         }
-        bool PassuctIsoTau = false;
         for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++) {
+            if (matchToOfflineTausEff(uctIsotau->eta(), uctIsotau->phi(), iEvent, iSetup))
+                plotFill("IsolatedTauUnpacked", 50, 0, 100);
 
-            if (uctIsotau->pt() > 20) PassuctIsoTau = true;
+
         }
 
 
