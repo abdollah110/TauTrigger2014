@@ -59,7 +59,7 @@ public:
 private:
     virtual void analyze(const edm::Event&, const edm::EventSetup&);
     virtual bool matchToGenTau(float ieta, float iphi, const edm::Event& iEvent, const edm::EventSetup& iSetup);
-    virtual bool matchToOfflineTausEff(float ieta, float iphi, const edm::Event& iEvent, const edm::EventSetup& iSetup);
+    virtual bool matchToOfflineTausEff(const edm::Event& iEvent);
 
     TH1D *demohisto;
     TH1D *l1extraParticles;
@@ -154,7 +154,7 @@ bool Efficiency_L1Mu::matchToGenTau(float ieta, float iphi, const edm::Event& iE
     return dR03;
 }
 
-bool Efficiency_L1Mu::matchToOfflineTausEff(float ieta, float iphi, const edm::Event& iEvent, const edm::EventSetup& iSetup) {
+bool Efficiency_L1Mu::matchToOfflineTausEff(const edm::Event& iEvent) {
     using namespace std;
     using namespace reco;
     using namespace edm;
@@ -170,7 +170,7 @@ bool Efficiency_L1Mu::matchToOfflineTausEff(float ieta, float iphi, const edm::E
 
     bool thereIsAGoodTau = false;
     for (; ipftau != jpftau; ++ipftau) {
-        if (matchToGenTau(ipftau->eta(), ipftau->phi(), iEvent, iSetup) && ipftau->pt() > 20 && fabs(ipftau->eta()) < 2.3 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits") > 0.5 && ipftau->tauID("againstMuonTight") > 0.5 && ipftau->tauID("againstElectronLoose") > 0.5 && dR2(ipftau->eta(), ipftau->phi(), ieta, iphi) < 0.3)
+        if (ipftau->pt() > 20 && fabs(ipftau->eta()) < 2.3 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits") > 0.5 && ipftau->tauID("againstMuonTight") > 0.5 && ipftau->tauID("againstElectronLoose") > 0.5)
             thereIsAGoodTau = true;
     }
     return thereIsAGoodTau;
@@ -232,29 +232,34 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
     bool PassTau = false;
     for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
 
-        l1extraParticles_Denum->Fill(tau->pt());
-        if (matchToOfflineTausEff(tau->eta(), tau->phi(), iEvent, iSetup))
-            l1extraParticles->Fill(tau->pt());
-        //                plotFill("l1extraParticles", tau->pt(),50, 0, 100);
+        if (matchToOfflineTausEff(iEvent)) {
+            l1extraParticles_Denum->Fill(tau->pt());
+            if (matchToGenTau(tau->eta(), tau->phi(), iEvent, iSetup))
+                l1extraParticles->Fill(tau->pt());
+            //                plotFill("l1extraParticles", tau->pt(),50, 0, 100);
 
-
+        }
 
     }
 
     for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
-        RelaxedTauUnpacked_Denum->Fill(ucttau->pt());
-        if (matchToOfflineTausEff(ucttau->eta(), ucttau->phi(), iEvent, iSetup))
-            RelaxedTauUnpacked->Fill(ucttau->pt());
-        //                plotFill("RelaxedTauUnpacked", ucttau->pt(),50, 0, 100);
+        if (matchToOfflineTausEff(iEvent)) {
+            l1extraParticles_Denum->Fill(tau->pt());
+            RelaxedTauUnpacked_Denum->Fill(ucttau->pt());
+            if (matchToGenTau(ucttau->eta(), ucttau->phi(), iEvent, iSetup))
+                RelaxedTauUnpacked->Fill(ucttau->pt());
+            //                plotFill("RelaxedTauUnpacked", ucttau->pt(),50, 0, 100);
 
-
+        }
     }
     for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++) {
-        IsolatedTauUnpacked_Denum->Fill(uctIsotau->pt());
-        if (matchToOfflineTausEff(uctIsotau->eta(), uctIsotau->phi(), iEvent, iSetup))
-            IsolatedTauUnpacked->Fill(uctIsotau->pt());
-        //                plotFill("IsolatedTauUnpacked", uctIsotau->pt(),50, 0, 100);
-
+        if (matchToOfflineTausEff(iEvent)) {
+            l1extraParticles_Denum->Fill(tau->pt());
+            IsolatedTauUnpacked_Denum->Fill(uctIsotau->pt());
+            if (matchToGenTau(uctIsotau->eta(), uctIsotau->phi(), iEvent, iSetup))
+                IsolatedTauUnpacked->Fill(uctIsotau->pt());
+            //                plotFill("IsolatedTauUnpacked", uctIsotau->pt(),50, 0, 100);
+        }
 
     }
 
