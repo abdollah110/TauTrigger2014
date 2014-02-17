@@ -58,6 +58,7 @@ public:
 
 private:
     virtual void analyze(const edm::Event&, const edm::EventSetup&);
+    bool matchToGenTau(float ieta, float iphi, const edm::Event& iEvent, const edm::EventSetup& iSetup);
 
 
     TH1D *demohisto;
