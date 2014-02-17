@@ -226,6 +226,7 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
     bool PassTau = false;
     for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
 
+        l1extraParticles_Denum->Fill(tau->pt());
         if (matchToOfflineTausEff(tau->eta(), tau->phi(), iEvent, iSetup))
             l1extraParticles->Fill(tau->pt());
         //                plotFill("l1extraParticles", tau->pt(),50, 0, 100);
@@ -235,6 +236,7 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
     }
 
     for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
+        RelaxedTauUnpacked_Denum->Fill(ucttau->pt());
         if (matchToOfflineTausEff(ucttau->eta(), ucttau->phi(), iEvent, iSetup))
             RelaxedTauUnpacked->Fill(ucttau->pt());
         //                plotFill("RelaxedTauUnpacked", ucttau->pt(),50, 0, 100);
@@ -242,6 +244,7 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
 
     }
     for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++) {
+        IsolatedTauUnpacked_Denum->Fill(uctIsotau->pt());
         if (matchToOfflineTausEff(uctIsotau->eta(), uctIsotau->phi(), iEvent, iSetup))
             IsolatedTauUnpacked->Fill(uctIsotau->pt());
         //                plotFill("IsolatedTauUnpacked", uctIsotau->pt(),50, 0, 100);
