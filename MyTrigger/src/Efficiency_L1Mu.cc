@@ -40,6 +40,7 @@
 #include "DataFormats/RecoCandidate/interface/RecoChargedCandidate.h"
 #include "L1Trigger/UCT2015/interface/UCTCandidate.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
+#include "DataFormats/HepMCCandidate/interface/GenParticleFwd.h"
 #include "TH1.h"
 #include "makeHisto.h"
 
@@ -128,7 +129,7 @@ bool matchToGenTau(float ieta, float iphi, const edm::Event& iEvent, const edm::
     using reco::GenParticle;
 
 
-    Handle < vector<reco::GenParticleCollection>> genTausHandle;
+    Handle < reco::GenParticleCollection> genTausHandle;
     iEvent.getByLabel("srcGenParticle_", genTausHandle);
 
 
