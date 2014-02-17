@@ -156,7 +156,7 @@ bool matchToOfflineTausEff(const edm::Event& iEvent, const edm::EventSetup& iSet
 
     bool thereIsAGoodTau = false;
     for (; ipftau != jpftau; ++ipftau) {
-        if (matchToGenTau && ipftau->pt() > 20 && fabs(ipftau->eta()) < 2.3 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits") > 0.5 && ipftau->tauID("againstMuonTight") > 0.5 && ipftau->tauID("againstElectronLoose") > 0.5)
+        if (matchToGenTau(ipftau->eta(), ipftau->phi(), iEvent, iSetup) && ipftau->pt() > 20 && fabs(ipftau->eta()) < 2.3 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits") > 0.5 && ipftau->tauID("againstMuonTight") > 0.5 && ipftau->tauID("againstElectronLoose") > 0.5)
             thereIsAGoodTau = true;
     }
     return thereIsAGoodTau;
