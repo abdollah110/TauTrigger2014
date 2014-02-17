@@ -9,8 +9,9 @@ process.maxEvents = cms.untracked.PSet(input=cms.untracked.int32(-1))
 process.source = cms.Source("PoolSource",
                             # replace 'myfile.root' with the source file you want to use
                             fileNames=cms.untracked.vstring(
-                            'file:/tmp/abdollah/patTuple_L1Mu12_9_1_7Cz.root'
-
+#                            'file:/tmp/abdollah/patTuple_L1Mu12_9_1_7Cz.root'
+                            'root://eoscms//eos/cms/store/user/abdollah/TauTrigger2014/CommissioningSkimmedL1Mu12-PatTuples/patTuple_L1Mu12_9_1_7Cz.root',
+#/eos/cms/store/user/abdollah/TauTrigger2014/CommissioningSkimmedL1Mu12-PatTuples/patTuple_L1Mu12_9_1_7Cz.root
 
                             )
                             )
