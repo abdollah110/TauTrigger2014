@@ -5,8 +5,8 @@
  * Created on July 21, 2010, 3:39 PM
  */
 
-#ifndef MAKEHISTO_H
-#define	MAKEHISTO_H
+#ifndef makeHisto_h
+#define	makeHisto_h
 
 
 
