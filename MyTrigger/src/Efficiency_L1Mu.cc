@@ -222,39 +222,38 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
         //        cout << "isolation03   " << isolation03 << endl;
         //        cout << "isolation04   " << isolation04 << endl;
 
+    }
+    bool PassTau = false;
+    for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
 
-        bool PassTau = false;
-        for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
-
-            if (matchToOfflineTausEff(tau->eta(), tau->phi(), iEvent, iSetup))
-                l1extraParticles->Fill(tau->pt());
-            //                plotFill("l1extraParticles", tau->pt(),50, 0, 100);
-
-
-
-        }
-
-        for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
-            if (matchToOfflineTausEff(ucttau->eta(), ucttau->phi(), iEvent, iSetup))
-                RelaxedTauUnpacked->Fill(ucttau->pt());
-            //                plotFill("RelaxedTauUnpacked", ucttau->pt(),50, 0, 100);
-
-
-        }
-        for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++) {
-            if (matchToOfflineTausEff(uctIsotau->eta(), uctIsotau->phi(), iEvent, iSetup))
-                IsolatedTauUnpacked->Fill(uctIsotau->pt());
-            //                plotFill("IsolatedTauUnpacked", uctIsotau->pt(),50, 0, 100);
-
-
-        }
-
+        if (matchToOfflineTausEff(tau->eta(), tau->phi(), iEvent, iSetup))
+            l1extraParticles->Fill(tau->pt());
+        //                plotFill("l1extraParticles", tau->pt(),50, 0, 100);
 
 
 
     }
+
+    for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
+        if (matchToOfflineTausEff(ucttau->eta(), ucttau->phi(), iEvent, iSetup))
+            RelaxedTauUnpacked->Fill(ucttau->pt());
+        //                plotFill("RelaxedTauUnpacked", ucttau->pt(),50, 0, 100);
+
+
+    }
+    for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++) {
+        if (matchToOfflineTausEff(uctIsotau->eta(), uctIsotau->phi(), iEvent, iSetup))
+            IsolatedTauUnpacked->Fill(uctIsotau->pt());
+        //                plotFill("IsolatedTauUnpacked", uctIsotau->pt(),50, 0, 100);
+
+
+    }
+
+
+
+
     //    Histo_Denumerator->Fill(step1);
-    plotFill("XXX", 6, 10, 0, 10);
+    //plotFill("XXX", 6, 10, 0, 10);
 
 
 
