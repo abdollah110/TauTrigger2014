@@ -135,7 +135,7 @@ bool matchToGenTau(float ieta, float iphi, const edm::Event& iEvent, const edm::
     bool dR03 = false;
     for (reco::GenParticleCollection::const_iterator genPar = genTausHandle->begin(); genPar != genTausHandle->end(); genPar++) {
         if (abs(genPar->pdgId()) == 15 && dR2(genPar->eta(), genPar->phi(), ieta, iphi) < 0.3)
-            dR05 = true;
+            dR03 = true;
     }
     return dR03;
 }
