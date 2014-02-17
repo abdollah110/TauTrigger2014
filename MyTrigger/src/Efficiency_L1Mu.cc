@@ -244,7 +244,6 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
 
     for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
         if (matchToOfflineTausEff(iEvent)) {
-            l1extraParticles_Denum->Fill(tau->pt());
             RelaxedTauUnpacked_Denum->Fill(ucttau->pt());
             if (matchToGenTau(ucttau->eta(), ucttau->phi(), iEvent, iSetup))
                 RelaxedTauUnpacked->Fill(ucttau->pt());
@@ -254,7 +253,6 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
     }
     for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++) {
         if (matchToOfflineTausEff(iEvent)) {
-            l1extraParticles_Denum->Fill(tau->pt());
             IsolatedTauUnpacked_Denum->Fill(uctIsotau->pt());
             if (matchToGenTau(uctIsotau->eta(), uctIsotau->phi(), iEvent, iSetup))
                 IsolatedTauUnpacked->Fill(uctIsotau->pt());
