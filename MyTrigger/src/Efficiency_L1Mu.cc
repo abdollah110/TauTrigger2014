@@ -1,9 +1,9 @@
 // -*- C++ -*-
 //
-// Package:    L1MuTrigger
-// Class:      L1MuTrigger
+// Package:    Efficiency_L1Mu
+// Class:      Efficiency_L1Mu
 // 
-/**\class L1MuTrigger L1MuTrigger.cc TauTrigger2014/L1MuTrigger/src/L1MuTrigger.cc
+/**\class Efficiency_L1Mu Efficiency_L1Mu.cc TauTrigger2014/Efficiency_L1Mu/src/Efficiency_L1Mu.cc
 
  Description: [one line class summary]
 
@@ -39,6 +39,7 @@
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
 #include "DataFormats/RecoCandidate/interface/RecoChargedCandidate.h"
 #include "L1Trigger/UCT2015/interface/UCTCandidate.h"
+#include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 #include "TH1.h"
 #include "makeHisto.h"
 
@@ -46,10 +47,10 @@
 // class declaration
 //
 
-class L1MuTrigger : public edm::EDAnalyzer {
+class Efficiency_L1Mu : public edm::EDAnalyzer {
 public:
-    explicit L1MuTrigger(const edm::ParameterSet&);
-    ~L1MuTrigger();
+    explicit Efficiency_L1Mu(const edm::ParameterSet&);
+    ~Efficiency_L1Mu();
 
     //    static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
 
@@ -61,6 +62,7 @@ private:
     TH1D *demohisto;
 
 
+    edm::InputTag srcGenParticle_;
     edm::InputTag L1TauSource_;
     edm::InputTag L1MuSource_;
     edm::InputTag srcHLTCaloTowers_;
@@ -82,16 +84,17 @@ private:
 // constructors and destructor
 //
 
-L1MuTrigger::L1MuTrigger(const edm::ParameterSet& iConfig) {
+Efficiency_L1Mu::Efficiency_L1Mu(const edm::ParameterSet& iConfig) {
     //now do what ever initialization is needed
     using namespace edm;
     edm::Service<TFileService> fs;
     myMap1 = new std::map<std::string, TH1F*>();
-    
+
     demohisto = fs->make<TH1D > ("demo", "demo", 50, 0, 50);
 
 
 
+    srcGenParticle_ = iConfig.getParameter<edm::InputTag > ("srcGenParticle");
     L1MuSource_ = iConfig.getParameter<edm::InputTag > ("srcL1Mus");
     L1TauSource_ = iConfig.getParameter<edm::InputTag > ("srcL1Taus");
     srcHLTCaloTowers_ = iConfig.getParameter<edm::InputTag > ("srcHLTCaloTowers");
@@ -99,7 +102,7 @@ L1MuTrigger::L1MuTrigger(const edm::ParameterSet& iConfig) {
     srcL1UpgradeIsoTaus_ = iConfig.getParameter<edm::InputTag > ("srcL1UpgradeIsoTaus");
 }
 
-L1MuTrigger::~L1MuTrigger() {
+Efficiency_L1Mu::~Efficiency_L1Mu() {
 
     map<string, TH1F*>::const_iterator iMap1 = myMap1->begin();
     map<string, TH1F*>::const_iterator jMap1 = myMap1->end();
@@ -117,9 +120,50 @@ L1MuTrigger::~L1MuTrigger() {
 // member functions
 //
 
+bool matchToGenTau(float ieta, float iphi, const edm::Event& iEvent, const edm::EventSetup& iSetup) {
+    using namespace std;
+    using namespace reco;
+    using namespace edm;
+    using namespace pat;
+
+
+    Handle < vector < reco::GenParticles >> genTausHandle;
+    iEvent.getByLabel("srcGenParticle_", genTausHandle);
+
+
+    bool dR05 = false;
+    for (vector<reco::GenParticles>::const_iterator genPar = genTausHandle->begin(); genPar != genTausHandle->end(); genPar++) {
+        if (genPar->pdgId() == 15 && dR2(genPar->eta(), genPar->phi(), ieta, iphi) < 0.5)
+            dR05 = true;
+    }
+    return dR05;
+}
+
+bool matchToOfflineTausEff(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
+    using namespace std;
+    using namespace reco;
+    using namespace edm;
+    using namespace pat;
+
+
+    Handle<pat::TauCollection> pftausHandle;
+    iEvent.getByLabel("selectedTaus", pftausHandle);
+    const TauCollection &pftau = *(pftausHandle.product());
+    pat::TauCollection::const_iterator ipftau = pftau.begin();
+    pat::TauCollection::const_iterator jpftau = pftau.end();
+
+
+    bool thereIsAGoodTau = false;
+    for (; ipftau != jpftau; ++ipftau) {
+        if (matchToGenTau && ipftau->pt() > 20 && fabs(ipftau->eta()) < 2.3 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits") > 0.5 && ipftau->tauID("againstMuonTight") > 0.5 && ipftau->tauID("againstElectronLoose") > 0.5)
+            thereIsAGoodTau = true;
 
 
 
+        return dR05;
+
+    }
+}
 
 
 
@@ -127,7 +171,7 @@ L1MuTrigger::~L1MuTrigger() {
 // ------------ method called for each event  ------------
 
 void
-L1MuTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
+Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     using reco::Muon;
     using reco::MuonCollection;
     using reco::RecoChargedCandidate;
@@ -178,6 +222,8 @@ L1MuTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
 
             if (tau->pt() > 20) PassTau = true;
+
+
         }
 
         bool PassuctTau = false;
@@ -195,8 +241,8 @@ L1MuTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 
 
     }
-//    Histo_Denumerator->Fill(step1);
-    plotFill("XXX",6,10,0,10);
+    //    Histo_Denumerator->Fill(step1);
+    plotFill("XXX", 6, 10, 0, 10);
 
 
 
@@ -207,4 +253,4 @@ L1MuTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 
 
 //define this as a plug-in
-DEFINE_FWK_MODULE(L1MuTrigger);
+DEFINE_FWK_MODULE(Efficiency_L1Mu);
