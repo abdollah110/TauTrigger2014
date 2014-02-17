@@ -65,6 +65,9 @@ private:
     TH1D *l1extraParticles;
     TH1D *RelaxedTauUnpacked;
     TH1D *IsolatedTauUnpacked;
+    TH1D *l1extraParticles_Denum;
+    TH1D *RelaxedTauUnpacked_Denum;
+    TH1D *IsolatedTauUnpacked_Denum;
 
 
     edm::InputTag srcGenParticle_;
@@ -99,6 +102,9 @@ Efficiency_L1Mu::Efficiency_L1Mu(const edm::ParameterSet& iConfig) {
     l1extraParticles = fs->make<TH1D > ("l1extraParticles", "", 50, 0, 100);
     RelaxedTauUnpacked = fs->make<TH1D > ("RelaxedTauUnpacked", "", 50, 0, 100);
     IsolatedTauUnpacked = fs->make<TH1D > ("IsolatedTauUnpacked", "", 50, 0, 100);
+    l1extraParticles_Denum = fs->make<TH1D > ("l1extraParticles_Denum", "", 50, 0, 100);
+    RelaxedTauUnpacked_Denum = fs->make<TH1D > ("RelaxedTauUnpacked_Denum", "", 50, 0, 100);
+    IsolatedTauUnpacked_Denum = fs->make<TH1D > ("IsolatedTauUnpacked_Denum", "", 50, 0, 100);
 
 
 
