@@ -68,6 +68,7 @@ private:
     TH1D *l1extraParticles_Denum;
     TH1D *RelaxedTauUnpacked_Denum;
     TH1D *IsolatedTauUnpacked_Denum;
+    TH1D *offLineTau;
 
 
     edm::InputTag srcGenParticle_;
@@ -105,6 +106,7 @@ Efficiency_L1Mu::Efficiency_L1Mu(const edm::ParameterSet& iConfig) {
     l1extraParticles_Denum = fs->make<TH1D > ("l1extraParticles_Denum", "", 50, 0, 100);
     RelaxedTauUnpacked_Denum = fs->make<TH1D > ("RelaxedTauUnpacked_Denum", "", 50, 0, 100);
     IsolatedTauUnpacked_Denum = fs->make<TH1D > ("IsolatedTauUnpacked_Denum", "", 50, 0, 100);
+    offLineTau = fs->make<TH1D > ("offLineTau", "", 50, 0, 100);
 
 
 
@@ -229,34 +231,36 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
         //        cout << "isolation04   " << isolation04 << endl;
 
     }
-    bool PassTau = false;
-    for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
 
-        if (matchToOfflineTausEff(iEvent)) {
-            l1extraParticles_Denum->Fill(tau->pt());
-            if (matchToGenTau(tau->eta(), tau->phi(), iEvent, iSetup))
-                l1extraParticles->Fill(tau->pt());
-            //                plotFill("l1extraParticles", tau->pt(),50, 0, 100);
+    Handle<pat::TauCollection> pftausHandle;
+    iEvent.getByLabel("selectedTaus", pftausHandle);
+    const TauCollection &pftau = *(pftausHandle.product());
+    pat::TauCollection::const_iterator ipftau = pftau.begin();
+    pat::TauCollection::const_iterator jpftau = pftau.end();
 
-        }
 
-    }
+    bool thereIsAGoodTau = false;
+    for (; ipftau != jpftau; ++ipftau) {
+        if (ipftau->pt() > 20 && fabs(ipftau->eta()) < 2.3 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits") > 0.5 && ipftau->tauID("againstMuonTight") > 0.5 && ipftau->tauID("againstElectronLoose") > 0.5 && matchToGenTau(ipftau->eta(), ipftau->phi(), iEvent, iSetup)) {
+            thereIsAGoodTau = true;
+            offLineTau->Fill(ipftau->pt());
 
-    for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
-        if (matchToOfflineTausEff(iEvent)) {
-            RelaxedTauUnpacked_Denum->Fill(ucttau->pt());
-            if (matchToGenTau(ucttau->eta(), ucttau->phi(), iEvent, iSetup))
-                RelaxedTauUnpacked->Fill(ucttau->pt());
-            //                plotFill("RelaxedTauUnpacked", ucttau->pt(),50, 0, 100);
+            for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
+                if (matchToGenTau(tau->eta(), tau->phi(), iEvent, iSetup))
+                    l1extraParticles->Fill(ipftau->pt());
+            }
 
-        }
-    }
-    for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++) {
-        if (matchToOfflineTausEff(iEvent)) {
-            IsolatedTauUnpacked_Denum->Fill(uctIsotau->pt());
-            if (matchToGenTau(uctIsotau->eta(), uctIsotau->phi(), iEvent, iSetup))
-                IsolatedTauUnpacked->Fill(uctIsotau->pt());
-            //                plotFill("IsolatedTauUnpacked", uctIsotau->pt(),50, 0, 100);
+
+            for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
+                if (matchToGenTau(ucttau->eta(), ucttau->phi(), iEvent, iSetup))
+                    RelaxedTauUnpacked->Fill(ipftau->pt());
+            }
+
+            for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++) {
+                if (matchToGenTau(uctIsotau->eta(), uctIsotau->phi(), iEvent, iSetup))
+                    IsolatedTauUnpacked->Fill(ipftau->pt());
+            }
+
         }
 
     }
