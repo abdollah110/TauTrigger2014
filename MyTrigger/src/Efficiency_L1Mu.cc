@@ -59,7 +59,7 @@ public:
 private:
     virtual void analyze(const edm::Event&, const edm::EventSetup&);
     virtual bool matchToGenTau(float ieta, float iphi, const edm::Event& iEvent, const edm::EventSetup& iSetup);
-
+    virtual bool matchToOfflineTausEff(float ieta, float iphi, const edm::Event& iEvent, const edm::EventSetup& iSetup);
 
     TH1D *demohisto;
 
@@ -142,7 +142,7 @@ bool  Efficiency_L1Mu::matchToGenTau(float ieta, float iphi, const edm::Event& i
     return dR03;
 }
 
-bool matchToOfflineTausEff(float ieta, float iphi, const edm::Event& iEvent, const edm::EventSetup& iSetup) {
+bool Efficiency_L1Mu::matchToOfflineTausEff(float ieta, float iphi, const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     using namespace std;
     using namespace reco;
     using namespace edm;
