@@ -113,7 +113,7 @@ Efficiency_L1Mu::Efficiency_L1Mu(const edm::ParameterSet& iConfig) {
     l1extraParticles_Denum = fs->make<TH1D > ("l1extraParticles_Denum", "", 50, 0, 100);
     RelaxedTauUnpacked_Denum = fs->make<TH1D > ("RelaxedTauUnpacked_Denum", "", 50, 0, 100);
     IsolatedTauUnpacked_Denum = fs->make<TH1D > ("IsolatedTauUnpacked_Denum", "", 50, 0, 100);
-    offLineTau = fs->make<TH1D > ("offLineTau", "", 50, 0, 100);
+    offLineTau = fs->make<TH1D > ("offLineTau", "", 100, 0, 100);
     eff_num_L1Tau = fs->make<TH1D > ("eff_num_L1Tau", "", 50, 0, 100);
     eff_denum_L1Tau = fs->make<TH1D > ("eff_denum_L1Tau", "", 50, 0, 100);
     Hist_numoffTau = fs->make<TH1D > ("Hist_numoffTau", "", 10, 0, 10);
@@ -289,31 +289,42 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
     ////////////////////////////////////////////////////////////////////////////////
     //  For efficiency turn On curve
     ////////////////////////////////////////////////////////////////////////////////
+    for (; ipftau != jpftau; ++ipftau) {
+        if (ipftau->pt() > 20 && fabs(ipftau->eta()) < 2.3 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits") > 0.5 && ipftau->tauID("againstMuonTight") > 0.5 && ipftau->tauID("againstElectronLoose") > 0.5 && matchToGenTau(ipftau->eta(), ipftau->phi(), iEvent)) {
+            offLineTau->Fill(1);
 
-    //            cout << "tausHandle size is = " << tausHandle.size() << endl;
-    //    numoffTau++;
-    for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
-        for (int ii = 0; ii < 100; ii++) {
-            if ( Efficiency_L1Mu::ThereIsOfflineTau(iEvent)) eff_denum_L1Tau->Fill(ii);
-            if ( Efficiency_L1Mu::ThereIsOfflineTau(iEvent) && Efficiency_L1Mu::matchToGenTau(tau->eta(), tau->phi(), iEvent)) eff_num_L1Tau->Fill(ii);
-//            if (tau->pt() > ii && Efficiency_L1Mu::ThereIsOfflineTau(iEvent)) eff_denum_L1Tau->Fill(ii);
-//            if (tau->pt() > ii && Efficiency_L1Mu::ThereIsOfflineTau(iEvent) && Efficiency_L1Mu::matchToGenTau(tau->eta(), tau->phi(), iEvent)) eff_num_L1Tau->Fill(ii);
+
+            float maxValPt_tau = 0;
+            for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
+                if (t.dR2(tau->eta(), tau->phi(), ipftau->eta(), ipftau->phi()) < 0.3) {
+                    if (tau->pt() > maxValPt_tau) {
+                        maxValPt_tau = tau->pt();
+                    }
+                    l1extraParticles->Fill(maxValPt_tau);
+                }
+
+            }
+
+            //            for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
+            //                if (matchToGenTau(tau->eta(), tau->phi(), iEvent)) {
+            //                    l1extraParticles->Fill(ipftau->pt());
+            //                }
+            //            }
+
+
+            //            for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
+            //                if (matchToGenTau(ucttau->eta(), ucttau->phi(), iEvent))
+            //                    RelaxedTauUnpacked->Fill(ipftau->pt());
+            //            }
+            //
+            //            for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++) {
+            //                if (matchToGenTau(uctIsotau->eta(), uctIsotau->phi(), iEvent))
+            //                    IsolatedTauUnpacked->Fill(ipftau->pt());
+            //            }
 
         }
-    }
-    //    Hist_numoffTau->Fill(numoffTau);
-    //    for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
-    //        rate_UCTCandidate->Fill(ii);
-    //        if (ucttau->pt() > ii)
-    //                rate_after_UCTCandidate->Fill(ii);
-    //        }
-    //
-    //    for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++) {
-    //        rate_UCTCandidateIso->Fill(ii);
-    //        if (uctIsotau->pt() > ii)
-    //                rate_after_UCTCandidateIso->Fill(ii);
-    //        }
 
+    }
 
 }
 
