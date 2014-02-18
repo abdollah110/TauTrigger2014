@@ -50,6 +50,7 @@ class L1MuTrigger : public edm::EDAnalyzer {
 public:
     explicit L1MuTrigger(const edm::ParameterSet&);
     ~L1MuTrigger();
+    MyTools t;
 
     //    static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
 
@@ -119,7 +120,7 @@ L1MuTrigger::~L1MuTrigger() {
     map<string, TH1F*>::const_iterator jMap1 = myMap1->end();
 
     for (; iMap1 != jMap1; ++iMap1)
-        nplot1(iMap1->first)->Write();
+        t.nplot1(iMap1->first)->Write();
 
     // do anything here that needs to be done at desctruction time
     // (e.g. close files, deallocate resources etc.)
@@ -149,7 +150,7 @@ L1MuTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     using namespace reco;
     using namespace edm;
     using namespace pat;
-    MyTools t;
+    
 
 
 
