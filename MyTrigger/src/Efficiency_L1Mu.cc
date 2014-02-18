@@ -291,7 +291,7 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
     ////////////////////////////////////////////////////////////////////////////////
 
     //            cout << "tausHandle size is = " << tausHandle.size() << endl;
-    numoffTau++;
+//    numoffTau++;
     for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
         for (int ii = 0; ii < 100; ii++) {
             if (tau->pt() > ii && Efficiency_L1Mu::ThereIsOfflineTau(iEvent)) eff_denum_L1Tau->Fill(ii);
@@ -299,7 +299,7 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
 
         }
     }
-    Hist_numoffTau->Fill(numoffTau);
+//    Hist_numoffTau->Fill(numoffTau);
     //    for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
     //        rate_UCTCandidate->Fill(ii);
     //        if (ucttau->pt() > ii)
