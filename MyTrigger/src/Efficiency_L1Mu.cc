@@ -78,8 +78,11 @@ private:
     edm::InputTag srcHLTCaloTowers_;
     edm::InputTag srcL1UpgradeTaus_;
     edm::InputTag srcL1UpgradeIsoTaus_;
+
+
     map<string, TH1F*>* myMap1;
-    map<string, TH2F*>* myMap2;
+    map<string, TH1F*>::const_iterator iMap1 = myMap1->begin();
+    map<string, TH1F*>::const_iterator jMap1 = myMap1->end();
 
     // ----------member data ---------------------------
 };
@@ -100,9 +103,7 @@ Efficiency_L1Mu::Efficiency_L1Mu(const edm::ParameterSet& iConfig) {
     //now do what ever initialization is needed
     using namespace edm;
     edm::Service<TFileService> fs;
-    myMap1 = new std::map<std::string, TH1F*>();
-    map<string, TH1F*>::const_iterator iMap1 = myMap1->begin();
-    map<string, TH1F*>::const_iterator jMap1 = myMap1->end();
+//    myMap1 = new std::map<std::string, TH1F*>();
 
     demohisto = fs->make<TH1D > ("demo", "demo", 50, 0, 50);
     l1extraParticles = fs->make<TH1D > ("l1extraParticles", "", 50, 0, 100);
