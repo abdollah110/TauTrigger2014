@@ -260,11 +260,11 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
     for (; ipftau != jpftau; ++ipftau) {
         if (ipftau->pt() > 20 && fabs(ipftau->eta()) < 2.3 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits") > 0.5 && ipftau->tauID("againstMuonTight") > 0.5 && ipftau->tauID("againstElectronLoose") > 0.5 && matchToGenTau(ipftau->eta(), ipftau->phi(), iEvent)) {
             //            thereIsAGoodTau = true;
-//            offLineTau->Fill(ipftau->pt());
+            //            offLineTau->Fill(ipftau->pt());
 
             for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
                 if (matchToGenTau(tau->eta(), tau->phi(), iEvent)) {
-                    l1extraParticles->Fill(ipftau->pt());
+                    //                    l1extraParticles->Fill(ipftau->pt());
                     //                    t.plotFill("XXXXX", 10, 100, 0, 100, 1);
                 }
             }
@@ -289,6 +289,8 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
     ////////////////////////////////////////////////////////////////////////////////
     //  For efficiency turn On curve
     ////////////////////////////////////////////////////////////////////////////////
+    ipftau = pftau.begin();
+    jpftau = pftau.end();
     for (; ipftau != jpftau; ++ipftau) {
         if (ipftau->pt() > 20 && fabs(ipftau->eta()) < 2.3 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits") > 0.5 && ipftau->tauID("againstMuonTight") > 0.5 && ipftau->tauID("againstElectronLoose") > 0.5 && matchToGenTau(ipftau->eta(), ipftau->phi(), iEvent)) {
             offLineTau->Fill(1);
