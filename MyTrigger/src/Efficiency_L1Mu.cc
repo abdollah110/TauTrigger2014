@@ -72,6 +72,7 @@ private:
     TH1D *offLineTau;
     TH1D *eff_num_L1Tau;
     TH1D *eff_denum_L1Tau;
+    TH1D *Hist_numoffTau;
 
 
     edm::InputTag srcGenParticle_;
@@ -115,6 +116,7 @@ Efficiency_L1Mu::Efficiency_L1Mu(const edm::ParameterSet& iConfig) {
     offLineTau = fs->make<TH1D > ("offLineTau", "", 50, 0, 100);
     eff_num_L1Tau = fs->make<TH1D > ("eff_num_L1Tau", "", 50, 0, 100);
     eff_denum_L1Tau = fs->make<TH1D > ("eff_denum_L1Tau", "", 50, 0, 100);
+    Hist_numoffTau = fs->make<TH1D > ("Hist_numoffTau", "", 10, 0, 10);
 
 
 
@@ -285,9 +287,11 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
     ////////////////////////////////////////////////////////////////////////////////
     ipftau = pftau.begin();
     jpftau = pftau.end();
+    int numoffTau = 0;
     for (; ipftau != jpftau; ++ipftau) {
         if (ipftau->pt() > 20 && fabs(ipftau->eta()) < 2.3 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits") > 0.5 && ipftau->tauID("againstMuonTight") > 0.5 && ipftau->tauID("againstElectronLoose") > 0.5 && matchToGenTau(ipftau->eta(), ipftau->phi(), iEvent, iSetup)) {
-//            cout << "tausHandle size is = " << tausHandle.size() << endl;
+            //            cout << "tausHandle size is = " << tausHandle.size() << endl;
+            numoffTau++;
             for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
                 for (int ii = 0; ii < 100; ii++) {
                     if (tau->pt() > ii) eff_denum_L1Tau->Fill(ii);
@@ -295,6 +299,7 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
                 }
             }
         }
+        Hist_numoffTau->Fill(numoffTau);
     }
     //    for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
     //        rate_UCTCandidate->Fill(ii);
