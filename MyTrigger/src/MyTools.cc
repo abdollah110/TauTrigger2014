@@ -27,13 +27,13 @@ TH2F* MyTools::nplot2(string name) {
 }
 //****************************************************
 
-void MyTools::plotFill(string name, float x, int nx, float nxmin, float nxmax, double weight=1) {
+void MyTools::plotFill(string name, float x, int nx, float nxmin, float nxmax, double weight) {
     if (myMap1->find(name) == myMap1->end())
         (*myMap1)[name] = new TH1F(name.c_str(), name.c_str(), nx, nxmin, nxmax);
     (*myMap1)[name]->Fill(x,weight);
 }
 
-void MyTools::plotFill(string name, float x, float y, int nx, float nxmin, float nxmax, int ny, float nymin, float nymax, double weight=1) {
+void MyTools::plotFill(string name, float x, float y, int nx, float nxmin, float nxmax, int ny, float nymin, float nymax, double weight) {
     if (myMap2->find(name) == myMap2->end())
         (*myMap2)[name] = new TH2F(name.c_str(), name.c_str(), nx, nxmin, nxmax, ny, nymin, nymax);
     (*myMap2)[name]->Fill(x, y,weight);
