@@ -127,8 +127,8 @@ Efficiency_L1Mu::~Efficiency_L1Mu() {
     map<string, TH1F*>::const_iterator iMap1 = myMap1->begin();
     map<string, TH1F*>::const_iterator jMap1 = myMap1->end();
 
-    for (; iMap1 != jMap1; ++iMap1)
-        t.nplot1(iMap1->first)->Write();
+//    for (; iMap1 != jMap1; ++iMap1)
+//        t.nplot1(iMap1->first)->Write();
 
     // do anything here that needs to be done at desctruction time
     // (e.g. close files, deallocate resources etc.)
