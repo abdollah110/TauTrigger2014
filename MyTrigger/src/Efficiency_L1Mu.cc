@@ -42,7 +42,7 @@
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticleFwd.h"
 #include "TH1.h"
-#include "makeHisto.h"
+#include "../interface/makeHisto.h"
 
 //
 // class declaration
