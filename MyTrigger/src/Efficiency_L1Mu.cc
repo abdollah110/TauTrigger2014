@@ -273,11 +273,11 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
     //  For efficiency measurement commulative
     ////////////////////////////////////////////////////////////////////////////////
 
-    for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
-        if (matchToGenTau(tau->eta(), tau->phi(), iEvent, iSetup))
-            l1extraParticles->Fill(ipftau->pt());
-
-    }
+//    for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
+//        if (matchToGenTau(tau->eta(), tau->phi(), iEvent, iSetup))
+//            l1extraParticles->Fill(ipftau->pt());
+//
+//    }
 
 
 
