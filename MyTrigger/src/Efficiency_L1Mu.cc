@@ -299,8 +299,8 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
                 }
             }
         }
-        Hist_numoffTau->Fill(numoffTau);
     }
+    Hist_numoffTau->Fill(numoffTau);
     //    for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
     //        rate_UCTCandidate->Fill(ii);
     //        if (ucttau->pt() > ii)
