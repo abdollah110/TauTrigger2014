@@ -80,7 +80,7 @@ private:
     edm::InputTag srcL1UpgradeIsoTaus_;
 
 
-    map<string, TH1F*>* myMap1;
+    map<string, TH1F*>* myMap1__;
 
     // ----------member data ---------------------------
 };
@@ -101,7 +101,7 @@ Efficiency_L1Mu::Efficiency_L1Mu(const edm::ParameterSet& iConfig) {
     //now do what ever initialization is needed
     using namespace edm;
     edm::Service<TFileService> fs;
-    myMap1 = new std::map<std::string, TH1F*>();
+    myMap1__ = new std::map<std::string, TH1F*>();
 
     demohisto = fs->make<TH1D > ("demo", "demo", 50, 0, 50);
     l1extraParticles = fs->make<TH1D > ("l1extraParticles", "", 50, 0, 100);
@@ -124,8 +124,8 @@ Efficiency_L1Mu::Efficiency_L1Mu(const edm::ParameterSet& iConfig) {
 
 Efficiency_L1Mu::~Efficiency_L1Mu() {
 
-    map<string, TH1F*>::const_iterator iMap1 = myMap1->begin();
-    map<string, TH1F*>::const_iterator jMap1 = myMap1->end();
+    map<string, TH1F*>::const_iterator iMap1 = myMap1__->begin();
+    map<string, TH1F*>::const_iterator jMap1 = myMap1__->end();
 
 //    for (; iMap1 != jMap1; ++iMap1)
 //        t.nplot1(iMap1->first)->Write();
