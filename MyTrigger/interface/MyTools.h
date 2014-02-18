@@ -27,14 +27,15 @@ using namespace std;
 
 class MyTools {
 public:
-    explicit MyTools();  // need to include the constrcutor in the class definition
+    explicit MyTools(); // need to include the constrcutor in the class definition
     TH1F* nplot1(std::string name);
     TH2F* nplot2(std::string name);
     void plotFill(std::string name, float x, int nx, float nxmin, float nxmax, double weight = 1);
     void plotFill(std::string name, float x, float y, int nx, float nxmin, float nxmax, int ny, float nymin, float nymax, double weight = 1);
     float deltaPhi_2(float a, float b);
     float dR2(float l1eta, float l1phi, float l2eta, float l2phi);
-
+    map<string, TH1F*>* myMap1;
+    map<string, TH2F*>* myMap2;
 };
 
 
