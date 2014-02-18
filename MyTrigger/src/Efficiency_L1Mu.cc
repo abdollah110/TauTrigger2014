@@ -101,6 +101,8 @@ Efficiency_L1Mu::Efficiency_L1Mu(const edm::ParameterSet& iConfig) {
     using namespace edm;
     edm::Service<TFileService> fs;
     myMap1 = new std::map<std::string, TH1F*>();
+    map<string, TH1F*>::const_iterator iMap1 = myMap1->begin();
+    map<string, TH1F*>::const_iterator jMap1 = myMap1->end();
 
     demohisto = fs->make<TH1D > ("demo", "demo", 50, 0, 50);
     l1extraParticles = fs->make<TH1D > ("l1extraParticles", "", 50, 0, 100);
@@ -123,8 +125,6 @@ Efficiency_L1Mu::Efficiency_L1Mu(const edm::ParameterSet& iConfig) {
 
 Efficiency_L1Mu::~Efficiency_L1Mu() {
 
-    map<string, TH1F*>::const_iterator iMap1 = myMap1->begin();
-    map<string, TH1F*>::const_iterator jMap1 = myMap1->end();
 
     for (; iMap1 != jMap1; ++iMap1)
         t.nplot1(iMap1->first)->Write();
@@ -254,7 +254,7 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
             for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
                 if (matchToGenTau(tau->eta(), tau->phi(), iEvent, iSetup)) {
                     l1extraParticles->Fill(ipftau->pt());
-//                    t.plotFill("l1extraParticles_____", ipftau->pt(), 100, 0, 100,1);
+                    t.plotFill("l1extraParticles_____", ipftau->pt(), 100, 0, 100, 1);
                 }
             }
 
