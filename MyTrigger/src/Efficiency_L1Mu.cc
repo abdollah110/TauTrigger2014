@@ -245,16 +245,17 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
     ////////////////////////////////////////////////////////////////////////////////
     //  For efficiency measurement
     ////////////////////////////////////////////////////////////////////////////////
-    bool thereIsAGoodTau = false;
+    //    bool thereIsAGoodTau = false;
     for (; ipftau != jpftau; ++ipftau) {
         if (ipftau->pt() > 20 && fabs(ipftau->eta()) < 2.3 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits") > 0.5 && ipftau->tauID("againstMuonTight") > 0.5 && ipftau->tauID("againstElectronLoose") > 0.5 && matchToGenTau(ipftau->eta(), ipftau->phi(), iEvent, iSetup)) {
-            thereIsAGoodTau = true;
+            //            thereIsAGoodTau = true;
             offLineTau->Fill(ipftau->pt());
 
             for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
-                if (matchToGenTau(tau->eta(), tau->phi(), iEvent, iSetup))
+                if (matchToGenTau(tau->eta(), tau->phi(), iEvent, iSetup)) {
                     l1extraParticles->Fill(ipftau->pt());
-                    t.plotFill("l1extraParticles_____",ipftau->pt(), 100,0,100);
+                    t.plotFill("l1extraParticles_____", ipftau->pt(), 100, 0, 100);
+                }
             }
 
 
