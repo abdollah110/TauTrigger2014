@@ -296,7 +296,7 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
             offLineTau->Fill(1);
 
 
-            float maxValPt_tau = 0;
+            float maxValPt_tau = 1;
             for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
                 if (t.dR2(tau->eta(), tau->phi(), ipftau->eta(), ipftau->phi()) < 0.3) {
                     if (tau->pt() > maxValPt_tau) {
