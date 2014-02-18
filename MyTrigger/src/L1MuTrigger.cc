@@ -171,7 +171,7 @@ L1MuTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     int step1 = 0;
     for (vector<l1extra::L1MuonParticle>::const_iterator mu = muonsHandle->begin(); mu != muonsHandle->end(); mu++) {
         step1++;
-        cout << step1 << "   Mu Pt is   " << mu->pt() << "   Mu eta is   " << mu->eta() << "   Mu Phi is   " << mu->phi() << endl;
+//        cout << step1 << "   Mu Pt is   " << mu->pt() << "   Mu eta is   " << mu->eta() << "   Mu Phi is   " << mu->phi() << endl;
         float isolation02 = 0;
         float isolation03 = 0;
         float isolation04 = 0;
@@ -181,9 +181,9 @@ L1MuTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
             if (dR2(tower->eta(), tower->phi(), mu->eta(), mu->phi()) < 0.4) isolation04 += tower->pt();
 
         }
-        cout << "isolation02   " << isolation02 << endl;
-        cout << "isolation03   " << isolation03 << endl;
-        cout << "isolation04   " << isolation04 << endl;
+//        cout << "isolation02   " << isolation02 << endl;
+//        cout << "isolation03   " << isolation03 << endl;
+//        cout << "isolation04   " << isolation04 << endl;
 
 
     }
