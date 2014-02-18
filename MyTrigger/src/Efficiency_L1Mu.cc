@@ -42,7 +42,7 @@
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticleFwd.h"
 #include "TH1.h"
-#include "../interface/MyTools.h"
+#include "../interface/makeHisto.h"
 
 //
 // class declaration
@@ -52,7 +52,6 @@ class Efficiency_L1Mu : public edm::EDAnalyzer {
 public:
     explicit Efficiency_L1Mu(const edm::ParameterSet&);
     ~Efficiency_L1Mu();
-    MyTools t;
 
     //    static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
 
@@ -78,8 +77,6 @@ private:
     edm::InputTag srcHLTCaloTowers_;
     edm::InputTag srcL1UpgradeTaus_;
     edm::InputTag srcL1UpgradeIsoTaus_;
-    map<string, TH1F*>* myMap1;
-    map<string, TH2F*>* myMap2;
 
     // ----------member data ---------------------------
 };
@@ -127,7 +124,7 @@ Efficiency_L1Mu::~Efficiency_L1Mu() {
     map<string, TH1F*>::const_iterator jMap1 = myMap1->end();
 
     for (; iMap1 != jMap1; ++iMap1)
-        t.nplot1(iMap1->first)->Write();
+        nplot1(iMap1->first)->Write();
 
     // do anything here that needs to be done at desctruction time
     // (e.g. close files, deallocate resources etc.)
@@ -153,7 +150,7 @@ bool Efficiency_L1Mu::matchToGenTau(float ieta, float iphi, const edm::Event& iE
 
     bool dR03 = false;
     for (reco::GenParticleCollection::const_iterator genPar = genTausHandle->begin(); genPar != genTausHandle->end(); genPar++) {
-        if (abs(genPar->pdgId()) == 15 && t.dR2(genPar->eta(), genPar->phi(), ieta, iphi) < 0.3)
+        if (abs(genPar->pdgId()) == 15 && dR2(genPar->eta(), genPar->phi(), ieta, iphi) < 0.3)
             dR03 = true;
     }
     return dR03;
@@ -224,9 +221,9 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
         float isolation03 = 0;
         float isolation04 = 0;
         for (SortedCollection < CaloTower, edm::StrictWeakOrdering < CaloTower >> ::const_iterator tower = CaloTowerHandle->begin(); tower != CaloTowerHandle->end(); tower++) {
-            if (t.dR2(tower->eta(), tower->phi(), mu->eta(), mu->phi()) < 0.2) isolation02 += tower->pt();
-            if (t.dR2(tower->eta(), tower->phi(), mu->eta(), mu->phi()) < 0.3) isolation03 += tower->pt();
-            if (t.dR2(tower->eta(), tower->phi(), mu->eta(), mu->phi()) < 0.4) isolation04 += tower->pt();
+            if (dR2(tower->eta(), tower->phi(), mu->eta(), mu->phi()) < 0.2) isolation02 += tower->pt();
+            if (dR2(tower->eta(), tower->phi(), mu->eta(), mu->phi()) < 0.3) isolation03 += tower->pt();
+            if (dR2(tower->eta(), tower->phi(), mu->eta(), mu->phi()) < 0.4) isolation04 += tower->pt();
 
         }
         //        cout << "isolation02   " << isolation02 << endl;
@@ -245,17 +242,15 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
     ////////////////////////////////////////////////////////////////////////////////
     //  For efficiency measurement
     ////////////////////////////////////////////////////////////////////////////////
-    //    bool thereIsAGoodTau = false;
+    bool thereIsAGoodTau = false;
     for (; ipftau != jpftau; ++ipftau) {
         if (ipftau->pt() > 20 && fabs(ipftau->eta()) < 2.3 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits") > 0.5 && ipftau->tauID("againstMuonTight") > 0.5 && ipftau->tauID("againstElectronLoose") > 0.5 && matchToGenTau(ipftau->eta(), ipftau->phi(), iEvent, iSetup)) {
-            //            thereIsAGoodTau = true;
+            thereIsAGoodTau = true;
             offLineTau->Fill(ipftau->pt());
 
             for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
-                if (matchToGenTau(tau->eta(), tau->phi(), iEvent, iSetup)) {
+                if (matchToGenTau(tau->eta(), tau->phi(), iEvent, iSetup))
                     l1extraParticles->Fill(ipftau->pt());
-//                    t.plotFill("l1extraParticles_____", ipftau->pt(), 100, 0, 100,1);
-                }
             }
 
 
