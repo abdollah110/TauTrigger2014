@@ -294,8 +294,10 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
     //    numoffTau++;
     for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
         for (int ii = 0; ii < 100; ii++) {
-            if (tau->pt() > ii && Efficiency_L1Mu::ThereIsOfflineTau(iEvent)) eff_denum_L1Tau->Fill(ii);
-            if (tau->pt() > ii && Efficiency_L1Mu::ThereIsOfflineTau(iEvent) && Efficiency_L1Mu::matchToGenTau(tau->eta(), tau->phi(), iEvent)) eff_num_L1Tau->Fill(ii);
+            if ( Efficiency_L1Mu::ThereIsOfflineTau(iEvent)) eff_denum_L1Tau->Fill(ii);
+            if ( Efficiency_L1Mu::ThereIsOfflineTau(iEvent) && Efficiency_L1Mu::matchToGenTau(tau->eta(), tau->phi(), iEvent)) eff_num_L1Tau->Fill(ii);
+//            if (tau->pt() > ii && Efficiency_L1Mu::ThereIsOfflineTau(iEvent)) eff_denum_L1Tau->Fill(ii);
+//            if (tau->pt() > ii && Efficiency_L1Mu::ThereIsOfflineTau(iEvent) && Efficiency_L1Mu::matchToGenTau(tau->eta(), tau->phi(), iEvent)) eff_num_L1Tau->Fill(ii);
 
         }
     }
