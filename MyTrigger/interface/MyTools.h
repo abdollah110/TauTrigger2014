@@ -27,6 +27,7 @@ using namespace std;
 
 class MyTools {
 public:
+    explicit MyTools();  // need to include the constrcutor in the class definition
     TH1F* nplot1(std::string name);
     TH2F* nplot2(std::string name);
     void plotFill(std::string name, float x, int nx, float nxmin, float nxmax, double weight = 1);
