@@ -254,7 +254,7 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
             for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
                 if (matchToGenTau(tau->eta(), tau->phi(), iEvent, iSetup)) {
                     l1extraParticles->Fill(ipftau->pt());
-                    t.plotFill("l1extraParticles_____", ipftau->pt(), 100, 0, 100,1);
+//                    t.plotFill("l1extraParticles_____", ipftau->pt(), 100, 0, 100,1);
                 }
             }
 
