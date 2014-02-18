@@ -291,7 +291,7 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
             for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
                 for (int ii = 0; ii < 100; ii++) {
                     if (tau->pt() > ii) eff_denum_L1Tau->Fill(ii);
-                    if (tau->pt() > ii && t.dR2(tau->eta(), tau->phi(), ipftau->eta(), ipftau->phi())) eff_num_L1Tau->Fill(ii);
+                    if (tau->pt() > ii && t.dR2(tau->eta(), tau->phi(), ipftau->eta(), ipftau->phi()) < 0.3) eff_num_L1Tau->Fill(ii);
                 }
             }
         }
