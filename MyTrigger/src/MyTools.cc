@@ -1,32 +1,10 @@
-/*
- * File:   makehisto.h
- * Author: abdollah
- *
- * Created on July 21, 2010, 3:39 PM
- */
+#include"../interface/MyTools.h"
 
-#ifndef makeHisto_h
-#define	makeHisto_h
+MyTools::MyTools(){
+    
+}
 
 
-
-
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <vector>
-#include <utility>
-#include <map>
-#include <string>
-#include "TH1F.h"
-#include "TH2F.h"
-#include "TTree.h"
-#include "TFile.h"
-#include "TSystem.h"
-//#include "myevent.h"
-//#include "LinkDef.h"
-#include "TMath.h" //M_PI is in TMath
-#include "TRandom3.h"
 using namespace std;
 
 //****************************************************
@@ -34,14 +12,14 @@ map<string, TH1F*>* myMap1;
 map<string, TH2F*>* myMap2;
 //**********************************************
 
-TH1F* nplot1(string name) {
+TH1F* MyTools::nplot1(string name) {
     if (myMap1->find(name) != myMap1->end())
         return (*myMap1)[name];
     else
         return 0;
 }
 
-TH2F* nplot2(string name) {
+TH2F* MyTools::nplot2(string name) {
     if (myMap2->find(name) != myMap2->end())
         return (*myMap2)[name];
     else
@@ -49,13 +27,13 @@ TH2F* nplot2(string name) {
 }
 //****************************************************
 
-void plotFill(string name, float x, int nx, float nxmin, float nxmax, double weight=1) {
+void MyTools::plotFill(string name, float x, int nx, float nxmin, float nxmax, double weight=1) {
     if (myMap1->find(name) == myMap1->end())
         (*myMap1)[name] = new TH1F(name.c_str(), name.c_str(), nx, nxmin, nxmax);
     (*myMap1)[name]->Fill(x,weight);
 }
 
-void plotFill(string name, float x, float y, int nx, float nxmin, float nxmax, int ny, float nymin, float nymax, double weight=1) {
+void MyTools::plotFill(string name, float x, float y, int nx, float nxmin, float nxmax, int ny, float nymin, float nymax, double weight=1) {
     if (myMap2->find(name) == myMap2->end())
         (*myMap2)[name] = new TH2F(name.c_str(), name.c_str(), nx, nxmin, nxmax, ny, nymin, nymax);
     (*myMap2)[name]->Fill(x, y,weight);
@@ -69,23 +47,15 @@ void plotFill(string name, float x, float y, int nx, float nxmin, float nxmax, i
 //        (ittau->px + Met.front().px)*(ittau->px + Met.front().px) -
 //        (ittau->py + Met.front().py)*(ittau->py + Met.front().py));
 
-float deltaPhi_2(float a, float b) {
+float MyTools::deltaPhi_2(float a, float b) {
     float result = a - b;
     while (result > M_PI) result -= 2 * M_PI;
     while (result <= -M_PI) result += 2 * M_PI;
     return fabs(result);
 }
 
-float dR2(float l1eta, float l1phi, float l2eta, float l2phi) {
+float MyTools::dR2(float l1eta, float l1phi, float l2eta, float l2phi) {
     float deta = l1eta - l2eta;
     float dphi = deltaPhi_2(l1phi, l2phi);
     return sqrt(deta * deta + dphi * dphi);
 }
-
-
-
-
-#endif	/* _MAKEHISTO_H */
-
-
-
