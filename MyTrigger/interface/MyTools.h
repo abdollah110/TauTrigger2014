@@ -34,8 +34,8 @@ public:
     void plotFill(std::string name, float x, float y, int nx, float nxmin, float nxmax, int ny, float nymin, float nymax, double weight = 1);
     float deltaPhi_2(float a, float b);
     float dR2(float l1eta, float l1phi, float l2eta, float l2phi);
-    map<string, TH1F*>* myMap1;
-    map<string, TH2F*>* myMap2;
+//    map<string, TH1F*>* myMap1;
+//    map<string, TH2F*>* myMap2;
 };
 
 
