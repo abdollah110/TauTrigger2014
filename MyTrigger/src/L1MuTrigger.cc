@@ -184,44 +184,67 @@ L1MuTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
             if (t.dR2(tower->eta(), tower->phi(), mu->eta(), mu->phi()) < 0.4) isolation04 += tower->pt();
 
         }
-        //        cout << "isolation02   " << isolation02 << endl;
-        //        cout << "isolation03   " << isolation03 << endl;
-        //        cout << "isolation04   " << isolation04 << endl;
-
-
-    }
-
-
-    for (int ii = 0; ii < 100; ii++) {
-
-
-        for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
-            rate_L1JetParticle->Fill(ii);
-            if (tau->pt() > ii)
-                rate_after_L1JetParticle->Fill(ii);
-        }
-
-        for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
-            rate_UCTCandidate->Fill(ii);
-            if (ucttau->pt() > ii)
-                rate_after_UCTCandidate->Fill(ii);
-        }
-
-        for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++) {
-            rate_UCTCandidateIso->Fill(ii);
-            if (uctIsotau->pt() > ii)
-                rate_after_UCTCandidateIso->Fill(ii);
-        }
-
-
     }
 
 
 
 
 
-    //    Histo_Denumerator->Fill(step1);
-    //    plotFill("XXX", 6, 10, 0, 10);
+
+
+
+    //########################################################
+    float maxValPt_tau = 0;
+    for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
+        if (tau->pt() > maxValPt_tau) {
+            maxValPt_tau = tau->pt();
+        }
+    }
+    rate_after_L1JetParticle->Fill(maxValPt_tau);
+
+    //########################################################
+    float maxValPt_ucttau = 0;
+    for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
+        if (ucttau->pt() > maxValPt_ucttau) {
+            maxValPt_ucttau = ucttau->pt();
+        }
+    }
+    rate_after_UCTCandidate->Fill(maxValPt_ucttau);
+
+    //########################################################
+    float maxValPt_uctIsotau = 0;
+    for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++) {
+        if (uctIsotau->pt() > maxValPt_uctIsotau) {
+            maxValPt_uctIsotau = uctIsotau->pt();
+        }
+    }
+    rate_after_UCTCandidateIso->Fill(maxValPt_uctIsotau);
+
+
+
+    //    for (int ii = 0; ii < 100; ii++) {
+    //
+    //
+    //        for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
+    //            rate_L1JetParticle->Fill(ii);
+    //            if (tau->pt() > ii)
+    //                rate_after_L1JetParticle->Fill(ii);
+    //        }
+    //
+    //        for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
+    //            rate_UCTCandidate->Fill(ii);
+    //            if (ucttau->pt() > ii)
+    //                rate_after_UCTCandidate->Fill(ii);
+    //        }
+    //
+    //        for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++) {
+    //            rate_UCTCandidateIso->Fill(ii);
+    //            if (uctIsotau->pt() > ii)
+    //                rate_after_UCTCandidateIso->Fill(ii);
+    //        }
+    //
+    //
+    //    }
 
 
 
