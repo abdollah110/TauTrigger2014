@@ -92,7 +92,7 @@ L1MuTrigger::L1MuTrigger(const edm::ParameterSet& iConfig) {
     //now do what ever initialization is needed
     using namespace edm;
     edm::Service<TFileService> fs;
-    myMap1 = new std::map<std::string, TH1F*>();
+//    myMap1 = new std::map<std::string, TH1F*>();
 
     demohisto = fs->make<TH1D > ("demo", "demo", 50, 0, 50);
     rate_L1JetParticle = fs->make<TH1D > ("rate_L1JetParticle", "", 100, 0, 100);
@@ -113,11 +113,11 @@ L1MuTrigger::L1MuTrigger(const edm::ParameterSet& iConfig) {
 
 L1MuTrigger::~L1MuTrigger() {
 
-    map<string, TH1F*>::const_iterator iMap1 = myMap1->begin();
-    map<string, TH1F*>::const_iterator jMap1 = myMap1->end();
+//    map<string, TH1F*>::const_iterator iMap1 = myMap1->begin();
+//    map<string, TH1F*>::const_iterator jMap1 = myMap1->end();
 
-    for (; iMap1 != jMap1; ++iMap1)
-        nplot1(iMap1->first)->Write();
+//    for (; iMap1 != jMap1; ++iMap1)
+//        nplot1(iMap1->first)->Write();
 
     // do anything here that needs to be done at desctruction time
     // (e.g. close files, deallocate resources etc.)
