@@ -161,7 +161,6 @@ bool Efficiency_L1Mu::matchToGenTau(float ieta, float iphi, const edm::Event& iE
     bool dR03 = false;
     for (reco::GenParticleCollection::const_iterator genPar = genTausHandle->begin(); genPar != genTausHandle->end(); genPar++) {
         if (genPar->mother() != NULL && abs(genPar->mother()->pdgId()) == 15 && abs(genPar->pdgId()) != 15 && abs(genPar->pdgId()) != 11 && abs(genPar->pdgId()) != 13 && abs(genPar->pdgId()) != 12 && abs(genPar->pdgId()) != 14 && abs(genPar->pdgId()) != 16 && t.dR2(genPar->eta(), genPar->phi(), ieta, iphi) < 0.3) {
-
             dR03 = true;
             //            cout << "pdgid is =  " << genPar->pdgId() << endl;
         }
@@ -257,32 +256,32 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
     //  For efficiency measurement
     ////////////////////////////////////////////////////////////////////////////////
     //    bool thereIsAGoodTau = false;
-    for (; ipftau != jpftau; ++ipftau) {
-        if (ipftau->pt() > 20 && fabs(ipftau->eta()) < 2.3 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits") > 0.5 && ipftau->tauID("againstMuonTight") > 0.5 && ipftau->tauID("againstElectronLoose") > 0.5 && matchToGenTau(ipftau->eta(), ipftau->phi(), iEvent)) {
-            //            thereIsAGoodTau = true;
-            //            offLineTau->Fill(ipftau->pt());
-
-            for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
-                if (matchToGenTau(tau->eta(), tau->phi(), iEvent)) {
-                    //                    l1extraParticles->Fill(ipftau->pt());
-                    //                    t.plotFill("XXXXX", 10, 100, 0, 100, 1);
-                }
-            }
-
-
-            for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
-                if (matchToGenTau(ucttau->eta(), ucttau->phi(), iEvent))
-                    RelaxedTauUnpacked->Fill(ipftau->pt());
-            }
-
-            for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++) {
-                if (matchToGenTau(uctIsotau->eta(), uctIsotau->phi(), iEvent))
-                    IsolatedTauUnpacked->Fill(ipftau->pt());
-            }
-
-        }
-
-    }
+    //    for (; ipftau != jpftau; ++ipftau) {
+    //        if (ipftau->pt() > 20 && fabs(ipftau->eta()) < 2.3 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits") > 0.5 && ipftau->tauID("againstMuonTight") > 0.5 && ipftau->tauID("againstElectronLoose") > 0.5 && matchToGenTau(ipftau->eta(), ipftau->phi(), iEvent)) {
+    //            //            thereIsAGoodTau = true;
+    //            //            offLineTau->Fill(ipftau->pt());
+    //
+    //            for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
+    //                if (matchToGenTau(tau->eta(), tau->phi(), iEvent)) {
+    //                    //                    l1extraParticles->Fill(ipftau->pt());
+    //                    //                    t.plotFill("XXXXX", 10, 100, 0, 100, 1);
+    //                }
+    //            }
+    //
+    //
+    //            for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
+    //                if (matchToGenTau(ucttau->eta(), ucttau->phi(), iEvent))
+    //                    RelaxedTauUnpacked->Fill(ipftau->pt());
+    //            }
+    //
+    //            for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++) {
+    //                if (matchToGenTau(uctIsotau->eta(), uctIsotau->phi(), iEvent))
+    //                    IsolatedTauUnpacked->Fill(ipftau->pt());
+    //            }
+    //
+    //        }
+    //
+    //    }
 
 
 
@@ -299,11 +298,11 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
             float maxValPt_tau = 1;
             for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
                 if (t.dR2(tau->eta(), tau->phi(), ipftau->eta(), ipftau->phi()) < 0.3) {
-                    if (tau->pt() > maxValPt_tau) {
-                        maxValPt_tau = tau->pt();
-                    }
+                    //                    if (tau->pt() > maxValPt_tau) {
+                    //                        maxValPt_tau = tau->pt();
+                    //                    }
+                    l1extraParticles->Fill(tau->pt());
                 }
-                l1extraParticles->Fill(maxValPt_tau);
 
             }
 
