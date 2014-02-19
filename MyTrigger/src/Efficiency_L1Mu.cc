@@ -302,8 +302,8 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
                     if (tau->pt() > maxValPt_tau) {
                         maxValPt_tau = tau->pt();
                     }
-                    l1extraParticles->Fill(maxValPt_tau);
                 }
+                l1extraParticles->Fill(maxValPt_tau);
 
             }
 
