@@ -295,7 +295,6 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
             offLineTau->Fill(1);
 
 
-            float maxValPt_tau = 1;
             for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
                 if (t.dR2(tau->eta(), tau->phi(), ipftau->eta(), ipftau->phi()) < 0.3) {
                     //                    if (tau->pt() > maxValPt_tau) {
@@ -306,22 +305,18 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
 
             }
 
-            //            for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
-            //                if (matchToGenTau(tau->eta(), tau->phi(), iEvent)) {
-            //                    l1extraParticles->Fill(ipftau->pt());
-            //                }
-            //            }
+            for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
+                if (t.dR2(ucttau->eta(), ucttau->phi(), ipftau->eta(), ipftau->phi()) < 0.3) {
+                    RelaxedTauUnpacked->Fill(ucttau->pt());
+                }
+            }
 
 
-            //            for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
-            //                if (matchToGenTau(ucttau->eta(), ucttau->phi(), iEvent))
-            //                    RelaxedTauUnpacked->Fill(ipftau->pt());
-            //            }
-            //
-            //            for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++) {
-            //                if (matchToGenTau(uctIsotau->eta(), uctIsotau->phi(), iEvent))
-            //                    IsolatedTauUnpacked->Fill(ipftau->pt());
-            //            }
+            for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++) {
+                if (t.dR2(uctIsotau->eta(), uctIsotau->phi(), ipftau->eta(), ipftau->phi()) < 0.3) {
+                    IsolatedTauUnpacked->Fill(uctIsotau->pt());
+                }
+            }
 
         }
 
