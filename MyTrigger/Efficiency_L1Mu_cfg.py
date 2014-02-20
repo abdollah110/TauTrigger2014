@@ -4,15 +4,15 @@ process = cms.Process("Demo")
 
 process.load("FWCore.MessageService.MessageLogger_cfi")
 
-process.maxEvents = cms.untracked.PSet(input=cms.untracked.int32(20000))
+process.maxEvents = cms.untracked.PSet(input=cms.untracked.int32(-1))
 
 process.source = cms.Source("PoolSource",
                             # replace 'myfile.root' with the source file you want to use
                             fileNames=cms.untracked.vstring(
                             #                            'file:/tmp/abdollah/patTuple_L1Mu12_9_1_7Cz.root'
-                            'file:/tmp/abdollah/mcpatTuple_10_1_VXl.root',
-                            # 'root://eoscms//eos/cms/store/cmst3/user/manzoni/TauPOG/4feb/ZTauTau_first2PixelVtx/patTuple_10_1_jgn.root',
-                            #                            'root://eoscms//eos/cms/store/cmst3/user/manzoni/TauPOG/4feb/ZTauTau_first2PixelVtx/patTuple_11_1_n65.root',
+                            #                            'file:/tmp/abdollah/mcpatTuple_10_1_VXl.root',
+                            'root://eoscms//eos/cms/store/cmst3/user/manzoni/TauPOG/4feb/ZTauTau_first2PixelVtx/patTuple_10_1_jgn.root',
+                            'root://eoscms//eos/cms/store/cmst3/user/manzoni/TauPOG/4feb/ZTauTau_first2PixelVtx/patTuple_11_1_n65.root',
                             'root://eoscms//eos/cms/store/cmst3/user/manzoni/TauPOG/4feb/ZTauTau_first2PixelVtx/patTuple_12_1_sRZ.root',
                             'root://eoscms//eos/cms/store/cmst3/user/manzoni/TauPOG/4feb/ZTauTau_first2PixelVtx/patTuple_13_1_Dza.root',
                             'root://eoscms//eos/cms/store/cmst3/user/manzoni/TauPOG/4feb/ZTauTau_first2PixelVtx/patTuple_14_1_NxH.root',
