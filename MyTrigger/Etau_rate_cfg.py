@@ -29,7 +29,7 @@ execfile("files.py")
 
 process.isolatedOnlineElectrons = cms.EDProducer(
                                              "ChargedCandidateFromTrigRefConverter",
-                                             triggerFilterElectronsSrc=cms.InputTag("hltEle22WP90RhoTrackIsoFilter")
+                                             triggerFilterMuonsSrc=cms.InputTag("hltEle22WP90RhoTrackIsoFilter")
                                              )
 
 process.demo = cms.EDAnalyzer('Etau_rate'
