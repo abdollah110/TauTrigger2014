@@ -50,19 +50,10 @@ public:
     ~Etau_rate();
     MyTools tool;
 
-    //    static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
-
-
 private:
-    //    virtual void beginJob();
     virtual void analyze(const edm::Event&, const edm::EventSetup&);
     virtual bool hasOverLap(float eta_, float phi_, const edm::Event& iEvent);
-    //    virtual void endJob();
 
-    //    virtual void beginRun(edm::Run const&, edm::EventSetup const&);
-    //    virtual void endRun(edm::Run const&, edm::EventSetup const&);
-    //    virtual void beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&);
-    //    virtual void endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&);
 
     TH1D *demohisto;
     TH1D *demohisto_17;
@@ -70,43 +61,10 @@ private:
     TH1D * Histo_tauPt_20;
     TH1D * Histo_Denumerator;
     TH1D * Histo_DenumeratorSV;
-    TH1D * Histo_Step1;
-    TH1D * Histo_Step2;
-    TH1D * Histo_Step3;
-    TH1D * Histo_StepSV1;
-    TH1D * Histo_StepSV2;
-    TH1D * Histo_StepSV3;
-    TH1D * Pt_Step1;
-    TH1D * Eta_Step1;
-    TH1D * Pt_Step2;
-    TH1D * Eta_Step2;
-    TH1D * Pt_Step3;
-    TH1D * Eta_Step3;
-
-    TH1D * Pt_StepSV1;
-    TH1D * Eta_StepSV1;
-    TH1D * Pt_StepSV2;
-    TH1D * Eta_StepSV2;
-    TH1D * Pt_StepSV3;
-    TH1D * Eta_StepSV3;
-
     // ----------member data ---------------------------
 };
 
-//
-// constants, enums and typedefs
-//
-
-//
-// static data member definitions
-//
-
-//
-// constructors and destructor
-//
-
 Etau_rate::Etau_rate(const edm::ParameterSet& iConfig) {
-    //now do what ever initialization is needed
     using namespace edm;
     edm::Service<TFileService> fs;
     demohisto = fs->make<TH1D > ("MuPt", "MuPt", 50, 0, 250);
@@ -115,79 +73,38 @@ Etau_rate::Etau_rate(const edm::ParameterSet& iConfig) {
     Histo_tauPt_20 = fs->make<TH1D > ("TauPt_20", "TauPt_20", 50, 0, 250);
     Histo_Denumerator = fs->make<TH1D > ("TriggerRate", "TriggerRate", 10, 0, 10);
     Histo_DenumeratorSV = fs->make<TH1D > ("TriggerRateStdVtx", "TriggerRateStdVtx", 10, 0, 10);
-    Histo_Step1 = fs->make<TH1D > ("Step1-Multiplicity", "Step1-Multiplicity", 10, 0, 10);
-    Histo_Step2 = fs->make<TH1D > ("Step2-Multiplicity", "Step2-Multiplicity", 10, 0, 10);
-    Histo_Step3 = fs->make<TH1D > ("Step3-Multiplicity", "Step3-Multiplicity", 10, 0, 10);
-    Histo_StepSV1 = fs->make<TH1D > ("StepSV1-Multiplicity", "StepSV1-Multiplicity", 10, 0, 10);
-    Histo_StepSV2 = fs->make<TH1D > ("StepSV2-Multiplicity", "StepSV2-Multiplicity", 10, 0, 10);
-    Histo_StepSV3 = fs->make<TH1D > ("StepSV3-Multiplicity", "StepSV3-Multiplicity", 10, 0, 10);
-    Pt_StepSV1 = fs->make<TH1D > ("Pt_StepSV1", "Pt_StepSV1", 40, 0, 200);
-    Eta_StepSV1 = fs->make<TH1D > ("Eta_StepSV1", "Eta_StepSV1", 50, -2.5, 2.5);
-    Pt_StepSV2 = fs->make<TH1D > ("Pt_StepSV2", "Pt_StepSV2", 40, 0, 200);
-    Eta_StepSV2 = fs->make<TH1D > ("Eta_StepSV2", "Eta_StepSV2", 50, -2.5, 2.5);
-    Pt_StepSV3 = fs->make<TH1D > ("Pt_StepSV3", "Pt_StepSV3", 40, 0, 200);
-    Eta_StepSV3 = fs->make<TH1D > ("Eta_StepSV3", "Eta_StepSV3", 50, -2.5, 2.5);
-    Pt_Step1 = fs->make<TH1D > ("Pt_Step1", "Pt_Step1", 40, 0, 200);
-    Eta_Step1 = fs->make<TH1D > ("Eta_Step1", "Eta_Step1", 50, -2.5, 2.5);
-    Pt_Step2 = fs->make<TH1D > ("Pt_Step2", "Pt_Step2", 40, 0, 200);
-    Eta_Step2 = fs->make<TH1D > ("Eta_Step2", "Eta_Step2", 50, -2.5, 2.5);
-    Pt_Step3 = fs->make<TH1D > ("Pt_Step3", "Pt_Step3", 40, 0, 200);
-    Eta_Step3 = fs->make<TH1D > ("Eta_Step3", "Eta_Step3", 50, -2.5, 2.5);
 }
 
 Etau_rate::~Etau_rate() {
-
-    // do anything here that needs to be done at desctruction time
-    // (e.g. close files, deallocate resources etc.)
-
 }
-
-
-//
-// member functions
-//
-
-//float deltaPhi_(float a, float b) {
-//    float result = a - b;
-//    while (result > M_PI) result -= 2 * M_PI;
-//    while (result <= -M_PI) result += 2 * M_PI;
-//    return fabs(result);
-//}
-//
-//float dR(float l1eta, float l1phi, float l2eta, float l2phi) {
-//    float deta = l1eta - l2eta;
-//    float dphi = t.dedeltaPhi_(l1phi, l2phi);
-//    return sqrt(deta * deta + dphi * dphi);
-//}
 
 bool Etau_rate::hasOverLap(float eta_, float phi_, const edm::Event& iEvent) {
     using reco::Muon;
     using reco::MuonCollection;
     using reco::RecoChargedCandidate;
-    //    using reco::RecoChargedCandidateCollection;
     using namespace std;
     using namespace reco;
     using namespace edm;
     using namespace pat;
 
-    //    Handle<pat::MuonCollection> muonsHandle;
-    //    iEvent.getByLabel("selectedMuons", muonsHandle);
-    Handle < std::vector < reco::RecoChargedCandidate >> muonsHandle;
-    //    iEvent.getByLabel("hltMuons", muonsHandle);
-    iEvent.getByLabel("isolatedOnlineMuons", muonsHandle);
-    const std::vector<reco::RecoChargedCandidate> & muons = *(muonsHandle.product());
+    //    Handle<pat::MuonCollection> electronHandle;
+    //    iEvent.getByLabel("selectedMuons", electronHandle);
+    Handle < std::vector < reco::RecoChargedCandidate >> electronHandle;
+    //    iEvent.getByLabel("hltMuons", electronHandle);
+    iEvent.getByLabel("isolatedOnlineElectrons", electronHandle);
+    const std::vector<reco::RecoChargedCandidate> & muons = *(electronHandle.product());
     std::vector<reco::RecoChargedCandidate>::const_iterator imu = muons.begin();
     std::vector<reco::RecoChargedCandidate>::const_iterator jmu = muons.end();
-    //    //    Handle<pat::MuonCollection> muonsHandle;
-    //    //    iEvent.getByLabel("selectedMuons", muonsHandle);
-    //    Handle<reco::MuonCollection> muonsHandle;
-    //    //    iEvent.getByLabel("hltMuons", muonsHandle);
-    //    iEvent.getByLabel("hltL3MuonCandidates", muonsHandle);
-    //    const MuonCollection & muons = *(muonsHandle.product());
+    //    //    Handle<pat::MuonCollection> electronHandle;
+    //    //    iEvent.getByLabel("selectedMuons", electronHandle);
+    //    Handle<reco::MuonCollection> electronHandle;
+    //    //    iEvent.getByLabel("hltMuons", electronHandle);
+    //    iEvent.getByLabel("hltL3MuonCandidates", electronHandle);
+    //    const MuonCollection & muons = *(electronHandle.product());
     //    reco::MuonCollection::const_iterator imu = muons.begin();
     //    reco::MuonCollection::const_iterator jmu = muons.end();
 
-    //const Provenance& prov = iEvent.getProvenance(muonsHandle.TauHLT());
+    //const Provenance& prov = iEvent.getProvenance(electronHandle.TauHLT());
     //const float& procName = prov.isolations_;
 
     bool dR05 = 0;
@@ -236,8 +153,8 @@ bool matchToOfflineTaus(int isoOption, float eta_, float phi_, const edm::Event&
 
 void
 Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
-    using reco::Muon;
-    using reco::MuonCollection;
+//    using reco::Muon;
+//    using reco::MuonCollection;
     using reco::RecoChargedCandidate;
     using namespace std;
     using namespace reco;
@@ -249,26 +166,26 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     //******************************************************
     //  REquring at least 1 muon in the event
     //******************************************************
-    Handle < std::vector < reco::RecoChargedCandidate >> muonsHandle;
-    iEvent.getByLabel("isolatedOnlineMuons", muonsHandle);
-    const std::vector<reco::RecoChargedCandidate> & muons = *(muonsHandle.product());
+    Handle < std::vector < reco::RecoChargedCandidate >> electronHandle;
+    iEvent.getByLabel("isolatedOnlineElectrons", electronHandle);
+    const std::vector<reco::RecoChargedCandidate> & muons = *(electronHandle.product());
     std::vector<reco::RecoChargedCandidate>::const_iterator imu = muons.begin();
     std::vector<reco::RecoChargedCandidate>::const_iterator jmu = muons.end();
 
-    int ipfmu = 0;
-    for (; imu != jmu; ++imu) {
-        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1) ipfmu++;
+    int ipfele = 0;
+    for (; iele != jele; ++iele) {
+        if (iele->pt() > 17 && fabs(iele->eta()) < 2.1) ipfele++;
     }
     //
     //    //******************************************************
     //    //  REquring at least 1 muon in the event
     //    //******************************************************
-    //    //    Handle<pat::MuonCollection> muonsHandle;
-    //    //    iEvent.getByLabel("selectedMuons", muonsHandle);
-    //    Handle<reco::recoRecoChargedCandidates> muonsHandle;
-    //    //    iEvent.getByLabel("hltMuons", muonsHandle);
-    //    iEvent.getByLabel("hltL3MuonCandidates", muonsHandle);
-    //    const MuonCollection & muons = *(muonsHandle.product());
+    //    //    Handle<pat::MuonCollection> electronHandle;
+    //    //    iEvent.getByLabel("selectedMuons", electronHandle);
+    //    Handle<reco::recoRecoChargedCandidates> electronHandle;
+    //    //    iEvent.getByLabel("hltMuons", electronHandle);
+    //    iEvent.getByLabel("hltL3MuonCandidates", electronHandle);
+    //    const MuonCollection & muons = *(electronHandle.product());
     //    reco::MuonCollection::const_iterator imu = muons.begin();
     //    reco::MuonCollection::const_iterator jmu = muons.end();
     //
