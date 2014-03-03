@@ -199,22 +199,22 @@ bool Etau_rate::hasOverLap(float eta_, float phi_, const edm::Event& iEvent) {
 
         //    }
 
-        return dR05;
     }
+    return dR05;
 }
 
 bool matchToOfflineTaus(int isoOption, float eta_, float phi_, const edm::Event& iEvent, const edm::EventSetup& iSetup) {
-    using namespace std;
-    using namespace reco;
-    using namespace edm;
-    using namespace pat;
-
-
-    Handle<pat::TauCollection> pftausHandle;
-    iEvent.getByLabel("selectedTaus", pftausHandle);
-    const TauCollection &pftau = *(pftausHandle.product());
-    pat::TauCollection::const_iterator ipftau = pftau.begin();
-    pat::TauCollection::const_iterator jpftau = pftau.end();
+        using namespace std;
+        using namespace reco;
+        using namespace edm;
+        using namespace pat;
+    
+    
+        Handle<pat::TauCollection> pftausHandle;
+        iEvent.getByLabel("selectedTaus", pftausHandle);
+        const TauCollection &pftau = *(pftausHandle.product());
+        pat::TauCollection::const_iterator ipftau = pftau.begin();
+        pat::TauCollection::const_iterator jpftau = pftau.end();
 
 
     bool dR05 = 0;
@@ -229,7 +229,6 @@ bool matchToOfflineTaus(int isoOption, float eta_, float phi_, const edm::Event&
     //    }
 
     return false;
-
 }
 
 
