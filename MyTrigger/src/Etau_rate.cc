@@ -174,7 +174,7 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 
     int ipfele = 0;
     for (; iele != jele; ++iele) {
-        if (iele->pt() > 17 && fabs(iele->eta()) < 2.1) ipfele++;
+        if (iele->pt() > 22 && fabs(iele->eta()) < 2.5) ipfele++;
     }
     //
     //    //******************************************************
