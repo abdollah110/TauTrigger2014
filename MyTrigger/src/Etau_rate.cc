@@ -310,7 +310,7 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         bool ptCut = itau->pt() > 20 && fabs(itau->eta()) < 2.3;
         //        bool muTauPair = ipfmu > 0;
         bool muTauPair = 1 > 0;
-        bool hasOverlapMu = hasOverLap(itau->eta(), itau->phi(), iEvent, iSetup);
+        bool hasOverlapMu = hasOverLap(itau->eta(), itau->phi(), iEvent);
         bool discByDecayModeFinding = (itau->tauID("decayModeFinding") > 0.5 ? true : false);
         //        bool discByIsolation = (itau->tauID("byIsolation") > 0.5 ? true : false);
         bool discByIsolation = (itau->tauID("byTrkIsolation") < 3.0 ? true : false);
