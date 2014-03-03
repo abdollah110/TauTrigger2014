@@ -203,7 +203,7 @@ bool Etau_rate::hasOverLap(float eta_, float phi_, const edm::Event& iEvent) {
     return dR05;
 }
 
-bool matchToOfflineTaus(int isoOption, float eta_, float phi_, const edm::Event& iEvent, const edm::EventSetup& iSetup) {
+bool matchToOfflineTaus(int isoOption, float eta_, float phi_, const edm::Event& iEvent) {
         using namespace std;
         using namespace reco;
         using namespace edm;
@@ -346,12 +346,12 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         //            //            Pt_Step3->Fill(itau->pt());
         //            //            Eta_Step3->Fill(itau->eta());
         //        }
-        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation && discByMuLoose && matchToOfflineTaus(6, itau->eta(), itau->phi(), iEvent, iSetup)) {
+        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation && discByMuLoose && matchToOfflineTaus(6, itau->eta(), itau->phi(), iEvent) {
             step6++;
             //            Pt_Step3->Fill(itau->pt());
             //            Eta_Step3->Fill(itau->eta());
         }
-        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation && discByMuLoose && matchToOfflineTaus(2, itau->eta(), itau->phi(), iEvent, iSetup)) {
+        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation && discByMuLoose && matchToOfflineTaus(2, itau->eta(), itau->phi(), iEvent)) {
             step7++;
             //            Pt_Step3->Fill(itau->pt());
             //            Eta_Step3->Fill(itau->eta());
