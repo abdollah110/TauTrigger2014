@@ -32,6 +32,7 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 
 #include "DataFormats/PatCandidates/interface/Muon.h"
+#include "DataFormats/PatCandidates/interface/Electron.h"
 #include "DataFormats/PatCandidates/interface/Tau.h"
 #include "PhysicsTools/PatUtils/interface/TriggerHelper.h"
 #include "FWCore/ServiceRegistry/interface/Service.h"
