@@ -228,7 +228,7 @@ bool matchToOfflineTaus(int isoOption, float eta_, float phi_, const edm::Event&
     //
     //    }
 
-    return dR05;
+    return false;
 
 }
 
