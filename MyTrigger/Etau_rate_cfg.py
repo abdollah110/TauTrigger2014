@@ -6,7 +6,7 @@ process.load("FWCore.MessageService.MessageLogger_cfi")
 
 process.maxEvents = cms.untracked.PSet(input=cms.untracked.int32(-1))
 
-execfile("source_etau.py")
+execfile("files.py")
 
 process.demo = cms.EDAnalyzer('Etau_rate'
                               )
