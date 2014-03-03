@@ -80,71 +80,50 @@ Etau_rate::~Etau_rate() {
 }
 
 bool Etau_rate::hasOverLap(float eta_, float phi_, const edm::Event& iEvent) {
-    using reco::Muon;
-    using reco::MuonCollection;
     using reco::RecoChargedCandidate;
     using namespace std;
     using namespace reco;
     using namespace edm;
     using namespace pat;
 
-    //    Handle<pat::MuonCollection> electronHandle;
-    //    iEvent.getByLabel("selectedMuons", electronHandle);
     Handle < std::vector < reco::RecoChargedCandidate >> electronHandle;
-    //    iEvent.getByLabel("hltMuons", electronHandle);
     iEvent.getByLabel("isolatedOnlineElectrons", electronHandle);
-    const std::vector<reco::RecoChargedCandidate> & muons = *(electronHandle.product());
-    std::vector<reco::RecoChargedCandidate>::const_iterator imu = muons.begin();
-    std::vector<reco::RecoChargedCandidate>::const_iterator jmu = muons.end();
-    //    //    Handle<pat::MuonCollection> electronHandle;
-    //    //    iEvent.getByLabel("selectedMuons", electronHandle);
-    //    Handle<reco::MuonCollection> electronHandle;
-    //    //    iEvent.getByLabel("hltMuons", electronHandle);
-    //    iEvent.getByLabel("hltL3MuonCandidates", electronHandle);
-    //    const MuonCollection & muons = *(electronHandle.product());
-    //    reco::MuonCollection::const_iterator imu = muons.begin();
-    //    reco::MuonCollection::const_iterator jmu = muons.end();
-
-    //const Provenance& prov = iEvent.getProvenance(electronHandle.TauHLT());
-    //const float& procName = prov.isolations_;
+    const std::vector<reco::RecoChargedCandidate> & elestrons = *(electronHandle.product());
+    std::vector<reco::RecoChargedCandidate>::const_iterator iele = elestrons.begin();
+    std::vector<reco::RecoChargedCandidate>::const_iterator jele = elestrons.end();
 
     bool dR05 = 0;
-    //    cout<<imu->userFloat("PFRelIsoDB0ChargedCandidateFromTrigRefConverter
-    for (; imu != jmu; ++imu) {
-        //        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1 && imu->userFloat("PFRelIsoDB04v2") < 0.15) dR05 = (dR(imu->eta(), imu->phi(), eta_, phi_) > 0.5 ? 1 : 0);
-        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1) dR05 = (tool.dR2(imu->eta(), imu->phi(), eta_, phi_) > 0.4 ? 1 : 0);
-        //        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1) dR05 = (dR(imu->eta(), imu->phi(), eta_, phi_) > 0.3 ? 1 : 0);
-
-        //    }
-
+    for (; iele != jele; ++iele) {
+        if (iele->pt() > 22 && fabs(iele->eta()) < 2.5) dR05 = (tool.dR2(iele->eta(), iele->phi(), eta_, phi_) > 0.4 ? 1 : 0);
+        dR05 = true;
     }
     return dR05;
 }
 
 bool matchToOfflineTaus(int isoOption, float eta_, float phi_, const edm::Event& iEvent) {
-        using namespace std;
-        using namespace reco;
-        using namespace edm;
-        using namespace pat;
-    
-    
-        Handle<pat::TauCollection> pftausHandle;
-        iEvent.getByLabel("selectedTaus", pftausHandle);
-        const TauCollection &pftau = *(pftausHandle.product());
-        pat::TauCollection::const_iterator ipftau = pftau.begin();
-        pat::TauCollection::const_iterator jpftau = pftau.end();
+    using namespace std;
+    using namespace reco;
+    using namespace edm;
+    using namespace pat;
+
+
+    Handle<pat::TauCollection> pftausHandle;
+    iEvent.getByLabel("selectedTaus", pftausHandle);
+    const TauCollection &pftau = *(pftausHandle.product());
+    pat::TauCollection::const_iterator ipftau = pftau.begin();
+    pat::TauCollection::const_iterator jpftau = pftau.end();
 
 
     bool dR05 = 0;
-    //    for (; ipftau != jpftau; ++ipftau) {
-    //        if (isoOption == 1 && ipftau->pt() > 20 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byLooseCombinedIsolationDeltaBetaCorr") > 0.5) dR05 = (t.dR(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5 ? 1 : 0);
-    //        if (isoOption == 2 && ipftau->pt() > 20 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byLooseCombinedIsolationDeltaBetaCorr3Hits") > 0.5) dR05 = (dR(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5 ? 1 : 0);
-    //        if (isoOption == 3 && ipftau->pt() > 20 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byLooseCombinedIsolationDeltaBetaCorr3Hits") > 0.5 && ipftau->tauID("againstMuonLoose3") > 0.5) dR05 = (dR(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5 ? 1 : 0);
-    //        if (isoOption == 4 && ipftau->pt() > 20 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byLooseCombinedIsolationDeltaBetaCorr3Hits") > 0.5 && ipftau->tauID("againstMuonMedium3") > 0.5) dR05 = (dR(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5 ? 1 : 0);
-    //        if (isoOption == 5 && ipftau->pt() > 20 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byLooseCombinedIsolationDeltaBetaCorr3Hits") > 0.5 && ipftau->tauID("againstMuonTight3") > 0.5) dR05 = (dR(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5 ? 1 : 0);
-    //        if (isoOption == 6 && ipftau->pt() > 20 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("againstMuonLoose3") > 0.5) dR05 = (dR(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5 ? 1 : 0);
-    //
-    //    }
+    for (; ipftau != jpftau; ++ipftau) {
+        if (isoOption == 1 && ipftau->pt() > 20 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byLooseCombinedIsolationDeltaBetaCorr") > 0.5) dR05 = (t.dR(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5 ? 1 : 0);
+        if (isoOption == 2 && ipftau->pt() > 20 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byLooseCombinedIsolationDeltaBetaCorr3Hits") > 0.5) dR05 = (dR(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5 ? 1 : 0);
+        if (isoOption == 3 && ipftau->pt() > 20 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byLooseCombinedIsolationDeltaBetaCorr3Hits") > 0.5 && ipftau->tauID("againstMuonLoose3") > 0.5) dR05 = (dR(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5 ? 1 : 0);
+        if (isoOption == 4 && ipftau->pt() > 20 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byLooseCombinedIsolationDeltaBetaCorr3Hits") > 0.5 && ipftau->tauID("againstMuonMedium3") > 0.5) dR05 = (dR(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5 ? 1 : 0);
+        if (isoOption == 5 && ipftau->pt() > 20 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byLooseCombinedIsolationDeltaBetaCorr3Hits") > 0.5 && ipftau->tauID("againstMuonTight3") > 0.5) dR05 = (dR(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5 ? 1 : 0);
+        if (isoOption == 6 && ipftau->pt() > 20 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("againstMuonLoose3") > 0.5) dR05 = (dR(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5 ? 1 : 0);
+
+    }
 
     return false;
 }
@@ -154,8 +133,8 @@ bool matchToOfflineTaus(int isoOption, float eta_, float phi_, const edm::Event&
 
 void
 Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
-//    using reco::Muon;
-//    using reco::MuonCollection;
+    //    using reco::Muon;
+    //    using reco::MuonCollection;
     using reco::RecoChargedCandidate;
     using namespace std;
     using namespace reco;
@@ -233,6 +212,7 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         bool discByIsolation = (itau->tauID("byTrkIsolation") < 3.0 ? true : false);
         bool discByIsolation5hits = (itau->tauID("byTrkIsolation5hits") < 3.0 ? true : false);
         bool discByMuLoose = (itau->tauID("againstMuonLoose") > 0.5 ? true : false);
+        bool discByEleLoose = (itau->tauID("againstElectronLoose") > 0.5 ? true : false);
 
         if (muTauPair && ptCut && hasOverlapMu) {
             step1++;
@@ -240,15 +220,15 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding) {
             step2++;
         }
-        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByMuLoose) {
+        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByEleLoose) {
             step3++;
         }
-        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByMuLoose && discByIsolation) {
+        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByEleLoose && discByIsolation) {
             step4++;
             //            Pt_Step4->Fill(itau->pt());
             //            Eta_Step4->Fill(itau->eta());
         }
-        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByMuLoose && discByIsolation5hits) {
+        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByEleLoose && discByIsolation5hits) {
             step5++;
             //            Pt_Step4->Fill(itau->pt());
             //            Eta_Step4->Fill(itau->eta());
@@ -258,12 +238,12 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         //            //            Pt_Step3->Fill(itau->pt());
         //            //            Eta_Step3->Fill(itau->eta());
         //        }
-        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation && discByMuLoose && matchToOfflineTaus(6, itau->eta(), itau->phi(), iEvent)) {
+        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation && discByEleLoose && matchToOfflineTaus(6, itau->eta(), itau->phi(), iEvent)) {
             step6++;
             //            Pt_Step3->Fill(itau->pt());
             //            Eta_Step3->Fill(itau->eta());
         }
-        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation && discByMuLoose && matchToOfflineTaus(2, itau->eta(), itau->phi(), iEvent)) {
+        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation && discByEleLoose && matchToOfflineTaus(2, itau->eta(), itau->phi(), iEvent)) {
             step7++;
             //            Pt_Step3->Fill(itau->pt());
             //            Eta_Step3->Fill(itau->eta());
@@ -290,15 +270,15 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     Histo_Denumerator->Fill(0);
     if (step1 > 0) {
         Histo_Denumerator->Fill(1);
-//        Histo_Step1->Fill(step1);
+        //        Histo_Step1->Fill(step1);
     }
     if (step2 > 0) {
         Histo_Denumerator->Fill(2);
-//        Histo_Step2->Fill(step2);
+        //        Histo_Step2->Fill(step2);
     }
     if (step3 > 0) {
         Histo_Denumerator->Fill(3);
-//        Histo_Step3->Fill(step3);
+        //        Histo_Step3->Fill(step3);
     }
     if (step4 > 0) {
         Histo_Denumerator->Fill(4);
