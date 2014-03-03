@@ -168,9 +168,9 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     //******************************************************
     Handle < std::vector < reco::RecoChargedCandidate >> electronHandle;
     iEvent.getByLabel("isolatedOnlineElectrons", electronHandle);
-    const std::vector<reco::RecoChargedCandidate> & muons = *(electronHandle.product());
-    std::vector<reco::RecoChargedCandidate>::const_iterator imu = muons.begin();
-    std::vector<reco::RecoChargedCandidate>::const_iterator jmu = muons.end();
+    const std::vector<reco::RecoChargedCandidate> & elestrons = *(electronHandle.product());
+    std::vector<reco::RecoChargedCandidate>::const_iterator iele = elestrons.begin();
+    std::vector<reco::RecoChargedCandidate>::const_iterator jele = elestrons.end();
 
     int ipfele = 0;
     for (; iele != jele; ++iele) {
@@ -235,18 +235,12 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 
         if (muTauPair && ptCut && hasOverlapMu) {
             step1++;
-            Pt_Step1->Fill(itau->pt());
-            Eta_Step1->Fill(itau->eta());
         }
         if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding) {
             step2++;
-            Pt_Step2->Fill(itau->pt());
-            Eta_Step2->Fill(itau->eta());
         }
         if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByMuLoose) {
             step3++;
-            Pt_Step3->Fill(itau->pt());
-            Eta_Step3->Fill(itau->eta());
         }
         if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByMuLoose && discByIsolation) {
             step4++;
@@ -295,15 +289,15 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     Histo_Denumerator->Fill(0);
     if (step1 > 0) {
         Histo_Denumerator->Fill(1);
-        Histo_Step1->Fill(step1);
+//        Histo_Step1->Fill(step1);
     }
     if (step2 > 0) {
         Histo_Denumerator->Fill(2);
-        Histo_Step2->Fill(step2);
+//        Histo_Step2->Fill(step2);
     }
     if (step3 > 0) {
         Histo_Denumerator->Fill(3);
-        Histo_Step3->Fill(step3);
+//        Histo_Step3->Fill(step3);
     }
     if (step4 > 0) {
         Histo_Denumerator->Fill(4);
