@@ -135,6 +135,7 @@ bool Etau_rate::matchToOfflineTaus(int isoOption, float eta_, float phi_, const 
         if (isoOption == 5 && ipftau->pt() > 20 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byLooseCombinedIsolationDeltaBetaCorr3Hits") > 0.5 && ipftau->tauID("againstMuonTight3") > 0.5) dR05 = (tool.dR2(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5 ? 1 : 0);
         if (isoOption == 6 && ipftau->pt() > 20 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("againstElectronLooseMVA5") > 0.5) dR05 = (tool.dR2(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5 ? 1 : 0);
         if (isoOption == 100 && ipftau->tauID("againstElectronLooseMVA5") > 0.5) dR05 = (tool.dR2(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.4 ? 1 : 0);
+        if (isoOption == 0) dR05 = (tool.dR2(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.4 ? 1 : 0);
 
     }
 
@@ -201,9 +202,9 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         bool hasOverlapEle = hasOverLap(itau->eta(), itau->phi(), iEvent);
         bool discByDecayModeFinding = (itau->tauID("decayModeFinding") > 0.5 ? true : false);
         //        bool discByIsolation = (itau->tauID("byIsolation") > 0.5 ? true : false);
-        bool discByIsolation = (itau->tauID("byTrkIsolation") < 3.0 ? true : false);
+//        bool discByIsolation = (itau->tauID("byTrkIsolation") < 3.0 ? true : false);
         bool discByIsolation5hits = (itau->tauID("byTrkIsolation5hits") < 3.0 ? true : false);
-        bool discByEleLoose = matchToOfflineTaus(100, itau->eta(), itau->phi(), iEvent);
+        bool discByEleLoose = matchToOfflineTaus(100, itau->eta(), itau->phi(), iEvent) || !(matchToOfflineTaus(0, itau->eta(), itau->phi(), iEvent));
 
         if (EleTauPair && ptCut && hasOverlapEle) {
             step1++;
@@ -217,12 +218,12 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding && discByIsolation5hits) {
             step4++;
         }
-        if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding && discByIsolation) {
-            step5++;
-        }
-        if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding && discByEleLoose && discByIsolation) {
-            step6++;
-        }
+//        if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding && discByIsolation) {
+//            step5++;
+//        }
+//        if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding && discByEleLoose && discByIsolation) {
+//            step6++;
+//        }
         if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding && discByEleLoose && discByIsolation5hits) {
             step7++;
         }
@@ -231,12 +232,12 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         //            //            Pt_Step3->Fill(itau->pt());
         //            //            Eta_Step3->Fill(itau->eta());
         //        }
-        if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding && discByIsolation && discByEleLoose && matchToOfflineTaus(6, itau->eta(), itau->phi(), iEvent)) {
+        if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding && discByIsolation5hits && discByEleLoose && matchToOfflineTaus(6, itau->eta(), itau->phi(), iEvent)) {
             step8++;
             //            Pt_Step3->Fill(itau->pt());
             //            Eta_Step3->Fill(itau->eta());
         }
-        if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding && discByIsolation && discByEleLoose && matchToOfflineTaus(2, itau->eta(), itau->phi(), iEvent)) {
+        if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding && discByIsolation5hits && discByEleLoose && matchToOfflineTaus(2, itau->eta(), itau->phi(), iEvent)) {
             step9++;
             //            Pt_Step3->Fill(itau->pt());
             //            Eta_Step3->Fill(itau->eta());
