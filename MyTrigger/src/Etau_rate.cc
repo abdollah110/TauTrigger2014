@@ -82,17 +82,24 @@ Etau_rate::~Etau_rate() {
 
 bool Etau_rate::hasOverLap(float eta_, float phi_, const edm::Event& iEvent) {
     using reco::RecoChargedCandidate;
+    using reco::Electron;
     using namespace std;
     using namespace reco;
     using namespace edm;
     using namespace pat;
 
-    Handle < std::vector < reco::RecoChargedCandidate >> electronHandle;
-//    iEvent.getByLabel("isolatedOnlineElectrons", electronHandle);
+    Handle < std::vector < reco::Electron >> electronHandle;
     iEvent.getByLabel("hltPixelMatchElectronsL1Seeded", electronHandle);
-    const std::vector<reco::RecoChargedCandidate> & elestrons = *(electronHandle.product());
-    std::vector<reco::RecoChargedCandidate>::const_iterator iele = elestrons.begin();
-    std::vector<reco::RecoChargedCandidate>::const_iterator jele = elestrons.end();
+    const std::vector<reco::Electron> & elestrons = *(electronHandle.product());
+    std::vector<reco::Electron>::const_iterator iele = elestrons.begin();
+    std::vector<reco::Electron>::const_iterator jele = elestrons.end();
+    
+//    Handle < std::vector < reco::RecoChargedCandidate >> electronHandle;
+////    iEvent.getByLabel("isolatedOnlineElectrons", electronHandle);
+//    iEvent.getByLabel("hltPixelMatchElectronsL1Seeded", electronHandle);
+//    const std::vector<reco::RecoChargedCandidate> & elestrons = *(electronHandle.product());
+//    std::vector<reco::RecoChargedCandidate>::const_iterator iele = elestrons.begin();
+//    std::vector<reco::RecoChargedCandidate>::const_iterator jele = elestrons.end();
 
     bool dR05 = 0;
     for (; iele != jele; ++iele) {
