@@ -88,7 +88,8 @@ bool Etau_rate::hasOverLap(float eta_, float phi_, const edm::Event& iEvent) {
     using namespace pat;
 
     Handle < std::vector < reco::RecoChargedCandidate >> electronHandle;
-    iEvent.getByLabel("isolatedOnlineElectrons", electronHandle);
+//    iEvent.getByLabel("isolatedOnlineElectrons", electronHandle);
+    iEvent.getByLabel("hltPixelMatchElectronsL1Seeded", electronHandle);
     const std::vector<reco::RecoChargedCandidate> & elestrons = *(electronHandle.product());
     std::vector<reco::RecoChargedCandidate>::const_iterator iele = elestrons.begin();
     std::vector<reco::RecoChargedCandidate>::const_iterator jele = elestrons.end();
@@ -149,16 +150,16 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     //******************************************************
     //  REquring at least 1 muon in the event
     //******************************************************
-    Handle < std::vector < reco::RecoChargedCandidate >> electronHandle;
-    iEvent.getByLabel("isolatedOnlineElectrons", electronHandle);
-    const std::vector<reco::RecoChargedCandidate> & elestrons = *(electronHandle.product());
-    std::vector<reco::RecoChargedCandidate>::const_iterator iele = elestrons.begin();
-    std::vector<reco::RecoChargedCandidate>::const_iterator jele = elestrons.end();
-
-    int ipfele = 0;
-    for (; iele != jele; ++iele) {
-        if (iele->pt() > 22 && fabs(iele->eta()) < 2.5) ipfele++;
-    }
+//    Handle < std::vector < reco::RecoChargedCandidate >> electronHandle;
+//    iEvent.getByLabel("isolatedOnlineElectrons", electronHandle);
+//    const std::vector<reco::RecoChargedCandidate> & elestrons = *(electronHandle.product());
+//    std::vector<reco::RecoChargedCandidate>::const_iterator iele = elestrons.begin();
+//    std::vector<reco::RecoChargedCandidate>::const_iterator jele = elestrons.end();
+//
+//    int ipfele = 0;
+//    for (; iele != jele; ++iele) {
+//        if (iele->pt() > 22 && fabs(iele->eta()) < 2.5) ipfele++;
+//    }
     //
     //    //******************************************************
     //    //  REquring at least 1 muon in the event
