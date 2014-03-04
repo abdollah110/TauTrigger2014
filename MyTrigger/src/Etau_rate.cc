@@ -106,7 +106,7 @@ bool Etau_rate::hasOverLap(float eta_, float phi_, const edm::Event& iEvent) {
 
     bool dR05 = 0;
     for (; iele != jele; ++iele) {
-//        cout << "There is an electron   " << iele->pt() << endl;
+        //        cout << "There is an electron   " << iele->pt() << endl;
         if (iele->pt() > 22 && fabs(iele->eta()) < 2.5) dR05 = (tool.dR2(iele->eta(), iele->phi(), eta_, phi_) > 0.4 ? 1 : 0);
         dR05 = true;
     }
@@ -235,7 +235,7 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         //        bool discByIsolation = (itau->tauID("byIsolation") > 0.5 ? true : false);
         //        bool discByIsolation = (itau->tauID("byTrkIsolation") < 3.0 ? true : false);
         bool discByIsolation5hits = (itau->tauID("byTrkIsolation5hits") < 3.0 ? true : false);
-        bool discByEleLoose = matchToOfflineTaus(100, itau->eta(), itau->phi(), iEvent) || !(matchToOfflineTaus(0, itau->eta(), itau->phi(), iEvent));
+        bool discByEleLoose = matchToOfflineTausForEleVeto(itau->eta(), itau->phi(), iEvent);
 
         if (EleTauPair && ptCut && hasOverlapEle) {
             step1++;
