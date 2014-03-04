@@ -38,6 +38,9 @@
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
 #include "DataFormats/RecoCandidate/interface/RecoChargedCandidate.h"
+#include "DataFormats/EgammaCandidates/interface/GsfElectron.h"
+#include "DataFormats/EgammaCandidates/interface/Electron.h"
+#include "DataFormats/EgammaCandidates/interface/ElectronFwd.h"
 #include "TH1.h"
 #include "../interface/MyTools.h"
 
