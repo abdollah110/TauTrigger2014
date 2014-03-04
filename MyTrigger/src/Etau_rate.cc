@@ -58,6 +58,7 @@ private:
     virtual void analyze(const edm::Event&, const edm::EventSetup&);
     virtual bool hasOverLap(float eta_, float phi_, const edm::Event& iEvent);
     virtual bool matchToOfflineTaus(int isoOption, float eta_, float phi_, const edm::Event& iEvent);
+    virtual bool matchToOfflineTausForEleVeto(float eta_, float phi_, const edm::Event& iEvent);
 
 
     TH1D *demohisto;
@@ -142,6 +143,36 @@ bool Etau_rate::matchToOfflineTaus(int isoOption, float eta_, float phi_, const 
     return dR05;
 }
 
+bool Etau_rate::matchToOfflineTausForEleVeto(float eta_, float phi_, const edm::Event& iEvent) {
+    using namespace std;
+    using namespace reco;
+    using namespace edm;
+    using namespace pat;
+
+
+    Handle<pat::TauCollection> pftausHandle;
+    iEvent.getByLabel("selectedTaus", pftausHandle);
+    const TauCollection &pftau = *(pftausHandle.product());
+    pat::TauCollection::const_iterator ipftau = pftau.begin();
+    pat::TauCollection::const_iterator jpftau = pftau.end();
+
+
+    bool dR05 = 0;
+    int numMatched = 0;
+    int numMatchedEleVeto = 0;
+    for (; ipftau != jpftau; ++ipftau) {
+        if (tool.dR2(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.4) {
+            numMatched++;
+            if (ipftau->tauID("againstElectronLooseMVA5") > 0.5) numMatchedEleVeto++;
+        }
+    }
+    if (numMatchedEleVeto > 0 || numMatched < 1)
+        return true;
+    else
+        return false;
+
+}
+
 
 // ------------ method called for each event  ------------
 
@@ -202,7 +233,7 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         bool hasOverlapEle = hasOverLap(itau->eta(), itau->phi(), iEvent);
         bool discByDecayModeFinding = (itau->tauID("decayModeFinding") > 0.5 ? true : false);
         //        bool discByIsolation = (itau->tauID("byIsolation") > 0.5 ? true : false);
-//        bool discByIsolation = (itau->tauID("byTrkIsolation") < 3.0 ? true : false);
+        //        bool discByIsolation = (itau->tauID("byTrkIsolation") < 3.0 ? true : false);
         bool discByIsolation5hits = (itau->tauID("byTrkIsolation5hits") < 3.0 ? true : false);
         bool discByEleLoose = matchToOfflineTaus(100, itau->eta(), itau->phi(), iEvent) || !(matchToOfflineTaus(0, itau->eta(), itau->phi(), iEvent));
 
@@ -218,12 +249,12 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding && discByIsolation5hits) {
             step4++;
         }
-//        if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding && discByIsolation) {
-//            step5++;
-//        }
-//        if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding && discByEleLoose && discByIsolation) {
-//            step6++;
-//        }
+        //        if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding && discByIsolation) {
+        //            step5++;
+        //        }
+        //        if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding && discByEleLoose && discByIsolation) {
+        //            step6++;
+        //        }
         if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding && discByEleLoose && discByIsolation5hits) {
             step7++;
         }
