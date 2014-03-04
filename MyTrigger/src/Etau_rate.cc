@@ -123,10 +123,11 @@ bool Etau_rate::matchToOfflineTaus(int isoOption, float eta_, float phi_, const 
         if (isoOption == 4 && ipftau->pt() > 20 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byLooseCombinedIsolationDeltaBetaCorr3Hits") > 0.5 && ipftau->tauID("againstMuonMedium3") > 0.5) dR05 = (tool.dR2(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5 ? 1 : 0);
         if (isoOption == 5 && ipftau->pt() > 20 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byLooseCombinedIsolationDeltaBetaCorr3Hits") > 0.5 && ipftau->tauID("againstMuonTight3") > 0.5) dR05 = (tool.dR2(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5 ? 1 : 0);
         if (isoOption == 6 && ipftau->pt() > 20 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("againstMuonLoose3") > 0.5) dR05 = (tool.dR2(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5 ? 1 : 0);
+        if (isoOption == 100 &&  ipftau->tauID("againstElectronLooseMVA5") > 0.5) dR05 = (tool.dR2(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.4 ? 1 : 0);
 
     }
 
-    return false;
+    return dR05;
 }
 
 
@@ -213,7 +214,7 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         bool discByIsolation = (itau->tauID("byTrkIsolation") < 3.0 ? true : false);
         bool discByIsolation5hits = (itau->tauID("byTrkIsolation5hits") < 3.0 ? true : false);
         bool discByMuLoose = (itau->tauID("againstMuonLoose") > 0.5 ? true : false);
-        bool discByEleLoose = (itau->tauID("againstElectronLoose") > 0.5 ? true : false);
+        bool discByEleLoose = matchToOfflineTaus(100, itau->eta(), itau->phi(), iEvent);
 
         if (muTauPair && ptCut && hasOverlapMu) {
             step1++;
