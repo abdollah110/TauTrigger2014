@@ -104,11 +104,12 @@ bool Etau_rate::hasOverLap(float eta_, float phi_, const edm::Event& iEvent) {
     std::vector<reco::Electron>::const_iterator iele = elestrons.begin();
     std::vector<reco::Electron>::const_iterator jele = elestrons.end();
 
-    bool dR05 = 0;
+    bool dR05 = true;
     for (; iele != jele; ++iele) {
         //        cout << "There is an electron   " << iele->pt() << endl;
-        if (iele->pt() > 22 && fabs(iele->eta()) < 2.5) dR05 = (tool.dR2(iele->eta(), iele->phi(), eta_, phi_) > 0.4 ? 1 : 0);
-        dR05 = true;
+//BUGGGGGGG//        if (iele->pt() > 22 && fabs(iele->eta()) < 2.5) dR05 = (tool.dR2(iele->eta(), iele->phi(), eta_, phi_) > 0.4 ? 1 : 0);
+        if (iele->pt() > 22 && fabs(iele->eta()) < 2.5) dR05 = (tool.dR2(iele->eta(), iele->phi(), eta_, phi_) < 0.4 ? 1 : 0);
+        dR05 = false;  // This means that there have been at least 1 isolated electron that matches to this tau
     }
     return dR05;
 }
@@ -242,7 +243,7 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         }
         if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding) {
             step2++;
-            cout << iEvent.id().run() << ":" << iEvent.id().luminosityBlock() << ":" << iEvent.id().event() << "\n";
+
         }
         if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding && discByEleLoose) {
             step3++;
@@ -300,6 +301,7 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     }
     if (step2 > 0) {
         Histo_Denumerator->Fill(2);
+        cout << iEvent.id().run() << ":" << iEvent.id().luminosityBlock() << ":" << iEvent.id().event() << "\n";
         //        Histo_Step2->Fill(step2);
     }
     if (step3 > 0) {
