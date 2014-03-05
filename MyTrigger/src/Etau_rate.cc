@@ -242,6 +242,7 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         }
         if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding) {
             step2++;
+            cout << iEvent.id().run() << ":" << iEvent.id().luminosityBlock() << ":" << iEvent.id().event() << "\n";
         }
         if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding && discByEleLoose) {
             step3++;
