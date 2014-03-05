@@ -104,12 +104,12 @@ bool Etau_rate::hasOverLap(float eta_, float phi_, const edm::Event& iEvent) {
     std::vector<reco::Electron>::const_iterator iele = elestrons.begin();
     std::vector<reco::Electron>::const_iterator jele = elestrons.end();
 
-    bool dR05 = true;
+    bool dR05 = 1;
     for (; iele != jele; ++iele) {
         //        cout << "There is an electron   " << iele->pt() << endl;
 //BUGGGGGGG//        if (iele->pt() > 22 && fabs(iele->eta()) < 2.5) dR05 = (tool.dR2(iele->eta(), iele->phi(), eta_, phi_) > 0.4 ? 1 : 0);
-        if (iele->pt() > 22 && fabs(iele->eta()) < 2.5) dR05 = (tool.dR2(iele->eta(), iele->phi(), eta_, phi_) < 0.4 ? 1 : 0);
-        dR05 = false;  // This means that there have been at least 1 isolated electron that matches to this tau
+        if (iele->pt() > 22 && fabs(iele->eta()) < 2.5) dR05 = (tool.dR2(iele->eta(), iele->phi(), eta_, phi_) < 0.4 ? 0 : 1);
+//        dR05 = false;  // This means that there have been at least 1 isolated electron that matches to this tau
     }
     return dR05;
 }
