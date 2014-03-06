@@ -286,7 +286,6 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
         if (ipftau->pt() > 20 && fabs(ipftau->eta()) < 2.3 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits") > 0.5 && ipftau->tauID("againstMuonTight") > 0.5 && ipftau->tauID("againstElectronLoose") > 0.5 && matchToGenTau(ipftau->eta(), ipftau->phi(), iEvent)) {
             offLineTau->Fill(1);
 
-
             for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
                 if (tool.dR2(tau->eta(), tau->phi(), ipftau->eta(), ipftau->phi()) < 0.3) {
                     //                    if (tau->pt() > maxValPt_tau) {

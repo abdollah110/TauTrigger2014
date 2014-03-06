@@ -188,11 +188,11 @@ bool hasOverLap(float eta_, float phi_, const edm::Event& iEvent, const edm::Eve
     //const float& procName = prov.isolations_;
 
     bool dR05 = 0;
-//    cout<<imu->userFloat("PFRelIsoDB0ChargedCandidateFromTrigRefConverter
+    //    cout<<imu->userFloat("PFRelIsoDB0ChargedCandidateFromTrigRefConverter
     for (; imu != jmu; ++imu) {
         //        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1 && imu->userFloat("PFRelIsoDB04v2") < 0.15) dR05 = (dR(imu->eta(), imu->phi(), eta_, phi_) > 0.5 ? 1 : 0);
-                if (imu->pt() > 17 && fabs(imu->eta()) < 2.1) dR05 = (dR(imu->eta(), imu->phi(), eta_, phi_) > 0.4 ? 1 : 0);
-//        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1) dR05 = (dR(imu->eta(), imu->phi(), eta_, phi_) > 0.3 ? 1 : 0);
+        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1) dR05 = (dR(imu->eta(), imu->phi(), eta_, phi_) > 0.4 ? 1 : 0);
+        //        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1) dR05 = (dR(imu->eta(), imu->phi(), eta_, phi_) > 0.3 ? 1 : 0);
 
     }
 
@@ -211,8 +211,50 @@ bool matchToOfflineTaus(int isoOption, float eta_, float phi_, const edm::Event&
     const TauCollection &pftau = *(pftausHandle.product());
     pat::TauCollection::const_iterator ipftau = pftau.begin();
     pat::TauCollection::const_iterator jpftau = pftau.end();
-
-
+    //
+    //  
+    ////
+    //  
+    ////
+    //  
+    ////
+    //  
+    ////
+    //  
+    ////
+    //  
+    ////
+    //  
+    ////
+    //  
+    ////
+    //  
+    ////
+    //  
+    ////
+    //  
+    ////   FIXME
+    //  
+    ////
+    //  
+    ////
+    //  
+    ////
+    //  
+    ////
+    //  
+    ////
+    //  
+    ////
+    //  
+    ////
+    //  
+    ////
+    //  
+    ////
+    //  
+    //
+    //    WRONG NEED TO BE FIXED
     bool dR05 = 0;
     for (; ipftau != jpftau; ++ipftau) {
         if (isoOption == 1 && ipftau->pt() > 20 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byLooseCombinedIsolationDeltaBetaCorr") > 0.5) dR05 = (dR(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5 ? 1 : 0);
@@ -353,21 +395,21 @@ MyTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
             //            Pt_Step3->Fill(itau->pt());
             //            Eta_Step3->Fill(itau->eta());
         }
-//        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation && discByMuLoose && matchToOfflineTaus(4, itau->eta(), itau->phi(), iEvent, iSetup)) {
-//            step7++;
-//            //            Pt_Step3->Fill(itau->pt());
-//            //            Eta_Step3->Fill(itau->eta());
-//        }
-////        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation && discByMuLoose && matchToOfflineTaus(5, itau->eta(), itau->phi(), iEvent, iSetup)) {
-//            step8++;
-//            //            Pt_Step3->Fill(itau->pt());
-//            //            Eta_Step3->Fill(itau->eta());
-//        }
-//        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation && discByMuLoose && matchToOfflineTaus(6, itau->eta(), itau->phi(), iEvent, iSetup)) {
-//            step9++;
-//            //            Pt_Step3->Fill(itau->pt());
-//            //            Eta_Step3->Fill(itau->eta());
-//        }
+        //        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation && discByMuLoose && matchToOfflineTaus(4, itau->eta(), itau->phi(), iEvent, iSetup)) {
+        //            step7++;
+        //            //            Pt_Step3->Fill(itau->pt());
+        //            //            Eta_Step3->Fill(itau->eta());
+        //        }
+        ////        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation && discByMuLoose && matchToOfflineTaus(5, itau->eta(), itau->phi(), iEvent, iSetup)) {
+        //            step8++;
+        //            //            Pt_Step3->Fill(itau->pt());
+        //            //            Eta_Step3->Fill(itau->eta());
+        //        }
+        //        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation && discByMuLoose && matchToOfflineTaus(6, itau->eta(), itau->phi(), iEvent, iSetup)) {
+        //            step9++;
+        //            //            Pt_Step3->Fill(itau->pt());
+        //            //            Eta_Step3->Fill(itau->eta());
+        //        }
 
 
     }
