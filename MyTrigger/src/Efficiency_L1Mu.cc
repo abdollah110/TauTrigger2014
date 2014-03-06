@@ -70,6 +70,7 @@ private:
     TH1D *l1extraParticlesEff;
     TH1D *RelaxedTauUnpackedEff;
     TH1D *IsolatedTauUnpackedEff;
+    TH1D *RELAXXXX;
 
 
     edm::InputTag srcGenParticle_;
@@ -113,6 +114,7 @@ Efficiency_L1Mu::Efficiency_L1Mu(const edm::ParameterSet& iConfig) {
     l1extraParticlesEff = fs->make<TH1D > ("l1extraParticlesEff", "", 50, 0, 100);
     RelaxedTauUnpackedEff = fs->make<TH1D > ("RelaxedTauUnpackedEff", "", 50, 0, 100);
     IsolatedTauUnpackedEff = fs->make<TH1D > ("IsolatedTauUnpackedEff", "", 50, 0, 100);
+    RELAXXXX = fs->make<TH1D > ("RELAXXXX", "", 50, 0, 100);
 
 
 
@@ -254,8 +256,11 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
                 }
             }
             for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
-                if (matchToGenTau(ucttau->eta(), ucttau->phi(), iEvent))
+                if (matchToGenTau(ucttau->eta(), ucttau->phi(), iEvent)) {
                     RelaxedTauUnpackedEff->Fill(ipftau->pt());
+                    RELAXXXX->Fill(ipftau->pt());
+
+                }
             }
 
             for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++) {

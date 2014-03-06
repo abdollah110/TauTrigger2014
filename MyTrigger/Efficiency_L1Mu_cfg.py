@@ -12,7 +12,7 @@ process.source = cms.Source("PoolSource",
                             #                            'file:/tmp/abdollah/patTuple_L1Mu12_9_1_7Cz.root'
                             #                            'file:/tmp/abdollah/mcpatTuple_10_1_VXl.root',
 
-
+                            ###### New V4 ZTautau  (Fixed issue)
                             'root://eoscms//eos/cms//store/cmst3/user/manzoni/TauPOG/mt/fixedUCT2015/ZTauTau_AllPixVtx_firstPixelVtx_sorted2power_threshold10gev/patTuple_10_1_iJD.root',
                             'root://eoscms//eos/cms//store/cmst3/user/manzoni/TauPOG/mt/fixedUCT2015/ZTauTau_AllPixVtx_firstPixelVtx_sorted2power_threshold10gev/patTuple_11_1_Wqu.root',
                             'root://eoscms//eos/cms//store/cmst3/user/manzoni/TauPOG/mt/fixedUCT2015/ZTauTau_AllPixVtx_firstPixelVtx_sorted2power_threshold10gev/patTuple_12_1_xLg.root',
@@ -31,6 +31,26 @@ process.source = cms.Source("PoolSource",
                             'root://eoscms//eos/cms//store/cmst3/user/manzoni/TauPOG/mt/fixedUCT2015/ZTauTau_AllPixVtx_firstPixelVtx_sorted2power_threshold10gev/patTuple_7_1_Psz.root',
                             'root://eoscms//eos/cms//store/cmst3/user/manzoni/TauPOG/mt/fixedUCT2015/ZTauTau_AllPixVtx_firstPixelVtx_sorted2power_threshold10gev/patTuple_8_1_z6J.root',
                             'root://eoscms//eos/cms//store/cmst3/user/manzoni/TauPOG/mt/fixedUCT2015/ZTauTau_AllPixVtx_firstPixelVtx_sorted2power_threshold10gev/patTuple_9_1_xVB.root',
+
+                            ###### New V4 ZPrimeTautau  (Fixed issue)
+                            'root://eoscms//eos/cms/store/cmst3/user/manzoni/TauPOG/mt/fixedUCT2015/ZPrimeTauTau_firstPixelVtx_sorted2power_threshold10gev/patTuple_10_1_hps.root',
+                            'root://eoscms//eos/cms/store/cmst3/user/manzoni/TauPOG/mt/fixedUCT2015/ZPrimeTauTau_firstPixelVtx_sorted2power_threshold10gev/patTuple_11_1_QJn.root',
+                            'root://eoscms//eos/cms/store/cmst3/user/manzoni/TauPOG/mt/fixedUCT2015/ZPrimeTauTau_firstPixelVtx_sorted2power_threshold10gev/patTuple_12_1_qUJ.root',
+                            'root://eoscms//eos/cms/store/cmst3/user/manzoni/TauPOG/mt/fixedUCT2015/ZPrimeTauTau_firstPixelVtx_sorted2power_threshold10gev/patTuple_13_1_S87.root',
+                            'root://eoscms//eos/cms/store/cmst3/user/manzoni/TauPOG/mt/fixedUCT2015/ZPrimeTauTau_firstPixelVtx_sorted2power_threshold10gev/patTuple_14_1_N6F.root',
+                            'root://eoscms//eos/cms/store/cmst3/user/manzoni/TauPOG/mt/fixedUCT2015/ZPrimeTauTau_firstPixelVtx_sorted2power_threshold10gev/patTuple_15_1_y08.root',
+                            'root://eoscms//eos/cms/store/cmst3/user/manzoni/TauPOG/mt/fixedUCT2015/ZPrimeTauTau_firstPixelVtx_sorted2power_threshold10gev/patTuple_16_1_9P8.root',
+                            'root://eoscms//eos/cms/store/cmst3/user/manzoni/TauPOG/mt/fixedUCT2015/ZPrimeTauTau_firstPixelVtx_sorted2power_threshold10gev/patTuple_17_1_kkd.root',
+                            'root://eoscms//eos/cms/store/cmst3/user/manzoni/TauPOG/mt/fixedUCT2015/ZPrimeTauTau_firstPixelVtx_sorted2power_threshold10gev/patTuple_18_1_dbl.root',
+                            'root://eoscms//eos/cms/store/cmst3/user/manzoni/TauPOG/mt/fixedUCT2015/ZPrimeTauTau_firstPixelVtx_sorted2power_threshold10gev/patTuple_1_1_GGK.root',
+                            'root://eoscms//eos/cms/store/cmst3/user/manzoni/TauPOG/mt/fixedUCT2015/ZPrimeTauTau_firstPixelVtx_sorted2power_threshold10gev/patTuple_2_1_UBF.root',
+                            'root://eoscms//eos/cms/store/cmst3/user/manzoni/TauPOG/mt/fixedUCT2015/ZPrimeTauTau_firstPixelVtx_sorted2power_threshold10gev/patTuple_3_1_yLc.root',
+                            'root://eoscms//eos/cms/store/cmst3/user/manzoni/TauPOG/mt/fixedUCT2015/ZPrimeTauTau_firstPixelVtx_sorted2power_threshold10gev/patTuple_4_1_V3O.root',
+                            'root://eoscms//eos/cms/store/cmst3/user/manzoni/TauPOG/mt/fixedUCT2015/ZPrimeTauTau_firstPixelVtx_sorted2power_threshold10gev/patTuple_5_1_ZUW.root',
+                            'root://eoscms//eos/cms/store/cmst3/user/manzoni/TauPOG/mt/fixedUCT2015/ZPrimeTauTau_firstPixelVtx_sorted2power_threshold10gev/patTuple_6_1_eBO.root',
+                            'root://eoscms//eos/cms/store/cmst3/user/manzoni/TauPOG/mt/fixedUCT2015/ZPrimeTauTau_firstPixelVtx_sorted2power_threshold10gev/patTuple_7_1_c3j.root',
+                            'root://eoscms//eos/cms/store/cmst3/user/manzoni/TauPOG/mt/fixedUCT2015/ZPrimeTauTau_firstPixelVtx_sorted2power_threshold10gev/patTuple_8_1_ZMp.root',
+                            'root://eoscms//eos/cms/store/cmst3/user/manzoni/TauPOG/mt/fixedUCT2015/ZPrimeTauTau_firstPixelVtx_sorted2power_threshold10gev/patTuple_9_1_2oj.root',
 
 
                             #
