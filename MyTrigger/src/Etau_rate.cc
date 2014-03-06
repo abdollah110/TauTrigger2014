@@ -124,18 +124,6 @@ bool Etau_rate::matchToOfflineTaus(int isoOption, float eta_, float phi_, const 
         }
     }
     return hasMatched;
-    //
-    //    int hasMatched = 0;
-    //    for (; ipftau != jpftau; ++ipftau) {
-    //        if (isoOption == 1 && ipftau->pt() > 20 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("againstElectronLooseMVA5") > 0.5 && tool.dR2(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5) hasMatched++;
-    //        if (isoOption == 2 && ipftau->pt() > 20 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byLooseCombinedIsolationDeltaBetaCorr3Hits") > 0.5 && tool.dR2(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5) hasMatched++;
-    //        if (isoOption == 3 && ipftau->pt() > 20 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byLooseCombinedIsolationDeltaBetaCorr3Hits") > 0.5 && ipftau->tauID("againstElectronLooseMVA5") > 0.5 && tool.dR2(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5) hasMatched++;
-    //    }
-    //
-    //    if (hasMatched > 0)
-    //        return true;
-    //    else
-    //        return false;
 }
 
 bool Etau_rate::matchToOfflineTausForEleVeto(float eta_, float phi_, const edm::Event& iEvent) {
