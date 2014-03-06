@@ -104,12 +104,12 @@ Efficiency_L1Mu::Efficiency_L1Mu(const edm::ParameterSet& iConfig) {
     myMap1__ = new std::map<std::string, TH1F*>();
 
 
-    offLineTau = fs->make<TH1D > ("offLineTau", "", 100, 0, 100);
+    offLineTau = fs->make<TH1D > ("offLineTau", "", 50, 0, 100);
     l1extraParticles = fs->make<TH1D > ("l1extraParticles", "", 50, 0, 100);
     RelaxedTauUnpacked = fs->make<TH1D > ("RelaxedTauUnpacked", "", 50, 0, 100);
     IsolatedTauUnpacked = fs->make<TH1D > ("IsolatedTauUnpacked", "", 50, 0, 100);
 
-    offLineTauEff = fs->make<TH1D > ("offLineTauEff", "", 100, 0, 100);
+    offLineTauEff = fs->make<TH1D > ("offLineTauEff", "", 50, 0, 100);
     l1extraParticlesEff = fs->make<TH1D > ("l1extraParticlesEff", "", 50, 0, 100);
     RelaxedTauUnpackedEff = fs->make<TH1D > ("RelaxedTauUnpackedEff", "", 50, 0, 100);
     IsolatedTauUnpackedEff = fs->make<TH1D > ("IsolatedTauUnpackedEff", "", 50, 0, 100);
