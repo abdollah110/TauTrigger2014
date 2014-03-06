@@ -65,12 +65,14 @@ def doRatio(num, denum, marSize, marStyle, marColor):
 
 
 File = TFile("eff_Results_v3.root", "OPEN")
+#File = TFile("eff_Results_Fixed1_Z_Zprime.root", "OPEN")
 Denum = File.Get("demo/offLineTauEff")
 Num_l1extra = File.Get("demo/l1extraParticlesEff")
 Num_RelaxedTau = File.Get("demo/RelaxedTauUnpackedEff")
 Num_IsolatedTau = File.Get("demo/IsolatedTauUnpackedEff")
 
-FileFixed = TFile("eff_Results_Fixed1.root", "OPEN")
+#FileFixed = TFile("eff_Results_Fixed1.root", "OPEN")
+FileFixed = TFile("eff_Results_Fixed1_Z_Zprime.root", "OPEN")
 DenumFixed = FileFixed.Get("demo/offLineTauEff")
 Num_l1extraFixed = FileFixed.Get("demo/l1extraParticlesEff")
 Num_RelaxedTauFixed = FileFixed.Get("demo/RelaxedTauUnpackedEff")
@@ -87,7 +89,11 @@ RelaxedTauFixed = doRatio(Num_RelaxedTauFixed, DenumFixed, 1.2, 21, 3)
 IsolatedTauFixed = doRatio(Num_IsolatedTauFixed, DenumFixed, 1.2, 24, 2)
 
 l1extra.Draw("PAE")
-RelaxedTauFixed.Draw("Psame")
+l1extraFixed.Draw("Psame")
+
+
+for bn in range(1,50):
+    print bn, DenumFixed.GetBinContent(bn)-Num_IsolatedTauFixed.GetBinContent(bn)
 
 #RelaxedTau.Draw("PAEsame")
 #IsolatedTau.Draw("Psame")

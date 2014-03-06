@@ -253,19 +253,23 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
             for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
                 if (matchToGenTau(tau->eta(), tau->phi(), iEvent)) {
                     l1extraParticlesEff->Fill(ipftau->pt());
+                    break;
                 }
             }
             for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
                 if (matchToGenTau(ucttau->eta(), ucttau->phi(), iEvent)) {
                     RelaxedTauUnpackedEff->Fill(ipftau->pt());
                     RELAXXXX->Fill(ipftau->pt());
+                    break;
 
                 }
             }
 
             for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++) {
-                if (matchToGenTau(uctIsotau->eta(), uctIsotau->phi(), iEvent))
+                if (matchToGenTau(uctIsotau->eta(), uctIsotau->phi(), iEvent)) {
                     IsolatedTauUnpackedEff->Fill(ipftau->pt());
+                    break;
+                }
             }
 
         }// if there is denumerator
