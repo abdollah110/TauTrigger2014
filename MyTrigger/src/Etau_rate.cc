@@ -108,15 +108,17 @@ bool Etau_rate::matchToOfflineTaus(int isoOption, float eta_, float phi_, const 
     pat::TauCollection::const_iterator jpftau = pftau.end();
 
 
-    bool dR05 = 0;
+    int hasMatched = 0;
     for (; ipftau != jpftau; ++ipftau) {
-        if (isoOption == 1 && ipftau->pt() > 20 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("againstElectronLooseMVA5") > 0.5) dR05 = (tool.dR2(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5 ? 1 : 0);
-        if (isoOption == 2 && ipftau->pt() > 20 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byLooseCombinedIsolationDeltaBetaCorr3Hits") > 0.5) dR05 = (tool.dR2(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5 ? 1 : 0);
-        if (isoOption == 3 && ipftau->pt() > 20 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byLooseCombinedIsolationDeltaBetaCorr3Hits") > 0.5 && ipftau->tauID("againstElectronLooseMVA5") > 0.5) dR05 = (tool.dR2(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5 ? 1 : 0);
-
+        if (isoOption == 1 && ipftau->pt() > 20 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("againstElectronLooseMVA5") > 0.5 && tool.dR2(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5) hasMatched++;
+        if (isoOption == 2 && ipftau->pt() > 20 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byLooseCombinedIsolationDeltaBetaCorr3Hits") > 0.5 && tool.dR2(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5) hasMatched++;
+        if (isoOption == 3 && ipftau->pt() > 20 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byLooseCombinedIsolationDeltaBetaCorr3Hits") > 0.5 && ipftau->tauID("againstElectronLooseMVA5") > 0.5 && tool.dR2(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5) hasMatched++;
     }
 
-    return dR05;
+    if (hasMatched > 0)
+        return true;
+    else
+        return false;
 }
 
 bool Etau_rate::matchToOfflineTausForEleVeto(float eta_, float phi_, const edm::Event& iEvent) {
@@ -133,7 +135,6 @@ bool Etau_rate::matchToOfflineTausForEleVeto(float eta_, float phi_, const edm::
     pat::TauCollection::const_iterator jpftau = pftau.end();
 
 
-    bool dR05 = 0;
     int numMatched = 0;
     int numMatchedEleVeto = 0;
     for (; ipftau != jpftau; ++ipftau) {

@@ -52,7 +52,7 @@ class Efficiency_L1Mu : public edm::EDAnalyzer {
 public:
     explicit Efficiency_L1Mu(const edm::ParameterSet&);
     ~Efficiency_L1Mu();
-    MyTools t;
+    MyTools tool;
 
     //    static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
 
@@ -133,8 +133,6 @@ Efficiency_L1Mu::~Efficiency_L1Mu() {
     map<string, TH1F*>::const_iterator iMap1 = myMap1__->begin();
     map<string, TH1F*>::const_iterator jMap1 = myMap1__->end();
 
-    //    for (; iMap1 != jMap1; ++iMap1)
-    //        t.nplot1(iMap1->first)->Write();
 
     // do anything here that needs to be done at desctruction time
     // (e.g. close files, deallocate resources etc.)
@@ -160,9 +158,8 @@ bool Efficiency_L1Mu::matchToGenTau(float ieta, float iphi, const edm::Event& iE
 
     bool dR03 = false;
     for (reco::GenParticleCollection::const_iterator genPar = genTausHandle->begin(); genPar != genTausHandle->end(); genPar++) {
-        if (genPar->mother() != NULL && abs(genPar->mother()->pdgId()) == 15 && abs(genPar->pdgId()) != 15 && abs(genPar->pdgId()) != 11 && abs(genPar->pdgId()) != 13 && abs(genPar->pdgId()) != 12 && abs(genPar->pdgId()) != 14 && abs(genPar->pdgId()) != 16 && t.dR2(genPar->eta(), genPar->phi(), ieta, iphi) < 0.3) {
+        if (genPar->mother() != NULL && abs(genPar->mother()->pdgId()) == 15 && abs(genPar->pdgId()) != 15 && abs(genPar->pdgId()) != 11 && abs(genPar->pdgId()) != 13 && abs(genPar->pdgId()) != 12 && abs(genPar->pdgId()) != 14 && abs(genPar->pdgId()) != 16 && tool.dR2(genPar->eta(), genPar->phi(), ieta, iphi) < 0.3) {
             dR03 = true;
-            //            cout << "pdgid is =  " << genPar->pdgId() << endl;
         }
     }
     return dR03;
@@ -207,10 +204,6 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
     using namespace pat;
 
 
-
-
-
-
     Handle < vector < l1extra::L1MuonParticle >> muonsHandle;
     iEvent.getByLabel(L1MuSource_, muonsHandle);
 
@@ -229,14 +222,13 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
     int step1 = 0;
     for (vector<l1extra::L1MuonParticle>::const_iterator mu = muonsHandle->begin(); mu != muonsHandle->end(); mu++) {
         step1++;
-        //        cout << step1 << "   Mu Pt is   " << mu->pt() << "   Mu eta is   " << mu->eta() << "   Mu Phi is   " << mu->phi() << endl;
         float isolation02 = 0;
         float isolation03 = 0;
         float isolation04 = 0;
         for (SortedCollection < CaloTower, edm::StrictWeakOrdering < CaloTower >> ::const_iterator tower = CaloTowerHandle->begin(); tower != CaloTowerHandle->end(); tower++) {
-            if (t.dR2(tower->eta(), tower->phi(), mu->eta(), mu->phi()) < 0.2) isolation02 += tower->pt();
-            if (t.dR2(tower->eta(), tower->phi(), mu->eta(), mu->phi()) < 0.3) isolation03 += tower->pt();
-            if (t.dR2(tower->eta(), tower->phi(), mu->eta(), mu->phi()) < 0.4) isolation04 += tower->pt();
+            if (tool.dR2(tower->eta(), tower->phi(), mu->eta(), mu->phi()) < 0.2) isolation02 += tower->pt();
+            if (tool.dR2(tower->eta(), tower->phi(), mu->eta(), mu->phi()) < 0.3) isolation03 += tower->pt();
+            if (tool.dR2(tower->eta(), tower->phi(), mu->eta(), mu->phi()) < 0.4) isolation04 += tower->pt();
 
         }
         //        cout << "isolation02   " << isolation02 << endl;
@@ -296,7 +288,7 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
 
 
             for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
-                if (t.dR2(tau->eta(), tau->phi(), ipftau->eta(), ipftau->phi()) < 0.3) {
+                if (tool.dR2(tau->eta(), tau->phi(), ipftau->eta(), ipftau->phi()) < 0.3) {
                     //                    if (tau->pt() > maxValPt_tau) {
                     //                        maxValPt_tau = tau->pt();
                     //                    }
@@ -306,14 +298,14 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
             }
 
             for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
-                if (t.dR2(ucttau->eta(), ucttau->phi(), ipftau->eta(), ipftau->phi()) < 0.3) {
+                if (tool.dR2(ucttau->eta(), ucttau->phi(), ipftau->eta(), ipftau->phi()) < 0.3) {
                     RelaxedTauUnpacked->Fill(ucttau->pt());
                 }
             }
 
 
             for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++) {
-                if (t.dR2(uctIsotau->eta(), uctIsotau->phi(), ipftau->eta(), ipftau->phi()) < 0.3) {
+                if (tool.dR2(uctIsotau->eta(), uctIsotau->phi(), ipftau->eta(), ipftau->phi()) < 0.3) {
                     IsolatedTauUnpacked->Fill(uctIsotau->pt());
                 }
             }
