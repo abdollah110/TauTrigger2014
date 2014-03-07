@@ -72,7 +72,8 @@ Num_RelaxedTau = File.Get("demo/RelaxedTauUnpackedEff")
 Num_IsolatedTau = File.Get("demo/IsolatedTauUnpackedEff")
 
 #FileFixed = TFile("eff_Results_Fixed1.root", "OPEN")
-FileFixed = TFile("eff_Results_Fixed1_Z_Zprime.root", "OPEN")
+#FileFixed = TFile("eff_Results_Fixed1_Z_Zprime.root", "OPEN")
+FileFixed = TFile("eff_Results_Fixed1_New.root", "OPEN")
 DenumFixed = FileFixed.Get("demo/offLineTauEff")
 Num_l1extraFixed = FileFixed.Get("demo/l1extraParticlesEff")
 Num_RelaxedTauFixed = FileFixed.Get("demo/RelaxedTauUnpackedEff")
@@ -86,28 +87,29 @@ IsolatedTau = doRatio(Num_IsolatedTau, Denum, 1.2, 25, 1)
 
 l1extraFixed = doRatio(Num_l1extraFixed, DenumFixed, 1.2, 23, 2)
 RelaxedTauFixed = doRatio(Num_RelaxedTauFixed, DenumFixed, 1.2, 21, 3)
-IsolatedTauFixed = doRatio(Num_IsolatedTauFixed, DenumFixed, 1.2, 24, 2)
+IsolatedTauFixed = doRatio(Num_IsolatedTauFixed, DenumFixed, 1.2, 24, 4)
 
-l1extra.Draw("PAE")
-l1extraFixed.Draw("Psame")
+#l1extra.Draw("PAE")
+#l1extraFixed.Draw("Psame")
 
 
 for bn in range(1,50):
-    print bn, DenumFixed.GetBinContent(bn)-Num_IsolatedTauFixed.GetBinContent(bn)
+    print bn, DenumFixed.GetBinContent(bn)-Num_l1extraFixed.GetBinContent(bn), DenumFixed.GetBinContent(bn)-Num_RelaxedTauFixed.GetBinContent(bn),DenumFixed.GetBinContent(bn)-Num_IsolatedTauFixed.GetBinContent(bn)
 
-#RelaxedTau.Draw("PAEsame")
-#IsolatedTau.Draw("Psame")
+l1extraFixed.Draw("PAE")
+RelaxedTauFixed.Draw("Psame")
+IsolatedTauFixed.Draw("Psame")
 
 
 #IsolatedTau.Draw("PAE")
-#IsolatedTauFixed.Draw("Psame")
 
 legend_ = TLegend(0.60, 0.78, 0.9, 0.9)
 legend_.SetFillColor(0)
 legend_.SetBorderSize(0)
 legend_.SetTextSize(.03)
+legend_.AddEntry(l1extraFixed, "l1extra(Fixed)", "lp")
+legend_.AddEntry(RelaxedTauFixed, "UCTTau(Fixed)", "lp")
 legend_.AddEntry(IsolatedTauFixed, "IsoUCTTau(Fixed)", "lp")
-legend_.AddEntry(IsolatedTau, "IsoUCTTau(old)", "lp")
 legend_.Draw()
 
 
