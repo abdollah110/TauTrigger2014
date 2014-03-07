@@ -63,13 +63,32 @@ def doRatio(num, denum, marSize, marStyle, marColor):
     return ratio
 
 
+def doCommulative(num, denum, marSize, marStyle, marColor):
 
-File = TFile("eff_Results_v3.root", "OPEN")
-#File = TFile("eff_Results_Fixed1_Z_Zprime.root", "OPEN")
-Denum = File.Get("demo/offLineTauEff")
-Num_l1extra = File.Get("demo/l1extraParticlesEff")
-Num_RelaxedTau = File.Get("demo/RelaxedTauUnpackedEff")
-Num_IsolatedTau = File.Get("demo/IsolatedTauUnpackedEff")
+    commul=TH1F(str(num), "", 100, 0, 100)
+    for ii in range(1,100):
+        commul.SetBinContent(ii + 1, (num.Integral(ii, 100)*1.0) / denum.GetEntries());
+
+    commul.SetMinimum(0.0)
+    commul.SetMaximum(1.2)
+    commul.SetMarkerSize(marSize);
+    commul.SetMarkerStyle(marStyle);
+    commul.SetMarkerColor(marColor);
+    commul.GetXaxis().SetTitle("Offline #tau_{pT} [GeV]")
+    commul.GetYaxis().SetTitle("ROC Efficiency")
+
+    return commul
+
+
+#File = TFile("eff_Results_v3.root", "OPEN")
+##File = TFile("eff_Results_Fixed1_Z_Zprime.root", "OPEN")
+#Denum = File.Get("demo/offLineTauEff")
+#Num_l1extra = File.Get("demo/l1extraParticlesEff")
+#Num_RelaxedTau = File.Get("demo/RelaxedTauUnpackedEff")
+#Num_IsolatedTau = File.Get("demo/IsolatedTauUnpackedEff")
+#l1extra = doRatio(Num_l1extra, Denum, 1.2, 24, 2)
+#RelaxedTau = doRatio(Num_RelaxedTau, Denum, 1.2, 21, 3)
+#IsolatedTau = doRatio(Num_IsolatedTau, Denum, 1.2, 25, 1)
 
 #FileFixed = TFile("eff_Results_Fixed1.root", "OPEN")
 #FileFixed = TFile("eff_Results_Fixed1_Z_Zprime.root", "OPEN")
@@ -78,30 +97,33 @@ DenumFixed = FileFixed.Get("demo/offLineTauEff")
 Num_l1extraFixed = FileFixed.Get("demo/l1extraParticlesEff")
 Num_RelaxedTauFixed = FileFixed.Get("demo/RelaxedTauUnpackedEff")
 Num_IsolatedTauFixed = FileFixed.Get("demo/IsolatedTauUnpackedEff")
+Denum = FileFixed.Get("demo/offLineTau")
+Num_l1extra = FileFixed.Get("demo/l1extraParticles")
+Num_RelaxedTau = FileFixed.Get("demo/RelaxedTauUnpacked")
+Num_IsolatedTau = FileFixed.Get("demo/IsolatedTauUnpacked")
 
 
 
-l1extra = doRatio(Num_l1extra, Denum, 1.2, 24, 2)
-RelaxedTau = doRatio(Num_RelaxedTau, Denum, 1.2, 21, 3)
-IsolatedTau = doRatio(Num_IsolatedTau, Denum, 1.2, 25, 1)
 
 l1extraFixed = doRatio(Num_l1extraFixed, DenumFixed, 1.2, 23, 2)
 RelaxedTauFixed = doRatio(Num_RelaxedTauFixed, DenumFixed, 1.2, 21, 3)
 IsolatedTauFixed = doRatio(Num_IsolatedTauFixed, DenumFixed, 1.2, 24, 4)
 
+l1extraROC = doCommulative(Num_l1extra, Denum, 1.2, 23, 2)
+RelaxedTauROC = doCommulative(Num_RelaxedTau, Denum, 1.2, 21, 3)
+IsolatedTauROC = doCommulative(Num_IsolatedTau, Denum, 1.2, 24, 4)
+
 #l1extra.Draw("PAE")
 #l1extraFixed.Draw("Psame")
 
 
-for bn in range(1,50):
-    print bn, DenumFixed.GetBinContent(bn)-Num_l1extraFixed.GetBinContent(bn), DenumFixed.GetBinContent(bn)-Num_RelaxedTauFixed.GetBinContent(bn),DenumFixed.GetBinContent(bn)-Num_IsolatedTauFixed.GetBinContent(bn)
+#for bn in range(1,50):
+#    print bn, DenumFixed.GetBinContent(bn)-Num_l1extraFixed.GetBinContent(bn), DenumFixed.GetBinContent(bn)-Num_RelaxedTauFixed.GetBinContent(bn),DenumFixed.GetBinContent(bn)-Num_IsolatedTauFixed.GetBinContent(bn)
 
 l1extraFixed.Draw("PAE")
 RelaxedTauFixed.Draw("Psame")
 IsolatedTauFixed.Draw("Psame")
 
-
-#IsolatedTau.Draw("PAE")
 
 legend_ = TLegend(0.60, 0.78, 0.9, 0.9)
 legend_.SetFillColor(0)
@@ -115,3 +137,24 @@ legend_.Draw()
 
 
 canvas.SaveAs("ChannelNameFixed2.pdf")
+
+
+
+l1extraROC.Draw("P")
+RelaxedTauROC.Draw("Psame")
+IsolatedTauROC.Draw("Psame")
+
+
+
+legend_ = TLegend(0.60, 0.78, 0.9, 0.9)
+legend_.SetFillColor(0)
+legend_.SetBorderSize(0)
+legend_.SetTextSize(.03)
+legend_.AddEntry(l1extraROC, "l1extra(ROC)", "lp")
+legend_.AddEntry(RelaxedTauROC, "UCTTau(ROC)", "lp")
+legend_.AddEntry(IsolatedTauROC, "IsoUCTTau(ROC)", "lp")
+legend_.Draw()
+
+
+
+canvas.SaveAs("ChannelNameROC2.pdf")
