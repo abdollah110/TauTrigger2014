@@ -192,7 +192,7 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
     Handle<pat::TauCollection> pftausHandle;
     iEvent.getByLabel("selectedTaus", pftausHandle);
 
-    std::vector<reco::Candidate::LorentzVector> getUCTCandidateP4s(const UCTCandidateCollection& uctCandidates, int mode) {
+     std::vector<reco::Candidate::LorentzVector> getUCTCandidateP4s(const UCTCandidateCollection& uctCandidates, int mode) {
         std::vector<reco::Candidate::LorentzVector> uctCandidateP4s;
         for (UCTCandidateCollection::const_iterator uctCandidate = uctCandidates.begin();
                 uctCandidate != uctCandidates.end(); ++uctCandidate) {
