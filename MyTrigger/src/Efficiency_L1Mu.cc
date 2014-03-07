@@ -168,6 +168,7 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
     using reco::Muon;
     using reco::MuonCollection;
     using reco::RecoChargedCandidate;
+    using reco::UCTCandidateCollection;
     using namespace std;
     using namespace reco;
     using namespace edm;
