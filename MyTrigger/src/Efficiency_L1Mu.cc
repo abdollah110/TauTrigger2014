@@ -161,6 +161,17 @@ bool Efficiency_L1Mu::matchToGenTau(float ieta, float iphi, const edm::Event& iE
     return dR03;
 }
 
+std::vector<reco::Candidate::LorentzVector> getUCTCandidateP4s(const vector < UCTCandidate >& uctCandidates, int mode) {
+    std::vector<reco::Candidate::LorentzVector> uctCandidateP4s;
+    for (UCTCandidateCollection::const_iterator uctCandidate = uctCandidates.begin();
+            uctCandidate != uctCandidates.end(); ++uctCandidate) {
+        if (mode == k2x1) uctCandidateP4s.push_back(uctCandidate->p4());
+        else if (mode == k4x4) uctCandidateP4s.push_back(getScaledP4(uctCandidate->p4(), uctCandidate->getFloat("associatedRegionEt", -4), uctCandidate->et()));
+        else if (mode == k12x12) uctCandidateP4s.push_back(getScaledP4(uctCandidate->p4(), uctCandidate->getFloat("associatedJetPt", -4), uctCandidate->et()));
+        else assert(0);
+    }
+    return uctCandidateP4s;
+}
 // ------------ method called for each event  ------------
 
 void
@@ -168,7 +179,7 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
     using reco::Muon;
     using reco::MuonCollection;
     using reco::RecoChargedCandidate;
-    using reco::UCTCandidateCollection;
+    //    using reco::UCTCandidateCollection;
     using namespace std;
     using namespace reco;
     using namespace edm;
@@ -193,18 +204,7 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
     Handle<pat::TauCollection> pftausHandle;
     iEvent.getByLabel("selectedTaus", pftausHandle);
 
-     std::vector<reco::Candidate::LorentzVector> getUCTCandidateP4s(const vector < UCTCandidate >& uctCandidates, int mode) {
-        std::vector<reco::Candidate::LorentzVector> uctCandidateP4s;
-        for (UCTCandidateCollection::const_iterator uctCandidate = uctCandidates.begin();
-                uctCandidate != uctCandidates.end(); ++uctCandidate) {
-            if (mode == k2x1) uctCandidateP4s.push_back(uctCandidate->p4());
-            else if (mode == k4x4) uctCandidateP4s.push_back(getScaledP4(uctCandidate->p4(), uctCandidate->getFloat("associatedRegionEt", -4), uctCandidate->et()));
-            else if (mode == k12x12) uctCandidateP4s.push_back(getScaledP4(uctCandidate->p4(), uctCandidate->getFloat("associatedJetPt", -4), uctCandidate->et()));
-            else assert(0);
-        }
-        return uctCandidateP4s;
 
-    }
 
     // Different for Muon Isolation
     //    for (vector<l1extra::L1MuonParticle>::const_iterator mu = muonsHandle->begin(); mu != muonsHandle->end(); mu++) {
