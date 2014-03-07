@@ -235,7 +235,7 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent) {
                 if (matchToGenTau(uctIsotau->eta(), uctIsotau->phi(), iEvent)) {
                     IsolatedTauUnpackedEff->Fill(ipftau->pt());
                     IsolatedTauUnpacked->Fill(uctIsotau->pt());
-                    break;
+                    break; 
                 }
             }
 
