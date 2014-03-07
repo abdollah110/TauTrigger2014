@@ -61,7 +61,7 @@ public:
 private:
     virtual void analyze(const edm::Event&, const edm::EventSetup&);
     virtual bool matchToGenTau(float ieta, float iphi, const edm::Event&);
-    virtual std::vector<reco::Candidate::LorentzVector> getUCTCandidateP4s(const vector < UCTCandidate >& , int );
+//    virtual std::vector<reco::Candidate::LorentzVector> getUCTCandidateP4s(const vector < UCTCandidate >& , int );
 
     TH1D *offLineTau;
     TH1D *l1extraParticles;
