@@ -211,7 +211,7 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent) {
     ////////////////////////////////////////////////////////////////////////////////
     //  For efficiency measurement
     ////////////////////////////////////////////////////////////////////////////////
-    for (<pat::TauCollection>::const_iterator ipftau = pftausHandle->begin(); ipftau != pftausHandle->end(); ipftau++) {
+    for (pat::TauCollection::const_iterator ipftau = pftausHandle->begin(); ipftau != pftausHandle->end(); ipftau++) {
         if (ipftau->pt() > 20 && fabs(ipftau->eta()) < 2.3 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits") > 0.5 && ipftau->tauID("againstMuonTight") > 0.5 && matchToGenTau(ipftau->eta(), ipftau->phi(), iEvent)) {
             offLineTauEff->Fill(ipftau->pt());
             offLineTau->Fill(ipftau->pt());
