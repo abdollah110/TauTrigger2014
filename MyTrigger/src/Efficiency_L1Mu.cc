@@ -43,6 +43,7 @@
 #include "DataFormats/HepMCCandidate/interface/GenParticleFwd.h"
 #include "TH1.h"
 #include "../interface/MyTools.h"
+#include "TLorentzVector.h"
 
 //
 // class declaration
@@ -162,20 +163,20 @@ bool Efficiency_L1Mu::matchToGenTau(float ieta, float iphi, const edm::Event& iE
     return dR03;
 }
 
-std::vector<reco::Candidate::LorentzVector> Efficiency_L1Mu::getUCTCandidateP4s(const vector < UCTCandidate >& uctCandidates, int mode) {
-    std::vector<reco::Candidate::LorentzVector> uctCandidateP4s;
-    for (vector < UCTCandidate >::const_iterator uctCandidate = uctCandidates.begin();
-            uctCandidate != uctCandidates.end(); ++uctCandidate) {
-        if (mode == 1) uctCandidateP4s.push_back(uctCandidate->p4());
-//        if (mode == k2x1) uctCandidateP4s.push_back(uctCandidate->p4());
-        else if (mode == 2) uctCandidateP4s.push_back(getScaledP4(uctCandidate->p4(), uctCandidate->getFloat("associatedRegionEt", -4), uctCandidate->et()));
-//        else if (mode == k4x4) uctCandidateP4s.push_back(getScaledP4(uctCandidate->p4(), uctCandidate->getFloat("associatedRegionEt", -4), uctCandidate->et()));
-        else if (mode == 3) uctCandidateP4s.push_back(getScaledP4(uctCandidate->p4(), uctCandidate->getFloat("associatedJetPt", -4), uctCandidate->et()));
-//        else if (mode == k12x12) uctCandidateP4s.push_back(getScaledP4(uctCandidate->p4(), uctCandidate->getFloat("associatedJetPt", -4), uctCandidate->et()));
-        else assert(0);
-    }
-    return uctCandidateP4s;
-}
+//std::vector<reco::Candidate::LorentzVector> Efficiency_L1Mu::getUCTCandidateP4s(const vector < UCTCandidate >& uctCandidates, int mode) {
+//    std::vector<reco::Candidate::LorentzVector> uctCandidateP4s;
+//    for (vector < UCTCandidate >::const_iterator uctCandidate = uctCandidates.begin();
+//            uctCandidate != uctCandidates.end(); ++uctCandidate) {
+//        if (mode == 1) uctCandidateP4s.push_back(uctCandidate->p4());
+////        if (mode == k2x1) uctCandidateP4s.push_back(uctCandidate->p4());
+//        else if (mode == 2) uctCandidateP4s.push_back(getScaledP4(uctCandidate->p4(), uctCandidate->getFloat("associatedRegionEt", -4), uctCandidate->et()));
+////        else if (mode == k4x4) uctCandidateP4s.push_back(getScaledP4(uctCandidate->p4(), uctCandidate->getFloat("associatedRegionEt", -4), uctCandidate->et()));
+//        else if (mode == 3) uctCandidateP4s.push_back(getScaledP4(uctCandidate->p4(), uctCandidate->getFloat("associatedJetPt", -4), uctCandidate->et()));
+////        else if (mode == k12x12) uctCandidateP4s.push_back(getScaledP4(uctCandidate->p4(), uctCandidate->getFloat("associatedJetPt", -4), uctCandidate->et()));
+//        else assert(0);
+//    }
+//    return uctCandidateP4s;
+//}
 // ------------ method called for each event  ------------
 
 void
@@ -240,7 +241,8 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
                 }
             }
             for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
-                cout << getUCTCandidateP4s(ucttau, 10).pt() << endl;
+//                cout << getUCTCandidateP4s(ucttau, 10).pt() << endl;
+                cout << ucttau->getFloat("associatedRegionEt", -4)<< endl;
                 if (matchToGenTau(ucttau->eta(), ucttau->phi(), iEvent)) {
                     RelaxedTauUnpackedEff->Fill(ipftau->pt());
                     RelaxedTauUnpacked->Fill(ucttau->pt());
