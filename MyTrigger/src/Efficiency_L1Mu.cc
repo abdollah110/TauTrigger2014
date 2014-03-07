@@ -161,18 +161,6 @@ bool Efficiency_L1Mu::matchToGenTau(float ieta, float iphi, const edm::Event& iE
     return dR03;
 }
 
-std::vector<reco::Candidate::LorentzVector> getUCTCandidateP4s(const UCTCandidateCollection& uctCandidates, int mode) {
-    std::vector<reco::Candidate::LorentzVector> uctCandidateP4s;
-    for (UCTCandidateCollection::const_iterator uctCandidate = uctCandidates.begin();
-            uctCandidate != uctCandidates.end(); ++uctCandidate) {
-        if (mode == k2x1) uctCandidateP4s.push_back(uctCandidate->p4());
-        else if (mode == k4x4) uctCandidateP4s.push_back(getScaledP4(uctCandidate->p4(), uctCandidate->getFloat("associatedRegionEt", -4), uctCandidate->et()));
-        else if (mode == k12x12) uctCandidateP4s.push_back(getScaledP4(uctCandidate->p4(), uctCandidate->getFloat("associatedJetPt", -4), uctCandidate->et()));
-        else assert(0);
-    }
-    return uctCandidateP4s;
-
-}
 // ------------ method called for each event  ------------
 
 void
@@ -204,6 +192,18 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
     Handle<pat::TauCollection> pftausHandle;
     iEvent.getByLabel("selectedTaus", pftausHandle);
 
+    std::vector<reco::Candidate::LorentzVector> getUCTCandidateP4s(const UCTCandidateCollection& uctCandidates, int mode) {
+        std::vector<reco::Candidate::LorentzVector> uctCandidateP4s;
+        for (UCTCandidateCollection::const_iterator uctCandidate = uctCandidates.begin();
+                uctCandidate != uctCandidates.end(); ++uctCandidate) {
+            if (mode == k2x1) uctCandidateP4s.push_back(uctCandidate->p4());
+            else if (mode == k4x4) uctCandidateP4s.push_back(getScaledP4(uctCandidate->p4(), uctCandidate->getFloat("associatedRegionEt", -4), uctCandidate->et()));
+            else if (mode == k12x12) uctCandidateP4s.push_back(getScaledP4(uctCandidate->p4(), uctCandidate->getFloat("associatedJetPt", -4), uctCandidate->et()));
+            else assert(0);
+        }
+        return uctCandidateP4s;
+
+    }
 
     // Different for Muon Isolation
     //    for (vector<l1extra::L1MuonParticle>::const_iterator mu = muonsHandle->begin(); mu != muonsHandle->end(); mu++) {
@@ -235,7 +235,7 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
                 }
             }
             for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
-                cout << getUCTCandidateP4s(ucttau, k4x4) << endl;
+                cout << getUCTCandidateP4s(ucttau, 10) << endl;
                 if (matchToGenTau(ucttau->eta(), ucttau->phi(), iEvent)) {
                     RelaxedTauUnpackedEff->Fill(ipftau->pt());
                     RelaxedTauUnpacked->Fill(ucttau->pt());
