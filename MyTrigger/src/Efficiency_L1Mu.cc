@@ -58,7 +58,7 @@ public:
 
 
 private:
-    virtual void analyze(const edm::Event&);
+    virtual void analyze(const edm::Event&, const edm::EventSetup&);
     virtual bool matchToGenTau(float ieta, float iphi, const edm::Event&);
 
     TH1D *offLineTau;
@@ -165,7 +165,7 @@ bool Efficiency_L1Mu::matchToGenTau(float ieta, float iphi, const edm::Event& iE
 // ------------ method called for each event  ------------
 
 void
-Efficiency_L1Mu::analyze(const edm::Event& iEvent) {
+Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     using reco::Muon;
     using reco::MuonCollection;
     using reco::RecoChargedCandidate;
@@ -235,7 +235,7 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent) {
                 if (matchToGenTau(uctIsotau->eta(), uctIsotau->phi(), iEvent)) {
                     IsolatedTauUnpackedEff->Fill(ipftau->pt());
                     IsolatedTauUnpacked->Fill(uctIsotau->pt());
-                    break; 
+                    break;
                 }
             }
 
