@@ -193,7 +193,7 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
     Handle<pat::TauCollection> pftausHandle;
     iEvent.getByLabel("selectedTaus", pftausHandle);
 
-     std::vector<reco::Candidate::LorentzVector> getUCTCandidateP4s(const UCTCandidateCollection& uctCandidates, int mode) {
+     std::vector<reco::Candidate::LorentzVector> getUCTCandidateP4s(const vector < UCTCandidate >& uctCandidates, int mode) {
         std::vector<reco::Candidate::LorentzVector> uctCandidateP4s;
         for (UCTCandidateCollection::const_iterator uctCandidate = uctCandidates.begin();
                 uctCandidate != uctCandidates.end(); ++uctCandidate) {
@@ -236,7 +236,7 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
                 }
             }
             for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
-                cout << getUCTCandidateP4s(ucttau, 10) << endl;
+                cout << getUCTCandidateP4s(ucttau, 10).pt() << endl;
                 if (matchToGenTau(ucttau->eta(), ucttau->phi(), iEvent)) {
                     RelaxedTauUnpackedEff->Fill(ipftau->pt());
                     RelaxedTauUnpacked->Fill(ucttau->pt());
