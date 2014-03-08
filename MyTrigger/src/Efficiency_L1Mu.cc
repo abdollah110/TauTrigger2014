@@ -63,16 +63,17 @@ private:
     virtual bool matchToGenTau(float ieta, float iphi, const edm::Event&);
     //    virtual std::vector<reco::Candidate::LorentzVector> getUCTCandidateP4s(const vector < UCTCandidate >& , int );
 
-    TH1D *offLineTau;
-    TH1D *l1extraParticles;
-    TH1D *RelaxedTauUnpacked;
-    TH1D *IsolatedTauUnpacked;
+    TH1D *offLineTauROC;
+    TH1D *l1extraParticlesROC;
+    TH1D *RelaxedTauUnpackedROC;
+    TH1D *RelaxedTauUnpackedROC4x4;
+    TH1D *IsolatedTauUnpackedROC;
+    TH1D *IsolatedTauUnpackedROC4x4;
+
     TH1D *offLineTauEff;
     TH1D *l1extraParticlesEff;
     TH1D *RelaxedTauUnpackedEff;
     TH1D *IsolatedTauUnpackedEff;
-    TH1D *RelaxedTauUnpackedEff4x4;
-    TH1D *IsolatedTauUnpackedEff4x4;
 
 
     edm::InputTag srcGenParticle_;
@@ -108,17 +109,17 @@ Efficiency_L1Mu::Efficiency_L1Mu(const edm::ParameterSet& iConfig) {
     myMap1__ = new std::map<std::string, TH1F*>();
 
 
-    offLineTau = fs->make<TH1D > ("offLineTau", "", 100, 0, 100);
-    l1extraParticles = fs->make<TH1D > ("l1extraParticles", "", 100, 0, 100);
-    RelaxedTauUnpacked = fs->make<TH1D > ("RelaxedTauUnpacked", "", 100, 0, 100);
-    IsolatedTauUnpacked = fs->make<TH1D > ("IsolatedTauUnpacked", "", 100, 0, 100);
+    offLineTauROC = fs->make<TH1D > ("offLineTau", "", 100, 0, 100);
+    l1extraParticlesROC = fs->make<TH1D > ("l1extraParticles", "", 100, 0, 100);
+    RelaxedTauUnpackedROC = fs->make<TH1D > ("RelaxedTauUnpacked", "", 100, 0, 100);
+    RelaxedTauUnpackedROC4x4 = fs->make<TH1D > ("RelaxedTauUnpackedEff4x4", "", 100, 0, 100);
+    IsolatedTauUnpackedROC = fs->make<TH1D > ("IsolatedTauUnpacked", "", 100, 0, 100);
+    IsolatedTauUnpackedROC4x4 = fs->make<TH1D > ("IsolatedTauUnpackedEff4x4", "", 100, 0, 100);
 
     offLineTauEff = fs->make<TH1D > ("offLineTauEff", "", 100, 0, 100);
     l1extraParticlesEff = fs->make<TH1D > ("l1extraParticlesEff", "", 100, 0, 100);
     RelaxedTauUnpackedEff = fs->make<TH1D > ("RelaxedTauUnpackedEff", "", 100, 0, 100);
     IsolatedTauUnpackedEff = fs->make<TH1D > ("IsolatedTauUnpackedEff", "", 100, 0, 100);
-    RelaxedTauUnpackedEff4x4 = fs->make<TH1D > ("RelaxedTauUnpackedEff4x4", "", 100, 0, 100);
-    IsolatedTauUnpackedEff4x4 = fs->make<TH1D > ("IsolatedTauUnpackedEff4x4", "", 100, 0, 100);
 
 
 
@@ -237,14 +238,14 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
     for (pat::TauCollection::const_iterator ipftau = pftausHandle->begin(); ipftau != pftausHandle->end(); ipftau++) {
         if (ipftau->pt() > 20 && fabs(ipftau->eta()) < 2.3 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits") > 0.5 && ipftau->tauID("againstMuonTight") > 0.5 && matchToGenTau(ipftau->eta(), ipftau->phi(), iEvent)) {
             offLineTauEff->Fill(ipftau->pt());
-            offLineTau->Fill(ipftau->pt());
+            offLineTauROC->Fill(ipftau->pt());
             // ############################## OLD tau HLT Algorithm
             bool hasPassedL1Tau = false;
             for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
                 if (matchToGenTau(tau->eta(), tau->phi(), iEvent)) {
                     hasPassedL1Tau = true;
                     l1extraParticlesEff->Fill(ipftau->pt());
-                    l1extraParticles->Fill(tau->pt());
+                    l1extraParticlesROC->Fill(tau->pt());
                     break;
                 }
             }
@@ -252,7 +253,7 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
                 for (vector<l1extra::L1JetParticle>::const_iterator jet = jetsHandle->begin(); jet != jetsHandle->end(); jet++) {
                     if (matchToGenTau(jet->eta(), jet->phi(), iEvent)) {
                         l1extraParticlesEff->Fill(ipftau->pt());
-                        l1extraParticles->Fill(jet->pt());
+                        l1extraParticlesROC->Fill(jet->pt());
                         break;
                     }
                 }
@@ -261,18 +262,18 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
             for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
                 //                cout << "2x1=" << ucttau->et() << "   4x4=" << ucttau->getFloat("associatedRegionEt", -4) << "   12x12= " << ucttau->getFloat("associatedJetPt", -4) << endl;
                 if (matchToGenTau(ucttau->eta(), ucttau->phi(), iEvent)) {
-                    RelaxedTauUnpackedEff4x4->Fill(ucttau->getFloat("associatedRegionEt", -4));
                     RelaxedTauUnpackedEff->Fill(ipftau->pt());
-                    RelaxedTauUnpacked->Fill(ucttau->pt());
+                    RelaxedTauUnpackedROC->Fill(ucttau->pt());
+                    RelaxedTauUnpackedROC4x4->Fill(ucttau->getFloat("associatedRegionEt", -4));
                     break;
 
                 }
             }
             for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++) {
                 if (matchToGenTau(uctIsotau->eta(), uctIsotau->phi(), iEvent)) {
-                    IsolatedTauUnpackedEff4x4->Fill(uctIsotau->getFloat("associatedRegionEt", -4));
                     IsolatedTauUnpackedEff->Fill(ipftau->pt());
-                    IsolatedTauUnpacked->Fill(uctIsotau->pt());
+                    IsolatedTauUnpackedROC->Fill(uctIsotau->pt());
+                    IsolatedTauUnpackedROC4x4->Fill(uctIsotau->getFloat("associatedRegionEt", -4));
                     break;
                 }
             }

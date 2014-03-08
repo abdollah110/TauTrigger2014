@@ -92,29 +92,34 @@ def doCommulative(num, denum, marSize, marStyle, marColor):
 
 #FileFixed = TFile("eff_Results_Fixed1.root", "OPEN")
 #FileFixed = TFile("eff_Results_Fixed1_Z_Zprime.root", "OPEN")
-FileFixed = TFile("eff_Results_Fixed1_New.root", "OPEN")
-DenumFixed = FileFixed.Get("demo/offLineTauEff")
-Num_l1extraFixed = FileFixed.Get("demo/l1extraParticlesEff")
-Num_RelaxedTauFixed = FileFixed.Get("demo/RelaxedTauUnpackedEff")
-Num_IsolatedTauFixed = FileFixed.Get("demo/IsolatedTauUnpackedEff")
-Denum = FileFixed.Get("demo/offLineTau")
-Num_l1extra = FileFixed.Get("demo/l1extraParticles")
-Num_RelaxedTau = FileFixed.Get("demo/RelaxedTauUnpacked")
-Num_IsolatedTau = FileFixed.Get("demo/IsolatedTauUnpacked")
+
+
+FileFixed = TFile("eff_Results_Fixed1.root", "OPEN")
+
+DenumEff = FileFixed.Get("demo/offLineTauEff")
+Num_l1extraEff = FileFixed.Get("demo/l1extraParticlesEff")
+Num_RelaxedTauEff = FileFixed.Get("demo/RelaxedTauUnpackedEff")
+Num_IsolatedTauEff = FileFixed.Get("demo/IsolatedTauUnpackedEff")
+
+DenumROC = FileFixed.Get("demo/offLineTauROC")
+Num_l1extraROC = FileFixed.Get("demo/l1extraParticlesROC")
+Num_RelaxedTauROC = FileFixed.Get("demo/RelaxedTauUnpackedROC")
+Num_IsolatedTauROC = FileFixed.Get("demo/IsolatedTauUnpackedROC")
+Num_RelaxedTauROC4x4 = FileFixed.Get("demo/RelaxedTauUnpackedROC4x4")
+Num_IsolatedTauROC4x4 = FileFixed.Get("demo/IsolatedTauUnpackedROC4x4")
 
 
 
 
-l1extraFixed = doRatio(Num_l1extraFixed, DenumFixed, 1.2, 23, 2)
-RelaxedTauFixed = doRatio(Num_RelaxedTauFixed, DenumFixed, 1.2, 21, 3)
-IsolatedTauFixed = doRatio(Num_IsolatedTauFixed, DenumFixed, 1.2, 24, 4)
+l1extraEff = doRatio(Num_l1extraEff, DenumEff, 1.2, 23, 2)
+RelaxedTauEff = doRatio(Num_RelaxedTauEff, DenumEff, 1.2, 21, 3)
+IsolatedTauEff = doRatio(Num_IsolatedTauEff, DenumEff, 1.2, 24, 4)
 
-l1extraROC = doCommulative(Num_l1extra, Denum, 1.2, 23, 2)
-RelaxedTauROC = doCommulative(Num_RelaxedTau, Denum, 1.2, 21, 3)
-IsolatedTauROC = doCommulative(Num_IsolatedTau, Denum, 1.2, 24, 4)
-
-#l1extra.Draw("PAE")
-#l1extraFixed.Draw("Psame")
+l1extraROC = doCommulative(Num_l1extraROC, DenumROC, 1.2, 23, 2)
+RelaxedTauROC = doCommulative(Num_RelaxedTauROC, DenumROC, 1.2, 21, 3)
+IsolatedTauROC = doCommulative(Num_IsolatedTauROC, DenumROC, 1.2, 24, 4)
+RelaxedTau4x4ROC = doCommulative(Num_RelaxedTauROC4x4, DenumROC, 1.2, 21, 3)
+IsolatedTau4x4ROC = doCommulative(Num_IsolatedTauROC4x4, DenumROC, 1.2, 24, 4)
 
 
 #for bn in range(1,50):
