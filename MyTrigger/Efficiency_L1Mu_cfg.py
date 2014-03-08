@@ -110,6 +110,7 @@ process.demo = cms.EDAnalyzer('Efficiency_L1Mu',
                               srcGenParticle=cms.InputTag("genParticles"),
                               srcL1Mus=cms.InputTag("l1extraParticles"),
                               srcL1Taus=cms.InputTag("l1extraParticles", "Tau"),
+                              srcL1Jets=cms.InputTag("l1extraParticles", "Central"),
                               srcHLTCaloTowers=cms.InputTag('hltTowerMakerForPF'),
                               srcL1UpgradeTaus=cms.InputTag('UCT2015Producer', 'RelaxedTauUnpacked'),
                               srcL1UpgradeIsoTaus=cms.InputTag('UCT2015Producer', 'IsolatedTauUnpacked') #taus below 60 GeV will have isolation applied

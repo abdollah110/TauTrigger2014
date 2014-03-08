@@ -71,10 +71,13 @@ private:
     TH1D *l1extraParticlesEff;
     TH1D *RelaxedTauUnpackedEff;
     TH1D *IsolatedTauUnpackedEff;
+    TH1D *RelaxedTauUnpackedEff4x4;
+    TH1D *IsolatedTauUnpackedEff4x4;
 
 
     edm::InputTag srcGenParticle_;
     edm::InputTag L1TauSource_;
+    edm::InputTag L1JetSource_;
     edm::InputTag L1MuSource_;
     edm::InputTag srcHLTCaloTowers_;
     edm::InputTag srcL1UpgradeTaus_;
@@ -105,21 +108,24 @@ Efficiency_L1Mu::Efficiency_L1Mu(const edm::ParameterSet& iConfig) {
     myMap1__ = new std::map<std::string, TH1F*>();
 
 
-    offLineTau = fs->make<TH1D > ("offLineTau", "", 50, 0, 100);
-    l1extraParticles = fs->make<TH1D > ("l1extraParticles", "", 50, 0, 100);
-    RelaxedTauUnpacked = fs->make<TH1D > ("RelaxedTauUnpacked", "", 50, 0, 100);
-    IsolatedTauUnpacked = fs->make<TH1D > ("IsolatedTauUnpacked", "", 50, 0, 100);
+    offLineTau = fs->make<TH1D > ("offLineTau", "", 100, 0, 100);
+    l1extraParticles = fs->make<TH1D > ("l1extraParticles", "", 100, 0, 100);
+    RelaxedTauUnpacked = fs->make<TH1D > ("RelaxedTauUnpacked", "", 100, 0, 100);
+    IsolatedTauUnpacked = fs->make<TH1D > ("IsolatedTauUnpacked", "", 100, 0, 100);
 
-    offLineTauEff = fs->make<TH1D > ("offLineTauEff", "", 50, 0, 100);
-    l1extraParticlesEff = fs->make<TH1D > ("l1extraParticlesEff", "", 50, 0, 100);
-    RelaxedTauUnpackedEff = fs->make<TH1D > ("RelaxedTauUnpackedEff", "", 50, 0, 100);
-    IsolatedTauUnpackedEff = fs->make<TH1D > ("IsolatedTauUnpackedEff", "", 50, 0, 100);
+    offLineTauEff = fs->make<TH1D > ("offLineTauEff", "", 100, 0, 100);
+    l1extraParticlesEff = fs->make<TH1D > ("l1extraParticlesEff", "", 100, 0, 100);
+    RelaxedTauUnpackedEff = fs->make<TH1D > ("RelaxedTauUnpackedEff", "", 100, 0, 100);
+    IsolatedTauUnpackedEff = fs->make<TH1D > ("IsolatedTauUnpackedEff", "", 100, 0, 100);
+    RelaxedTauUnpackedEff4x4 = fs->make<TH1D > ("RelaxedTauUnpackedEff4x4", "", 100, 0, 100);
+    IsolatedTauUnpackedEff4x4 = fs->make<TH1D > ("IsolatedTauUnpackedEff4x4", "", 100, 0, 100);
 
 
 
     srcGenParticle_ = iConfig.getParameter<edm::InputTag > ("srcGenParticle");
     L1MuSource_ = iConfig.getParameter<edm::InputTag > ("srcL1Mus");
     L1TauSource_ = iConfig.getParameter<edm::InputTag > ("srcL1Taus");
+    L1JetSource_ = iConfig.getParameter<edm::InputTag > ("srcL1Jets");
     srcHLTCaloTowers_ = iConfig.getParameter<edm::InputTag > ("srcHLTCaloTowers");
     srcL1UpgradeTaus_ = iConfig.getParameter<edm::InputTag > ("srcL1UpgradeTaus");
     srcL1UpgradeIsoTaus_ = iConfig.getParameter<edm::InputTag > ("srcL1UpgradeIsoTaus");
@@ -127,8 +133,8 @@ Efficiency_L1Mu::Efficiency_L1Mu(const edm::ParameterSet& iConfig) {
 
 Efficiency_L1Mu::~Efficiency_L1Mu() {
 
-    map<string, TH1F*>::const_iterator iMap1 = myMap1__->begin();
-    map<string, TH1F*>::const_iterator jMap1 = myMap1__->end();
+    //    map<string, TH1F*>::const_iterator iMap1 = myMap1__->begin();
+    //    map<string, TH1F*>::const_iterator jMap1 = myMap1__->end();
 
 
     // do anything here that needs to be done at desctruction time
@@ -197,6 +203,9 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
     Handle < vector < l1extra::L1JetParticle >> tausHandle;
     iEvent.getByLabel(L1TauSource_, tausHandle);
 
+    Handle < vector < l1extra::L1JetParticle >> jetsHandle;
+    iEvent.getByLabel(L1JetSource_, jetsHandle);
+
     Handle < vector < UCTCandidate >> tausUpgradeHandle;
     iEvent.getByLabel(srcL1UpgradeTaus_, tausUpgradeHandle);
 
@@ -229,18 +238,30 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
         if (ipftau->pt() > 20 && fabs(ipftau->eta()) < 2.3 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits") > 0.5 && ipftau->tauID("againstMuonTight") > 0.5 && matchToGenTau(ipftau->eta(), ipftau->phi(), iEvent)) {
             offLineTauEff->Fill(ipftau->pt());
             offLineTau->Fill(ipftau->pt());
-
+            // ############################## OLD tau HLT Algorithm
+            bool hasPassedL1Tau = false;
             for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
                 if (matchToGenTau(tau->eta(), tau->phi(), iEvent)) {
+                    hasPassedL1Tau = true;
                     l1extraParticlesEff->Fill(ipftau->pt());
                     l1extraParticles->Fill(tau->pt());
                     break;
                 }
             }
+            if (!hasPassedL1Tau) { // Here we add OR between L1Tau and L1Jet
+                for (vector<l1extra::L1JetParticle>::const_iterator jet = jetsHandle->begin(); jet != jetsHandle->end(); jet++) {
+                    if (matchToGenTau(jet->eta(), jet->phi(), iEvent)) {
+                        l1extraParticlesEff->Fill(ipftau->pt());
+                        l1extraParticles->Fill(jet->pt());
+                        break;
+                    }
+                }
+            }
+            // ############################## NEW tau HLT Algorithm UST2015
             for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
-                //                cout << getUCTCandidateP4s(ucttau, 10).pt() << endl;
-                cout << "2x1=" << ucttau->et() << "   4x4=" << ucttau->getFloat("associatedRegionEt", -4) << "   12x12= " << ucttau->getFloat("associatedJetPt", -4) << endl;
+                //                cout << "2x1=" << ucttau->et() << "   4x4=" << ucttau->getFloat("associatedRegionEt", -4) << "   12x12= " << ucttau->getFloat("associatedJetPt", -4) << endl;
                 if (matchToGenTau(ucttau->eta(), ucttau->phi(), iEvent)) {
+                    RelaxedTauUnpackedEff4x4->Fill(ucttau->getFloat("associatedRegionEt", -4));
                     RelaxedTauUnpackedEff->Fill(ipftau->pt());
                     RelaxedTauUnpacked->Fill(ucttau->pt());
                     break;
@@ -249,6 +270,7 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
             }
             for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++) {
                 if (matchToGenTau(uctIsotau->eta(), uctIsotau->phi(), iEvent)) {
+                    IsolatedTauUnpackedEff4x4->Fill(uctIsotau->getFloat("associatedRegionEt", -4));
                     IsolatedTauUnpackedEff->Fill(ipftau->pt());
                     IsolatedTauUnpacked->Fill(uctIsotau->pt());
                     break;
