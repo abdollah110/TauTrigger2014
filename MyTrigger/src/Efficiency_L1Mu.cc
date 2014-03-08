@@ -239,7 +239,7 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
             }
             for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
                 //                cout << getUCTCandidateP4s(ucttau, 10).pt() << endl;
-                cout << "2x1=" << uctCandidate->et() << "   4x4=" << ucttau->getFloat("associatedRegionEt", -4) << "   12x12= " << ucttau->getFloat("associatedJetPt", -4) << endl;
+                cout << "2x1=" << ucttau->et() << "   4x4=" << ucttau->getFloat("associatedRegionEt", -4) << "   12x12= " << ucttau->getFloat("associatedJetPt", -4) << endl;
                 if (matchToGenTau(ucttau->eta(), ucttau->phi(), iEvent)) {
                     RelaxedTauUnpackedEff->Fill(ipftau->pt());
                     RelaxedTauUnpacked->Fill(ucttau->pt());
