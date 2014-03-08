@@ -125,9 +125,9 @@ IsolatedTau4x4ROC = doCommulative(Num_IsolatedTauROC4x4, DenumROC, 1.2, 24, 4)
 #for bn in range(1,50):
 #    print bn, DenumFixed.GetBinContent(bn)-Num_l1extraFixed.GetBinContent(bn), DenumFixed.GetBinContent(bn)-Num_RelaxedTauFixed.GetBinContent(bn),DenumFixed.GetBinContent(bn)-Num_IsolatedTauFixed.GetBinContent(bn)
 
-l1extraFixed.Draw("PAE")
-RelaxedTauFixed.Draw("Psame")
-IsolatedTauFixed.Draw("Psame")
+l1extraEff.Draw("PAE")
+RelaxedTauEff.Draw("Psame")
+IsolatedTauEff.Draw("Psame")
 
 
 legend_ = TLegend(0.60, 0.78, 0.9, 0.9)
@@ -148,6 +148,8 @@ canvas.SaveAs("ChannelNameFixed2.pdf")
 l1extraROC.Draw("P")
 RelaxedTauROC.Draw("Psame")
 IsolatedTauROC.Draw("Psame")
+RelaxedTau4x4ROC.Draw("Psame")
+IsolatedTau4x4ROC.Draw("Psame")
 
 
 
@@ -155,9 +157,11 @@ legend_ = TLegend(0.60, 0.78, 0.9, 0.9)
 legend_.SetFillColor(0)
 legend_.SetBorderSize(0)
 legend_.SetTextSize(.03)
-legend_.AddEntry(l1extraROC, "l1extra(ROC)", "lp")
-legend_.AddEntry(RelaxedTauROC, "UCTTau(ROC)", "lp")
-legend_.AddEntry(IsolatedTauROC, "IsoUCTTau(ROC)", "lp")
+legend_.AddEntry(l1extraROC, "L1tau or jet", "lp")
+legend_.AddEntry(RelaxedTauROC, "UCTTau2x1", "lp")
+legend_.AddEntry(IsolatedTauROC, "IsoUCTTau2x1", "lp")
+legend_.AddEntry(RelaxedTau4x4ROC, "UCTTau4x4", "lp")
+legend_.AddEntry(IsolatedTau4x4ROC, "IsoUCTTau4x4", "lp")
 legend_.Draw()
 
 

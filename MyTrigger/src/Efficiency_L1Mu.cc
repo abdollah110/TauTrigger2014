@@ -109,12 +109,12 @@ Efficiency_L1Mu::Efficiency_L1Mu(const edm::ParameterSet& iConfig) {
     myMap1__ = new std::map<std::string, TH1F*>();
 
 
-    offLineTauROC = fs->make<TH1D > ("offLineTau", "", 100, 0, 100);
-    l1extraParticlesROC = fs->make<TH1D > ("l1extraParticles", "", 100, 0, 100);
-    RelaxedTauUnpackedROC = fs->make<TH1D > ("RelaxedTauUnpacked", "", 100, 0, 100);
-    RelaxedTauUnpackedROC4x4 = fs->make<TH1D > ("RelaxedTauUnpackedEff4x4", "", 100, 0, 100);
-    IsolatedTauUnpackedROC = fs->make<TH1D > ("IsolatedTauUnpacked", "", 100, 0, 100);
-    IsolatedTauUnpackedROC4x4 = fs->make<TH1D > ("IsolatedTauUnpackedEff4x4", "", 100, 0, 100);
+    offLineTauROC = fs->make<TH1D > ("offLineTauROC", "", 100, 0, 100);
+    l1extraParticlesROC = fs->make<TH1D > ("l1extraParticlesROC", "", 100, 0, 100);
+    RelaxedTauUnpackedROC = fs->make<TH1D > ("RelaxedTauUnpackedROC", "", 100, 0, 100);
+    RelaxedTauUnpackedROC4x4 = fs->make<TH1D > ("RelaxedTauUnpackedROC4x4", "", 100, 0, 100);
+    IsolatedTauUnpackedROC = fs->make<TH1D > ("IsolatedTauUnpackedROC", "", 100, 0, 100);
+    IsolatedTauUnpackedROC4x4 = fs->make<TH1D > ("IsolatedTauUnpackedROC4x4", "", 100, 0, 100);
 
     offLineTauEff = fs->make<TH1D > ("offLineTauEff", "", 100, 0, 100);
     l1extraParticlesEff = fs->make<TH1D > ("l1extraParticlesEff", "", 100, 0, 100);
