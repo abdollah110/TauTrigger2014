@@ -31,17 +31,17 @@ void L1CurveROC() {
 
     int val = 100;
     //###### Efficiency
-    TFile *inputFile = new TFile("eff_Results.root");
-    TH1D *Denum = (TH1D*) inputFile->Get("demo/offLineTau");
-    TH1D *L1JetParticle = (TH1D*) inputFile->Get("demo/l1extraParticles");
-    TH1D *UCTCandidate = (TH1D*) inputFile->Get("demo/RelaxedTauUnpacked");
-    TH1D *UCTCandidateIso = (TH1D*) inputFile->Get("demo/IsolatedTauUnpacked");
+    TFile *inputFile = new TFile("muTau_L1Mu_efficiency.root");
+    TH1D *Denum = (TH1D*) inputFile->Get("demo/offLineTauROC");
+    TH1D *L1JetParticle = (TH1D*) inputFile->Get("demo/l1extraParticlesROC");
+    TH1D *UCTCandidate = (TH1D*) inputFile->Get("demo/RelaxedTauUnpackedROC");
+    TH1D *UCTCandidateIso = (TH1D*) inputFile->Get("demo/IsolatedTauUnpackedROC");
 
     //###### Rate
-    TFile *inputFile_rate = new TFile("l1Rate.root");
-    TH1D *L1JetParticle_rate = (TH1D*) inputFile_rate->Get("demo/rate_after_L1JetParticle");
-    TH1D *UCTCandidate_rate = (TH1D*) inputFile_rate->Get("demo/rate_after_UCTCandidate");
-    TH1D *UCTCandidateIso_rate = (TH1D*) inputFile_rate->Get("demo/rate_after_UCTCandidateIso");
+    TFile *inputFile_rate = new TFile("muTau_L1Mu_rate.root");
+    TH1D *L1JetParticle_rate = (TH1D*) inputFile_rate->Get("demo/rate_L1JetParticle");
+    TH1D *UCTCandidate_rate = (TH1D*) inputFile_rate->Get("demo/rate_UCTCandidate");
+    TH1D *UCTCandidateIso_rate = (TH1D*) inputFile_rate->Get("demo/rate_UCTCandidateIso");
 
 
     //###### ROC

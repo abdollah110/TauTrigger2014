@@ -81,6 +81,17 @@ private:
     TH1D * rate_UCTCandidateIso4x4;
     TH1D * rate_UCTCandidate4x4;
 
+    TH2D * Eff2D_Denum_l1extraParticles;
+    TH2D * Eff2D_Denum_RelaxedTauUnpacked;
+    TH2D * Eff2D_Denum_RelaxedTauUnpacked4x4;
+    TH2D * Eff2D_Denum_IsolatedTauUnpacked;
+    TH2D * Eff2D_Denum_IsolatedTauUnpacked4x4;
+    TH2D * Eff2D_Num_l1extraParticles;
+    TH2D * Eff2D_Num_RelaxedTauUnpacked;
+    TH2D * Eff2D_Num_RelaxedTauUnpacked4x4;
+    TH2D * Eff2D_Num_IsolatedTauUnpacked;
+    TH2D * Eff2D_Num_IsolatedTauUnpacked4x4;
+
     edm::InputTag srcGenParticle_;
     edm::InputTag L1TauSource_;
     edm::InputTag L1JetSource_;
@@ -132,6 +143,18 @@ Efficiency_L1Mu::Efficiency_L1Mu(const edm::ParameterSet& iConfig) {
     rate_UCTCandidate = fs->make<TH1D > ("rate_UCTCandidate", "", 100, 0, 100);
     rate_UCTCandidateIso4x4 = fs->make<TH1D > ("rate_UCTCandidateIso4x4", "", 100, 0, 100);
     rate_UCTCandidate4x4 = fs->make<TH1D > ("rate_UCTCandidate4x4", "", 100, 0, 100);
+
+    Eff2D_Denum_l1extraParticles = fs->make<TH1D > ("Eff2D_Denum_l1extraParticles", "", 100, 0, 100, 100, 0, 100);
+    Eff2D_Denum_RelaxedTauUnpacked = fs->make<TH1D > ("Eff2D_Denum_RelaxedTauUnpacked", "", 100, 0, 100, 100, 0, 100);
+    Eff2D_Denum_RelaxedTauUnpacked4x4 = fs->make<TH1D > ("Eff2D_Denum_RelaxedTauUnpacked4x4", "", 100, 0, 100, 100, 0, 100);
+    Eff2D_Denum_IsolatedTauUnpacked = fs->make<TH1D > ("Eff2D_Denum_IsolatedTauUnpacked", "", 100, 0, 100, 100, 0, 100);
+    Eff2D_Denum_IsolatedTauUnpacked4x4 = fs->make<TH1D > ("Eff2D_Denum_IsolatedTauUnpacked4x4", "", 100, 0, 100, 100, 0, 100);
+
+    Eff2D_Num_l1extraParticles = fs->make<TH1D > ("Eff2D_Num_l1extraParticles", "", 100, 0, 100, 100, 0, 100);
+    Eff2D_Num_RelaxedTauUnpacked = fs->make<TH1D > ("Eff2D_Num_RelaxedTauUnpacked", "", 100, 0, 100, 100, 0, 100);
+    Eff2D_Num_RelaxedTauUnpacked4x4 = fs->make<TH1D > ("Eff2D_Num_RelaxedTauUnpacked4x4", "", 100, 0, 100, 100, 0, 100);
+    Eff2D_Num_IsolatedTauUnpacked = fs->make<TH1D > ("Eff2D_Num_IsolatedTauUnpacked", "", 100, 0, 100, 100, 0, 100);
+    Eff2D_Num_IsolatedTauUnpacked4x4 = fs->make<TH1D > ("Eff2D_Num_IsolatedTauUnpacked4x4", "", 100, 0, 100, 100, 0, 100);
 
 
     srcGenParticle_ = iConfig.getParameter<edm::InputTag > ("srcGenParticle");
@@ -255,10 +278,12 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
                 // ############################## OLD tau HLT Algorithm
                 bool hasPassedL1Tau = false;
                 for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
+                    Eff2D_Denum_l1extraParticles->Fill(ipftau->pt(), tau->pt());
                     if (matchToGenTau(tau->eta(), tau->phi(), iEvent)) {
                         hasPassedL1Tau = true;
                         l1extraParticlesEff->Fill(ipftau->pt());
                         l1extraParticlesROC->Fill(tau->pt());
+                        Eff2D_Num_l1extraParticles->Fill(ipftau->pt(), tau->pt());
                         break;
                     }
                 }
@@ -274,19 +299,27 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
                 // ############################## NEW tau HLT Algorithm UST2015
                 for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
                     //                cout << "2x1=" << ucttau->et() << "   4x4=" << ucttau->getFloat("associatedRegionEt", -4) << "   12x12= " << ucttau->getFloat("associatedJetPt", -4) << endl;
+                    Eff2D_Denum_RelaxedTauUnpacked->Fill(ipftau->pt(), tau->pt());
+                    Eff2D_Denum_RelaxedTauUnpacked4x4->Fill(ipftau->pt(), ucttau->getFloat("associatedRegionEt", -4));
                     if (matchToGenTau(ucttau->eta(), ucttau->phi(), iEvent)) {
                         RelaxedTauUnpackedEff->Fill(ipftau->pt());
                         RelaxedTauUnpackedROC->Fill(ucttau->pt());
                         RelaxedTauUnpackedROC4x4->Fill(ucttau->getFloat("associatedRegionEt", -4));
+                        Eff2D_Num_RelaxedTauUnpacked->Fill(ipftau->pt(), tau->pt());
+                        Eff2D_Num_RelaxedTauUnpacked4x4->Fill(ipftau->pt(), ucttau->getFloat("associatedRegionEt", -4));
                         break;
 
                     }
                 }
                 for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++) {
+                    Eff2D_Denum_IsolatedTauUnpacked->Fill(ipftau->pt(), tau->pt());
+                    Eff2D_Denum_IsolatedTauUnpacked4x4->Fill(ipftau->pt(), uctIsotau->getFloat("associatedRegionEt", -4));
                     if (matchToGenTau(uctIsotau->eta(), uctIsotau->phi(), iEvent)) {
                         IsolatedTauUnpackedEff->Fill(ipftau->pt());
                         IsolatedTauUnpackedROC->Fill(uctIsotau->pt());
                         IsolatedTauUnpackedROC4x4->Fill(uctIsotau->getFloat("associatedRegionEt", -4));
+                        Eff2D_Num_IsolatedTauUnpacked->Fill(ipftau->pt(), tau->pt());
+                        Eff2D_Num_IsolatedTauUnpacked4x4->Fill(ipftau->pt(), uctIsotau->getFloat("associatedRegionEt", -4));
                         break;
                     }
                 }
@@ -321,7 +354,7 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
         for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++) {
             if (uctIsotau->pt() > maxValPt_uctIsotau) maxValPt_uctIsotau = uctIsotau->pt();
             if (uctIsotau->getFloat("associatedRegionEt", -4) > maxValPt_uctIsotau4x4) maxValPt_uctIsotau4x4 = uctIsotau->getFloat("associatedRegionEt", -4);
-            
+
         }
         rate_UCTCandidateIso->Fill(maxValPt_uctIsotau);
         rate_UCTCandidateIso4x4->Fill(maxValPt_uctIsotau4x4);
