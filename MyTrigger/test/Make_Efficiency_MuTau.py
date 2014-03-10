@@ -115,11 +115,11 @@ l1extraEff = doRatio(Num_l1extraEff, DenumEff, 1.2, 23, 2)
 RelaxedTauEff = doRatio(Num_RelaxedTauEff, DenumEff, 1.2, 21, 3)
 IsolatedTauEff = doRatio(Num_IsolatedTauEff, DenumEff, 1.2, 24, 4)
 
-l1extraROC = doCommulative(Num_l1extraROC, DenumROC, 1.2, 23, 2)
-RelaxedTauROC = doCommulative(Num_RelaxedTauROC, DenumROC, 1.2, 21, 3)
-IsolatedTauROC = doCommulative(Num_IsolatedTauROC, DenumROC, 1.2, 24, 4)
-RelaxedTau4x4ROC = doCommulative(Num_RelaxedTauROC4x4, DenumROC, 1.2, 21, 3)
-IsolatedTau4x4ROC = doCommulative(Num_IsolatedTauROC4x4, DenumROC, 1.2, 24, 4)
+l1extraROC = doCommulative(Num_l1extraROC, DenumROC, 1.2, 21, 2)
+RelaxedTauROC = doCommulative(Num_RelaxedTauROC, DenumROC, 1.2, 22, 3)
+IsolatedTauROC = doCommulative(Num_IsolatedTauROC, DenumROC, 1.2, 23, 4)
+RelaxedTau4x4ROC = doCommulative(Num_RelaxedTauROC4x4, DenumROC, 1.2, 24, 6)
+IsolatedTau4x4ROC = doCommulative(Num_IsolatedTauROC4x4, DenumROC, 1.2, 25, 7)
 
 
 #for bn in range(1,50):
@@ -134,14 +134,14 @@ legend_ = TLegend(0.60, 0.78, 0.9, 0.9)
 legend_.SetFillColor(0)
 legend_.SetBorderSize(0)
 legend_.SetTextSize(.03)
-legend_.AddEntry(l1extraFixed, "l1extra(Fixed)", "lp")
-legend_.AddEntry(RelaxedTauFixed, "UCTTau(Fixed)", "lp")
-legend_.AddEntry(IsolatedTauFixed, "IsoUCTTau(Fixed)", "lp")
+legend_.AddEntry(l1extraEff, "l1extra", "lp")
+legend_.AddEntry(RelaxedTauEff, "UCTTau", "lp")
+legend_.AddEntry(IsolatedTauEff, "IsoUCTTau", "lp")
 legend_.Draw()
 
 
 
-canvas.SaveAs("ChannelNameFixed2.pdf")
+canvas.SaveAs("MuTauEfficiency.pdf")
 
 
 
@@ -166,4 +166,4 @@ legend_.Draw()
 
 
 
-canvas.SaveAs("ChannelNameROC2.pdf")
+canvas.SaveAs("MuTauROC.pdf")
