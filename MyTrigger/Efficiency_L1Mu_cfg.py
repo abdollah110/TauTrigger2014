@@ -47,11 +47,11 @@ process.demo = cms.EDAnalyzer('Efficiency_L1Mu',
 
 if isData:
     process.TFileService = cms.Service("TFileService",
-                                       fileName=cms.string('muTau_L1Mu_efficiency.root')
+                                       fileName=cms.string('muTau_L1Mu_rate.root')
                                        )
 else:
     process.TFileService = cms.Service("TFileService",
-                                       fileName=cms.string('muTau_L1Mu_rate.root')
+                                       fileName=cms.string('muTau_L1Mu_efficiency.root')
                                        )
 
 process.p = cms.Path(process.demo)

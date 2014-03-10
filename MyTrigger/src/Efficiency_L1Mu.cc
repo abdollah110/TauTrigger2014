@@ -78,6 +78,8 @@ private:
     TH1D * rate_L1JetParticle;
     TH1D * rate_UCTCandidateIso;
     TH1D * rate_UCTCandidate;
+    TH1D * rate_UCTCandidateIso4x4;
+    TH1D * rate_UCTCandidate4x4;
 
     edm::InputTag srcGenParticle_;
     edm::InputTag L1TauSource_;
@@ -128,6 +130,8 @@ Efficiency_L1Mu::Efficiency_L1Mu(const edm::ParameterSet& iConfig) {
     rate_L1JetParticle = fs->make<TH1D > ("rate_L1JetParticle", "", 100, 0, 100);
     rate_UCTCandidateIso = fs->make<TH1D > ("rate_UCTCandidateIso", "", 100, 0, 100);
     rate_UCTCandidate = fs->make<TH1D > ("rate_UCTCandidate", "", 100, 0, 100);
+    rate_UCTCandidateIso4x4 = fs->make<TH1D > ("rate_UCTCandidateIso4x4", "", 100, 0, 100);
+    rate_UCTCandidate4x4 = fs->make<TH1D > ("rate_UCTCandidate4x4", "", 100, 0, 100);
 
 
     srcGenParticle_ = iConfig.getParameter<edm::InputTag > ("srcGenParticle");
@@ -302,21 +306,25 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
 
         //########################################################
         float maxValPt_ucttau = 0;
+        float maxValPt_ucttau4x4 = 0;
         for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
-            if (ucttau->pt() > maxValPt_ucttau) {
-                maxValPt_ucttau = ucttau->pt();
-            }
+            if (ucttau->pt() > maxValPt_ucttau) maxValPt_ucttau = ucttau->pt();
+            if (ucttau->getFloat("associatedRegionEt", -4) > maxValPt_ucttau4x4) maxValPt_ucttau4x4 = ucttau->getFloat("associatedRegionEt", -4);
+
         }
         rate_UCTCandidate->Fill(maxValPt_ucttau);
+        rate_UCTCandidate4x4->Fill(maxValPt_ucttau4x4);
 
         //########################################################
         float maxValPt_uctIsotau = 0;
+        float maxValPt_uctIsotau4x4 = 0;
         for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++) {
-            if (uctIsotau->pt() > maxValPt_uctIsotau) {
-                maxValPt_uctIsotau = uctIsotau->pt();
-            }
+            if (uctIsotau->pt() > maxValPt_uctIsotau) maxValPt_uctIsotau = uctIsotau->pt();
+            if (uctIsotau->getFloat("associatedRegionEt", -4) > maxValPt_uctIsotau4x4) maxValPt_uctIsotau4x4 = uctIsotau->getFloat("associatedRegionEt", -4);
+            
         }
         rate_UCTCandidateIso->Fill(maxValPt_uctIsotau);
+        rate_UCTCandidateIso4x4->Fill(maxValPt_uctIsotau4x4);
     } // end loop over rate
 
 }

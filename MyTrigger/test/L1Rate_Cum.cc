@@ -28,10 +28,11 @@
 void L1Rate_Cum() {
     //    cout << "############################################################" << endl;
     //    cout << "\n\n   It is Precossing -->  " << num << "  over  " << denum << endl;
-    TFile *inputFile = new TFile("l1Rate.root");
-    TH1D *L1JetParticle = (TH1D*) inputFile->Get("demo/rate_after_L1JetParticle");
-    TH1D *UCTCandidate = (TH1D*) inputFile->Get("demo/rate_after_UCTCandidate");
-    TH1D *UCTCandidateIso = (TH1D*) inputFile->Get("demo/rate_after_UCTCandidateIso");
+//    TFile *inputFile = new TFile("l1Rate.root");
+    TFile *inputFile = new TFile("muTau_L1Mu_rate.root");
+    TH1D *L1JetParticle = (TH1D*) inputFile->Get("demo/rate_L1JetParticle");
+    TH1D *UCTCandidate = (TH1D*) inputFile->Get("demo/rate_UCTCandidate");
+    TH1D *UCTCandidateIso = (TH1D*) inputFile->Get("demo/rate_UCTCandidateIso");
 
     TFile * OutPut = new TFile("Out.root", "RECREATE");
     OutPut->cd();
