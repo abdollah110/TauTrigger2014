@@ -299,26 +299,26 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
                 // ############################## NEW tau HLT Algorithm UST2015
                 for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
                     //                cout << "2x1=" << ucttau->et() << "   4x4=" << ucttau->getFloat("associatedRegionEt", -4) << "   12x12= " << ucttau->getFloat("associatedJetPt", -4) << endl;
-                    Eff2D_Denum_RelaxedTauUnpacked->Fill(ipftau->pt(), tau->pt());
+                    Eff2D_Denum_RelaxedTauUnpacked->Fill(ipftau->pt(), ucttau->pt());
                     Eff2D_Denum_RelaxedTauUnpacked4x4->Fill(ipftau->pt(), ucttau->getFloat("associatedRegionEt", -4));
                     if (matchToGenTau(ucttau->eta(), ucttau->phi(), iEvent)) {
                         RelaxedTauUnpackedEff->Fill(ipftau->pt());
                         RelaxedTauUnpackedROC->Fill(ucttau->pt());
                         RelaxedTauUnpackedROC4x4->Fill(ucttau->getFloat("associatedRegionEt", -4));
-                        Eff2D_Num_RelaxedTauUnpacked->Fill(ipftau->pt(), tau->pt());
+                        Eff2D_Num_RelaxedTauUnpacked->Fill(ipftau->pt(), ucttau->pt());
                         Eff2D_Num_RelaxedTauUnpacked4x4->Fill(ipftau->pt(), ucttau->getFloat("associatedRegionEt", -4));
                         break;
 
                     }
                 }
                 for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++) {
-                    Eff2D_Denum_IsolatedTauUnpacked->Fill(ipftau->pt(), tau->pt());
+                    Eff2D_Denum_IsolatedTauUnpacked->Fill(ipftau->pt(), uctIsotau->pt());
                     Eff2D_Denum_IsolatedTauUnpacked4x4->Fill(ipftau->pt(), uctIsotau->getFloat("associatedRegionEt", -4));
                     if (matchToGenTau(uctIsotau->eta(), uctIsotau->phi(), iEvent)) {
                         IsolatedTauUnpackedEff->Fill(ipftau->pt());
                         IsolatedTauUnpackedROC->Fill(uctIsotau->pt());
                         IsolatedTauUnpackedROC4x4->Fill(uctIsotau->getFloat("associatedRegionEt", -4));
-                        Eff2D_Num_IsolatedTauUnpacked->Fill(ipftau->pt(), tau->pt());
+                        Eff2D_Num_IsolatedTauUnpacked->Fill(ipftau->pt(), uctIsotau->pt());
                         Eff2D_Num_IsolatedTauUnpacked4x4->Fill(ipftau->pt(), uctIsotau->getFloat("associatedRegionEt", -4));
                         break;
                     }
