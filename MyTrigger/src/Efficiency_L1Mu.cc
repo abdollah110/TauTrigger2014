@@ -144,17 +144,17 @@ Efficiency_L1Mu::Efficiency_L1Mu(const edm::ParameterSet& iConfig) {
     rate_UCTCandidateIso4x4 = fs->make<TH1D > ("rate_UCTCandidateIso4x4", "", 100, 0, 100);
     rate_UCTCandidate4x4 = fs->make<TH1D > ("rate_UCTCandidate4x4", "", 100, 0, 100);
 
-    Eff2D_Denum_l1extraParticles = fs->make<TH1D > ("Eff2D_Denum_l1extraParticles", "", 100, 0, 100, 100, 0, 100);
-    Eff2D_Denum_RelaxedTauUnpacked = fs->make<TH1D > ("Eff2D_Denum_RelaxedTauUnpacked", "", 100, 0, 100, 100, 0, 100);
-    Eff2D_Denum_RelaxedTauUnpacked4x4 = fs->make<TH1D > ("Eff2D_Denum_RelaxedTauUnpacked4x4", "", 100, 0, 100, 100, 0, 100);
-    Eff2D_Denum_IsolatedTauUnpacked = fs->make<TH1D > ("Eff2D_Denum_IsolatedTauUnpacked", "", 100, 0, 100, 100, 0, 100);
-    Eff2D_Denum_IsolatedTauUnpacked4x4 = fs->make<TH1D > ("Eff2D_Denum_IsolatedTauUnpacked4x4", "", 100, 0, 100, 100, 0, 100);
+    Eff2D_Denum_l1extraParticles = fs->make<TH2D > ("Eff2D_Denum_l1extraParticles", "", 100, 0, 100, 100, 0, 100);
+    Eff2D_Denum_RelaxedTauUnpacked = fs->make<TH2D > ("Eff2D_Denum_RelaxedTauUnpacked", "", 100, 0, 100, 100, 0, 100);
+    Eff2D_Denum_RelaxedTauUnpacked4x4 = fs->make<TH2D > ("Eff2D_Denum_RelaxedTauUnpacked4x4", "", 100, 0, 100, 100, 0, 100);
+    Eff2D_Denum_IsolatedTauUnpacked = fs->make<TH2D > ("Eff2D_Denum_IsolatedTauUnpacked", "", 100, 0, 100, 100, 0, 100);
+    Eff2D_Denum_IsolatedTauUnpacked4x4 = fs->make<TH2D > ("Eff2D_Denum_IsolatedTauUnpacked4x4", "", 100, 0, 100, 100, 0, 100);
 
-    Eff2D_Num_l1extraParticles = fs->make<TH1D > ("Eff2D_Num_l1extraParticles", "", 100, 0, 100, 100, 0, 100);
-    Eff2D_Num_RelaxedTauUnpacked = fs->make<TH1D > ("Eff2D_Num_RelaxedTauUnpacked", "", 100, 0, 100, 100, 0, 100);
-    Eff2D_Num_RelaxedTauUnpacked4x4 = fs->make<TH1D > ("Eff2D_Num_RelaxedTauUnpacked4x4", "", 100, 0, 100, 100, 0, 100);
-    Eff2D_Num_IsolatedTauUnpacked = fs->make<TH1D > ("Eff2D_Num_IsolatedTauUnpacked", "", 100, 0, 100, 100, 0, 100);
-    Eff2D_Num_IsolatedTauUnpacked4x4 = fs->make<TH1D > ("Eff2D_Num_IsolatedTauUnpacked4x4", "", 100, 0, 100, 100, 0, 100);
+    Eff2D_Num_l1extraParticles = fs->make<TH2D > ("Eff2D_Num_l1extraParticles", "", 100, 0, 100, 100, 0, 100);
+    Eff2D_Num_RelaxedTauUnpacked = fs->make<TH2D > ("Eff2D_Num_RelaxedTauUnpacked", "", 100, 0, 100, 100, 0, 100);
+    Eff2D_Num_RelaxedTauUnpacked4x4 = fs->make<TH2D > ("Eff2D_Num_RelaxedTauUnpacked4x4", "", 100, 0, 100, 100, 0, 100);
+    Eff2D_Num_IsolatedTauUnpacked = fs->make<TH2D > ("Eff2D_Num_IsolatedTauUnpacked", "", 100, 0, 100, 100, 0, 100);
+    Eff2D_Num_IsolatedTauUnpacked4x4 = fs->make<TH2D > ("Eff2D_Num_IsolatedTauUnpacked4x4", "", 100, 0, 100, 100, 0, 100);
 
 
     srcGenParticle_ = iConfig.getParameter<edm::InputTag > ("srcGenParticle");
