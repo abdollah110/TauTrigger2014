@@ -308,7 +308,8 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
                     //                cout << "2x1=" << ucttau->et() << "   4x4=" << ucttau->getFloat("associatedRegionEt", -4) << "   12x12= " << ucttau->getFloat("associatedJetPt", -4) << endl;
                     Eff2D_Denum_RelaxedTauUnpacked->Fill(ipftau->pt(), ucttau->pt());
                     Eff2D_Denum_RelaxedTauUnpacked4x4->Fill(ipftau->pt(), ucttau->getFloat("associatedRegionEt", -4));
-                    if (matchToGenTau(ucttau->eta(), ucttau->phi(), iEvent)) {
+//                    if (matchToGenTau(ucttau->eta(), ucttau->phi(), iEvent)) {
+                    if (ucttau->pt() > 15 && matchToGenTau(ucttau->eta(), ucttau->phi(), iEvent)) {
                         RelaxedTauUnpackedEff->Fill(ipftau->pt());
                         RelaxedTauUnpackedROC->Fill(ucttau->pt());
                         RelaxedTauUnpackedROC4x4->Fill(ucttau->getFloat("associatedRegionEt", -4));

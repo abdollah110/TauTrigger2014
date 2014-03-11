@@ -47,8 +47,8 @@ canvas.SetGridy(10)
 
 
 def doRatio2D(num, denum, cut, marStyle, marColor):
-    OneDDenum = TH1F("NewDenum", "", 100, 0, 100)
     OneDNum = TH1F("NewNum", "", 100, 0, 100)
+    OneDDenum = TH1F("NewDenum", "", 100, 0, 100)
     for ii in range(1, 100):
         ValDenum = 0
         ValNum = 0
