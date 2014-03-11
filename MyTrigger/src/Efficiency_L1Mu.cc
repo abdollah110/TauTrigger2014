@@ -275,16 +275,12 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
                         break;
                     }
                 }
-                for (vector<l1extra::L1JetParticle>::const_iterator jet = jetsHandle->begin(); jet != jetsHandle->end(); jet++) {
-                    if (matchToGenTau(jet->eta(), jet->phi(), iEvent)) {
-                        Eff2D_Num_l1extraParticles->Fill(ipftau->pt(), jet->pt() - 20);
-                    }
-                }
                 if (!hasPassedL1Tau) { // Here we add OR between L1Tau and L1Jet
                     for (vector<l1extra::L1JetParticle>::const_iterator jet = jetsHandle->begin(); jet != jetsHandle->end(); jet++) {
                         if (matchToGenTau(jet->eta(), jet->phi(), iEvent)) {
                             l1extraParticlesEff->Fill(ipftau->pt());
                             l1extraParticlesROC->Fill(jet->pt() - 20);
+                            Eff2D_Num_l1extraParticles->Fill(ipftau->pt(), jet->pt() - 20);
                             //                            l1extraParticlesROC->Fill(jet->pt());
                             break;
                         }

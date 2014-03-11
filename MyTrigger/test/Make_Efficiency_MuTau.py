@@ -48,22 +48,22 @@ canvas.SetGridy(10)
 
 def doRatio2D(num, denum, cut, marStyle, marColor):
     OneDNum = TH1F("NewNum", "", 100, 0, 100)
-    OneDDenum = TH1F("NewDenum", "", 100, 0, 100)
+#    OneDDenum = TH1F("NewDenum", "", 100, 0, 100)
     for ii in range(1, 100):
         ValDenum = 0
         ValNum = 0
-        for jj in range(15, 100):
+        for jj in range(cut, 100):
             ValNum = ValNum + num.GetBinContent(ii, jj)
         OneDNum.SetBinContent(ii, ValNum)
-        for jj in range(0, 100):
-            ValDenum = ValDenum + denum.GetBinContent(ii, jj)
-        OneDDenum.SetBinContent(ii, ValDenum)
+#        for jj in range(0, 100):
+#            ValDenum = ValDenum + denum.GetBinContent(ii, jj)
+#        OneDDenum.SetBinContent(ii, ValDenum)
 #        OneDNum.Fill(ii, ValNum)
 #        OneDDenum.Fill(ii, ValDenum)
 #        print ii, ValNum, ValDenum
     bins = array('d', [20, 25, 30, 35, 40, 45, 50, 55, 70, 100])
     num_R = OneDNum.Rebin(len(bins)-1, "Hinm", bins)
-    denum_R = OneDDenum.Rebin(len(bins)-1, "Hin", bins)
+    denum_R = denum.Rebin(len(bins)-1, "Hin", bins)
     ratio = ROOT.TGraphAsymmErrors(num_R, denum_R, "")
     ratio.SetMinimum(0.0)
     ratio.SetMaximum(1.2)
@@ -72,7 +72,7 @@ def doRatio2D(num, denum, cut, marStyle, marColor):
     ratio.SetMarkerColor(marColor);
     ratio.SetLineColor(marColor);
     ratio.SetLineWidth(2);
-    ratio.GetXaxis().SetTitle("#tau_{pT} [GeV]")
+    ratio.GetXaxis().SetTitle("offLine #tau_{pT} [GeV]")
     ratio.GetYaxis().SetTitle("Efficiency")
     return ratio
 
@@ -147,15 +147,39 @@ legend_.Draw()
 canvas.SaveAs("MuTauEfficiency.pdf")
 
 FileRootEff = TFile("muTau_L1Mu_efficiency_1.root", "OPEN")
-DeNum_l1extraEff = FileRootEff.Get("demo/Eff2D_Denum_l1extraParticles")
-DeNum_RelaxedTauEff = FileRootEff.Get("demo/Eff2D_Denum_RelaxedTauUnpacked")
-DeNum_IsolatedTauEff = FileRootEff.Get("demo/Eff2D_Denum_IsolatedTauUnpacked")
+DenumEff = FileRootEff.Get("demo/offLineTauEff")
 Num_l1extraEff = FileRootEff.Get("demo/Eff2D_Num_l1extraParticles")
 Num_RelaxedTauEff = FileRootEff.Get("demo/Eff2D_Num_RelaxedTauUnpacked")
 Num_IsolatedTauEff = FileRootEff.Get("demo/Eff2D_Num_IsolatedTauUnpacked")
-l1extraEff = doRatio2D(Num_l1extraEff, DeNum_l1extraEff, 15, 23, 2)
-RelaxedTauEff = doRatio2D(Num_RelaxedTauEff, DeNum_RelaxedTauEff, 15, 21, 3)
-IsolatedTauEff = doRatio2D(Num_IsolatedTauEff, DeNum_IsolatedTauEff, 15, 24, 4)
+RelaxedTauEff10 = doRatio2D(Num_RelaxedTauEff, DenumEff, 10, 21, 2)
+RelaxedTauEff15 = doRatio2D(Num_RelaxedTauEff, DenumEff, 15, 22, 3)
+RelaxedTauEff20 = doRatio2D(Num_RelaxedTauEff, DenumEff, 20, 23, 4)
+RelaxedTauEff25 = doRatio2D(Num_RelaxedTauEff, DenumEff, 25, 24, 6)
+#RelaxedTauEff = doRatio2D(Num_RelaxedTauEff, DenumEff, 15, 21, 3)
+#IsolatedTauEff = doRatio2D(Num_IsolatedTauEff, DenumEff, 15, 24, 4)
+RelaxedTauEff10.Draw("PAE")
+RelaxedTauEff15.Draw("Psame")
+RelaxedTauEff20.Draw("Psame")
+RelaxedTauEff25.Draw("Psame")
+legend_ = TLegend(0.60, 0.78, 0.9, 0.9)
+legend_.SetFillColor(0)
+legend_.SetBorderSize(0)
+legend_.SetTextSize(.03)
+legend_.AddEntry(RelaxedTauEff10, "UCTTauL1 10GeV", "lp")
+legend_.AddEntry(RelaxedTauEff15, "UCTTauL1 15GeV", "lp")
+legend_.AddEntry(RelaxedTauEff20, "UCTTauL1 20GeV", "lp")
+legend_.AddEntry(RelaxedTauEff25, "UCTTauL1 25GeV", "lp")
+legend_.Draw()
+canvas.SaveAs("MuTauEfficiency2D.pdf")
+
+FileRootEff = TFile("muTau_L1Mu_efficiency_1.root", "OPEN")
+DenumEff = FileRootEff.Get("demo/offLineTauEff")
+Num_l1extraEff = FileRootEff.Get("demo/Eff2D_Num_l1extraParticles")
+Num_RelaxedTauEff = FileRootEff.Get("demo/Eff2D_Num_RelaxedTauUnpacked")
+Num_IsolatedTauEff = FileRootEff.Get("demo/Eff2D_Num_IsolatedTauUnpacked")
+l1extraEff = doRatio2D(Num_l1extraEff, DenumEff, 15, 21, 2)
+RelaxedTauEff = doRatio2D(Num_RelaxedTauEff, DenumEff, 15, 22, 3)
+IsolatedTauEff = doRatio2D(Num_IsolatedTauEff, DenumEff, 15, 23, 4)
 l1extraEff.Draw("PAE")
 RelaxedTauEff.Draw("Psame")
 IsolatedTauEff.Draw("Psame")
@@ -163,14 +187,14 @@ legend_ = TLegend(0.60, 0.78, 0.9, 0.9)
 legend_.SetFillColor(0)
 legend_.SetBorderSize(0)
 legend_.SetTextSize(.03)
-legend_.AddEntry(l1extraEff, "l1extra", "lp")
-legend_.AddEntry(RelaxedTauEff, "UCTTau", "lp")
-legend_.AddEntry(IsolatedTauEff, "IsoUCTTau", "lp")
+legend_.AddEntry(l1extraEff, "l1extraEff", "lp")
+legend_.AddEntry(RelaxedTauEff, "RelaxedTauEff", "lp")
+legend_.AddEntry(IsolatedTauEff, "IsolatedTauEff", "lp")
 legend_.Draw()
-canvas.SaveAs("MuTauEfficiency2D.pdf")
+canvas.SaveAs("MuTauEfficiencyDifferentAlgo2D.pdf")
 
 
-FileRootEff = TFile("muTau_L1Mu_efficiency.root", "OPEN")
+FileRootEff = TFile("muTau_L1Mu_efficiency_1.root", "OPEN")
 DenumROC = FileRootEff.Get("demo/offLineTauROC")
 Num_l1extraROC = FileRootEff.Get("demo/l1extraParticlesROC")
 Num_RelaxedTauROC = FileRootEff.Get("demo/RelaxedTauUnpackedROC")
