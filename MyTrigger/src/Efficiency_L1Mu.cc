@@ -287,11 +287,18 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
                         break;
                     }
                 }
+                for (vector<l1extra::L1JetParticle>::const_iterator jet = jetsHandle->begin(); jet != jetsHandle->end(); jet++) {
+                    Eff2D_Denum_l1extraParticles->Fill(ipftau->pt(), jet->pt() - 20);
+                    if (matchToGenTau(jet->eta(), jet->phi(), iEvent)) {
+                        Eff2D_Num_l1extraParticles->Fill(ipftau->pt(), jet->pt() - 20);
+                    }
+                }
                 if (!hasPassedL1Tau) { // Here we add OR between L1Tau and L1Jet
                     for (vector<l1extra::L1JetParticle>::const_iterator jet = jetsHandle->begin(); jet != jetsHandle->end(); jet++) {
                         if (matchToGenTau(jet->eta(), jet->phi(), iEvent)) {
                             l1extraParticlesEff->Fill(ipftau->pt());
-                            l1extraParticlesROC->Fill(jet->pt());
+                            l1extraParticlesROC->Fill(jet->pt() - 20);
+                            //                            l1extraParticlesROC->Fill(jet->pt());
                             break;
                         }
                     }
@@ -330,12 +337,18 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
     } else {
 
         float maxValPt_tau = 0;
+        float maxValPt_jet = 0;
         for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
             if (tau->pt() > maxValPt_tau) {
                 maxValPt_tau = tau->pt();
             }
         }
-        rate_L1JetParticle->Fill(maxValPt_tau);
+        for (vector<l1extra::L1JetParticle>::const_iterator jet = jetsHandle->begin(); jet != jetsHandle->end(); jet++) {
+            if (jet->pt() > maxValPt_jet) {
+                maxValPt_jet = jet->pt();
+            }
+        }
+        (maxValPt_tau > (maxValPt_jet - 20) ? rate_L1JetParticle->Fill(maxValPt_tau) : rate_L1JetParticle->Fill(maxValPt_jet - 20));
 
         //########################################################
         float maxValPt_ucttau = 0;

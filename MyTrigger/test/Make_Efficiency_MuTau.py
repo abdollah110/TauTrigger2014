@@ -46,6 +46,33 @@ canvas.SetGridy(10)
 
 
 
+def doRatio2D(num, denum, cut, marStyle, marColor):
+    OneDDenum = TH1F("NewDenum", "", 100, 0, 100)
+    OneDNum = TH1F("NewNum", "", 100, 0, 100)
+    for ii in range(1, 100):
+        ValDenum = 0
+        ValNum = 0
+        for jj in range(cut, 100):
+            ValNum = ValNum + num.GetBinContent(ii, jj)
+            ValDenum = ValDenum + denum.GetBinContent(ii, jj)
+        OneDNum.Fill(ii, ValNum)
+        OneDDenum.Fill(ii, ValDenum)
+        print ii, ValNum, ValDenum
+    bins = array('d', [20, 25, 30, 35, 40, 45, 50, 55, 70, 100])
+    num_R = OneDNum.Rebin(len(bins)-1, "Hinm", bins)
+    denum_R = OneDDenum.Rebin(len(bins)-1, "Hin", bins)
+    ratio = ROOT.TGraphAsymmErrors(num_R, denum_R, "")
+    ratio.SetMinimum(0.0)
+    ratio.SetMaximum(1.2)
+    ratio.SetMarkerSize(1.2);
+    ratio.SetMarkerStyle(marStyle);
+    ratio.SetMarkerColor(marColor);
+    ratio.SetLineColor(marColor);
+    ratio.SetLineWidth(2);
+    ratio.GetXaxis().SetTitle("#tau_{pT} [GeV]")
+    ratio.GetYaxis().SetTitle("Efficiency")
+    return ratio
+
 def doRatio(num, denum, marStyle, marColor):
     bins = array('d', [20, 26, 32, 40, 50, 70, 100])
     num_R = num.Rebin(len(bins)-1, "Hinm", bins)
@@ -79,7 +106,7 @@ def doCommulative(num, denum, marStyle, marColor):
 def doROCCurve(num1, denum1, num2, denum2, marStyle, marColor):
     rocCurve = TH2F(str(num1), "", 100, 0, 1, 100, 0, 1)
     for ii in range(1, 100):
-        print ii, "  ","\n"
+        print ii, "  ", "\n"
         for jj in range (1, 100):
             for kk in range (1, 100):
                 if (math.floor((num1.Integral(ii, 100) * 1.0) * 100 / denum1.GetEntries()) == jj and math.floor((1 - ((num2.Integral(ii, 100) * 1.0) / denum2.GetEntries())) * 100) == kk):
@@ -116,10 +143,33 @@ legend_.AddEntry(IsolatedTauEff, "IsoUCTTau", "lp")
 legend_.Draw()
 canvas.SaveAs("MuTauEfficiency.pdf")
 
+FileRootEff = TFile("muTau_L1Mu_efficiency.root", "OPEN")
+DeNum_l1extraEff = FileRootEff.Get("demo/Eff2D_Denum_l1extraParticles")
+DeNum_RelaxedTauEff = FileRootEff.Get("demo/Eff2D_Denum_RelaxedTauUnpacked")
+DeNum_IsolatedTauEff = FileRootEff.Get("demo/Eff2D_Denum_IsolatedTauUnpacked")
+Num_l1extraEff = FileRootEff.Get("demo/Eff2D_Num_l1extraParticles")
+Num_RelaxedTauEff = FileRootEff.Get("demo/Eff2D_Num_RelaxedTauUnpacked")
+Num_IsolatedTauEff = FileRootEff.Get("demo/Eff2D_Num_IsolatedTauUnpacked")
+l1extraEff = doRatio2D(Num_l1extraEff, DeNum_l1extraEff, 15, 23, 2)
+RelaxedTauEff = doRatio2D(Num_RelaxedTauEff, DeNum_RelaxedTauEff, 15, 21, 3)
+IsolatedTauEff = doRatio2D(Num_IsolatedTauEff, DeNum_IsolatedTauEff, 15, 24, 4)
+l1extraEff.Draw("PAE")
+RelaxedTauEff.Draw("Psame")
+IsolatedTauEff.Draw("Psame")
+legend_ = TLegend(0.60, 0.78, 0.9, 0.9)
+legend_.SetFillColor(0)
+legend_.SetBorderSize(0)
+legend_.SetTextSize(.03)
+legend_.AddEntry(l1extraEff, "l1extra", "lp")
+legend_.AddEntry(RelaxedTauEff, "UCTTau", "lp")
+legend_.AddEntry(IsolatedTauEff, "IsoUCTTau", "lp")
+legend_.Draw()
+canvas.SaveAs("MuTauEfficiency2D.pdf")
+
 
 FileRootEff = TFile("muTau_L1Mu_efficiency.root", "OPEN")
 DenumROC = FileRootEff.Get("demo/offLineTauROC")
-#Num_l1extraROC = FileRootEff.Get("demo/l1extraParticlesROC")
+Num_l1extraROC = FileRootEff.Get("demo/l1extraParticlesROC")
 Num_RelaxedTauROC = FileRootEff.Get("demo/RelaxedTauUnpackedROC")
 Num_IsolatedTauROC = FileRootEff.Get("demo/IsolatedTauUnpackedROC")
 Num_RelaxedTauROC4x4 = FileRootEff.Get("demo/RelaxedTauUnpackedROC4x4")
@@ -180,23 +230,23 @@ canvas.SaveAs("MuTauRateCum.pdf")
 
 
 
-L1JetParticleROC = doROCCurve(Num_l1extraROC, DenumROC, L1JetParticle, L1JetParticle, 21, 2)
-#UCTCandidateROC = doROCCurve(Num_RelaxedTauROC, DenumROC, UCTCandidate, UCTCandidate, 22, 3)
-UCTCandidateIsoROC = doROCCurve(Num_IsolatedTauROC, DenumROC, UCTCandidateIso, UCTCandidateIso, 23, 4)
-L1JetParticleROC.Draw("P")
-#UCTCandidateROC.Draw("Psame")
-UCTCandidateIsoROC.Draw("Psame")
-#UCTCandidateCum4x4.Draw("Psame")
-#UCTCandidateIsoCum4x4.Draw("Psame")
-legend_ = TLegend(0.60, 0.78, 0.9, 0.9)
-legend_.SetFillColor(0)
-legend_.SetBorderSize(0)
-legend_.SetTextSize(.03)
-legend_.AddEntry(L1JetParticleROC, "L1JetParticleROC", "lp")
-#legend_.AddEntry(UCTCandidateROC, "UCTCandidateROC", "lp")
-legend_.AddEntry(UCTCandidateIsoROC, "UCTCandidateIsoROC", "lp")
-#legend_.AddEntry(UCTCandidateCum4x4, "UCTCandidate4x4", "lp")
-#legend_.AddEntry(UCTCandidateIsoCum4x4, "UCTCandidateIso4x4", "lp")
-canvas.SetLogy(0)
-#legend_.Draw()
-canvas.SaveAs("MuTauROC.pdf")
+#L1JetParticleROC = doROCCurve(Num_l1extraROC, DenumROC, L1JetParticle, L1JetParticle, 21, 2)
+##UCTCandidateROC = doROCCurve(Num_RelaxedTauROC, DenumROC, UCTCandidate, UCTCandidate, 22, 3)
+#UCTCandidateIsoROC = doROCCurve(Num_IsolatedTauROC, DenumROC, UCTCandidateIso, UCTCandidateIso, 23, 4)
+#L1JetParticleROC.Draw("P")
+##UCTCandidateROC.Draw("Psame")
+#UCTCandidateIsoROC.Draw("Psame")
+##UCTCandidateCum4x4.Draw("Psame")
+##UCTCandidateIsoCum4x4.Draw("Psame")
+#legend_ = TLegend(0.60, 0.78, 0.9, 0.9)
+#legend_.SetFillColor(0)
+#legend_.SetBorderSize(0)
+#legend_.SetTextSize(.03)
+#legend_.AddEntry(L1JetParticleROC, "L1JetParticleROC", "lp")
+##legend_.AddEntry(UCTCandidateROC, "UCTCandidateROC", "lp")
+#legend_.AddEntry(UCTCandidateIsoROC, "UCTCandidateIsoROC", "lp")
+##legend_.AddEntry(UCTCandidateCum4x4, "UCTCandidate4x4", "lp")
+##legend_.AddEntry(UCTCandidateIsoCum4x4, "UCTCandidateIso4x4", "lp")
+#canvas.SetLogy(0)
+##legend_.Draw()
+#canvas.SaveAs("MuTauROC.pdf")
