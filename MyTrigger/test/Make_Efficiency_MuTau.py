@@ -52,10 +52,11 @@ def doRatio2D(num, denum, cut, marStyle, marColor):
     for ii in range(1, 100):
         ValDenum = 0
         ValNum = 0
-        for jj in range(20, 100):
+        for jj in range(15, 100):
             ValNum = ValNum + num.GetBinContent(ii, jj)
-            ValDenum = ValDenum + denum.GetBinContent(ii, jj)
         OneDNum.SetBinContent(ii, ValNum)
+        for jj in range(0, 100):
+            ValDenum = ValDenum + denum.GetBinContent(ii, jj)
         OneDDenum.SetBinContent(ii, ValDenum)
 #        OneDNum.Fill(ii, ValNum)
 #        OneDDenum.Fill(ii, ValDenum)
@@ -76,7 +77,7 @@ def doRatio2D(num, denum, cut, marStyle, marColor):
     return ratio
 
 def doRatio(num, denum, marStyle, marColor):
-    bins = array('d', [20, 26, 32, 40, 50, 70, 100])
+    bins = array('d', [20, 25, 30, 35, 40, 45, 50, 55, 70, 100])
     num_R = num.Rebin(len(bins)-1, "Hinm", bins)
     denum_R = denum.Rebin(len(bins)-1, "Hin", bins)
     ratio = ROOT.TGraphAsymmErrors(num_R, denum_R, "")
@@ -145,7 +146,7 @@ legend_.AddEntry(IsolatedTauEff, "IsoUCTTau", "lp")
 legend_.Draw()
 canvas.SaveAs("MuTauEfficiency.pdf")
 
-FileRootEff = TFile("muTau_L1Mu_efficiency.root", "OPEN")
+FileRootEff = TFile("muTau_L1Mu_efficiency_1.root", "OPEN")
 DeNum_l1extraEff = FileRootEff.Get("demo/Eff2D_Denum_l1extraParticles")
 DeNum_RelaxedTauEff = FileRootEff.Get("demo/Eff2D_Denum_RelaxedTauUnpacked")
 DeNum_IsolatedTauEff = FileRootEff.Get("demo/Eff2D_Denum_IsolatedTauUnpacked")
