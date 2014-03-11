@@ -52,12 +52,14 @@ def doRatio2D(num, denum, cut, marStyle, marColor):
     for ii in range(1, 100):
         ValDenum = 0
         ValNum = 0
-        for jj in range(cut, 100):
+        for jj in range(20, 100):
             ValNum = ValNum + num.GetBinContent(ii, jj)
             ValDenum = ValDenum + denum.GetBinContent(ii, jj)
-        OneDNum.Fill(ii, ValNum)
-        OneDDenum.Fill(ii, ValDenum)
-        print ii, ValNum, ValDenum
+        OneDNum.SetBinContent(ii, ValNum)
+        OneDDenum.SetBinContent(ii, ValDenum)
+#        OneDNum.Fill(ii, ValNum)
+#        OneDDenum.Fill(ii, ValDenum)
+#        print ii, ValNum, ValDenum
     bins = array('d', [20, 25, 30, 35, 40, 45, 50, 55, 70, 100])
     num_R = OneDNum.Rebin(len(bins)-1, "Hinm", bins)
     denum_R = OneDDenum.Rebin(len(bins)-1, "Hin", bins)
