@@ -293,8 +293,8 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
                 // ############################## NEW tau HLT Algorithm UST2015
                 for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
                     //                cout << "2x1=" << ucttau->et() << "   4x4=" << ucttau->getFloat("associatedRegionEt", -4) << "   12x12= " << ucttau->getFloat("associatedJetPt", -4) << endl;
-                    //                    if (matchToGenTau(ucttau->eta(), ucttau->phi(), iEvent)) {
-                    if (ucttau->pt() > 15 && matchToGenTau(ucttau->eta(), ucttau->phi(), iEvent)) {
+                    if (matchToGenTau(ucttau->eta(), ucttau->phi(), iEvent)) {
+                        //                    if (ucttau->pt() > 15 && matchToGenTau(ucttau->eta(), ucttau->phi(), iEvent)) {
                         RelaxedTauUnpackedEff->Fill(ipftau->pt());
                         RelaxedTauUnpackedROC->Fill(ucttau->pt());
                         RelaxedTauUnpackedROC4x4->Fill(ucttau->getFloat("associatedRegionEt", -4));
