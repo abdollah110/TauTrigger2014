@@ -273,7 +273,7 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
                         hasPassedL1Tau = true;
                         l1extraParticlesEff->Fill(ipftau->pt());
                         l1extraParticlesROC->Fill(tau->pt());
-                        ValuePtTau = tau->pt();
+                        ValuePtTau = ipftau->pt();
                         break;
                     }
                 }
@@ -282,7 +282,7 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
                         if (matchToGenTau(jet->eta(), jet->phi(), iEvent)) {
                             l1extraParticlesEff->Fill(ipftau->pt());
                             l1extraParticlesROC->Fill(jet->pt() - 20);
-                            ValuePtJet = jet->pt() - 20;
+                            ValuePtJet = ipftau->pt() - 20;
                             break;
                         }
                     }
