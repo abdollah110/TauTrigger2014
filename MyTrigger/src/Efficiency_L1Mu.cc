@@ -266,12 +266,14 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
                 offLineTauROC->Fill(ipftau->pt());
                 // ############################## OLD tau HLT Algorithm
                 bool hasPassedL1Tau = false;
+                float ValuePtTau = 0;
+                float ValuePtJet = 0;
                 for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
                     if (matchToGenTau(tau->eta(), tau->phi(), iEvent)) {
                         hasPassedL1Tau = true;
                         l1extraParticlesEff->Fill(ipftau->pt());
                         l1extraParticlesROC->Fill(tau->pt());
-                        Eff2D_Num_l1extraParticles->Fill(ipftau->pt(), tau->pt());
+                        ValuePtTau = tau->pt();
                         break;
                     }
                 }
@@ -280,12 +282,12 @@ Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
                         if (matchToGenTau(jet->eta(), jet->phi(), iEvent)) {
                             l1extraParticlesEff->Fill(ipftau->pt());
                             l1extraParticlesROC->Fill(jet->pt() - 20);
-                            Eff2D_Num_l1extraParticles->Fill(ipftau->pt(), jet->pt() - 20);
-                            //                            l1extraParticlesROC->Fill(jet->pt());
+                            ValuePtJet = jet->pt() - 20;
                             break;
                         }
                     }
                 }
+                if (ValuePtTau || ValuePtJet) (ValuePtTau > (ValuePtJet) ? Eff2D_Num_l1extraParticles->Fill(ipftau->pt(), ValuePtTau) : Eff2D_Num_l1extraParticles->Fill(ipftau->pt(), ValuePtJet));
                 // ############################## NEW tau HLT Algorithm UST2015
                 for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
                     //                cout << "2x1=" << ucttau->et() << "   4x4=" << ucttau->getFloat("associatedRegionEt", -4) << "   12x12= " << ucttau->getFloat("associatedJetPt", -4) << endl;
