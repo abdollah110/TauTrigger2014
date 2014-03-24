@@ -192,7 +192,7 @@ bool EfficiencyRate_L1Ele::matchToElectron(float ieta, float iphi, const edm::Ev
     bool dR03NonIso = false;
     for (vector<l1extra::L1EmParticle>::const_iterator isoele = IsoElectronHandle->begin(); isoele != IsoElectronHandle->end(); isoele++) {
         if (isoele->pt() > 12 && tool.dR2(isoele->eta(), isoele->phi(), ieta, iphi) < 0.3) {
-            dR03 = true;
+            dR03Iso = true;
             break;
         }
     }
