@@ -61,6 +61,7 @@ public:
 private:
     virtual void analyze(const edm::Event&, const edm::EventSetup&);
     virtual bool matchToGenTau(float ieta, float iphi, const edm::Event&);
+    virtual bool matchToElectron(float ieta, float iphi, const edm::Event&);
     //    virtual std::vector<reco::Candidate::LorentzVector> getUCTCandidateP4s(const vector < UCTCandidate >& , int );
 
     TH1D *offLineTauROC;
@@ -91,6 +92,8 @@ private:
     edm::InputTag L1TauSource_;
     edm::InputTag L1JetSource_;
     edm::InputTag L1MuSource_;
+    edm::InputTag srcL1IsoElectron_;
+    edm::InputTag srcL1NonIsoElectron_;
     edm::InputTag srcHLTCaloTowers_;
     edm::InputTag srcL1UpgradeTaus_;
     edm::InputTag srcL1UpgradeIsoTaus_;
@@ -148,6 +151,8 @@ EfficiencyRate_L1Ele::EfficiencyRate_L1Ele(const edm::ParameterSet& iConfig) {
 
     srcGenParticle_ = iConfig.getParameter<edm::InputTag > ("srcGenParticle");
     L1MuSource_ = iConfig.getParameter<edm::InputTag > ("srcL1Mus");
+    srcL1IsoElectron_ = iConfig.getParameter<edm::InputTag > ("srcL1IsoElectron");
+    srcL1NonIsoElectron_ = iConfig.getParameter<edm::InputTag > ("srcL1NonIsoElectron");
     L1TauSource_ = iConfig.getParameter<edm::InputTag > ("srcL1Taus");
     L1JetSource_ = iConfig.getParameter<edm::InputTag > ("srcL1Jets");
     srcHLTCaloTowers_ = iConfig.getParameter<edm::InputTag > ("srcHLTCaloTowers");
@@ -171,6 +176,34 @@ EfficiencyRate_L1Ele::~EfficiencyRate_L1Ele() {
 //
 // member functions
 //
+
+bool EfficiencyRate_L1Ele::matchToElectron(float ieta, float iphi, const edm::Event& iEvent) {
+    using namespace std;
+    using namespace edm;
+
+    Handle < vector < l1extra::L1EmParticle >> IsoElectronHandle;
+    iEvent.getByLabel(srcL1IsoElectron_, IsoElectronHandle);
+
+    Handle < vector < l1extra::L1EmParticle >> NonIsoElectronHandle;
+    iEvent.getByLabel(srcL1NonIsoElectron_, NonIsoElectronHandle);
+
+
+    bool dR03Iso = false;
+    bool dR03NonIso = false;
+    for (l1extra::L1EmParticle::const_iterator isoele = IsoElectronHandle->begin(); isoele != IsoElectronHandle->end(); isoele++) {
+        if (isoele->pt() > 12 && tool.dR2(isoele->eta(), isoele->phi(), ieta, iphi) < 0.3) {
+            dR03 = true;
+            break;
+        }
+    }
+    for (l1extra::L1EmParticle::const_iterator isoNele = NonIsoElectronHandle->begin(); isoNele != NonIsoElectronHandle->end(); isoNele++) {
+        if (isoNele->pt() > 12 && tool.dR2(isoNele->eta(), isoNele->phi(), ieta, iphi) < 0.3) {
+            dR03NonIso = true;
+            break;
+        }
+    }
+    return (!(dR03Iso || dR03NonIso));
+}
 
 bool EfficiencyRate_L1Ele::matchToGenTau(float ieta, float iphi, const edm::Event& iEvent) {
     using namespace std;
@@ -227,19 +260,12 @@ void EfficiencyRate_L1Ele::analyze(const edm::Event& iEvent, const edm::EventSet
     iEvent.getByLabel("selectedTaus", pftausHandle);
 
 
+    Handle < vector < l1extra::L1EmParticle >> IsoElectronHandle;
+    iEvent.getByLabel(srcL1IsoElectron_, IsoElectronHandle);
 
-    // Different for Muon Isolation
-    //    for (vector<l1extra::L1MuonParticle>::const_iterator mu = muonsHandle->begin(); mu != muonsHandle->end(); mu++) {
-    //        float isolation02 = 0;
-    //        float isolation03 = 0;
-    //        float isolation04 = 0;
-    //        for (SortedCollection < CaloTower, edm::StrictWeakOrdering < CaloTower >> ::const_iterator tower = CaloTowerHandle->begin(); tower != CaloTowerHandle->end(); tower++) {
-    //            if (tool.dR2(tower->eta(), tower->phi(), mu->eta(), mu->phi()) < 0.2) isolation02 += tower->pt();
-    //            if (tool.dR2(tower->eta(), tower->phi(), mu->eta(), mu->phi()) < 0.3) isolation03 += tower->pt();
-    //            if (tool.dR2(tower->eta(), tower->phi(), mu->eta(), mu->phi()) < 0.4) isolation04 += tower->pt();
-    //
-    //        }
-    //    }
+    Handle < vector < l1extra::L1EmParticle >> NonIsoElectronHandle;
+    iEvent.getByLabel(srcL1NonIsoElectron_, NonIsoElectronHandle);
+
 
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -300,18 +326,18 @@ void EfficiencyRate_L1Ele::analyze(const edm::Event& iEvent, const edm::EventSet
             }// if there is denumerator
 
         }//loop over OfflineTau
-    ////////////////////////////////////////////////////////////////////////////////
-    //  For rate measurement
-    ////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////
+        //  For rate measurement
+        ////////////////////////////////////////////////////////////////////////////////
     } else {
 
         float maxValPt_tau = 0;
         float maxValPt_jet = 0;
         for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
-            if (tau->pt() > maxValPt_tau) maxValPt_tau = tau->pt();
+            if (tau->pt() > maxValPt_tau && matchToElectron(tau->eta(), tau->phi(), iEvent)) maxValPt_tau = tau->pt();
         }
         for (vector<l1extra::L1JetParticle>::const_iterator jet = jetsHandle->begin(); jet != jetsHandle->end(); jet++) {
-            if (jet->pt() > maxValPt_jet) maxValPt_jet = jet->pt();
+            if (jet->pt() > maxValPt_jet && matchToElectron(jet->eta(), jet->phi(), iEvent)) maxValPt_jet = jet->pt();
         }
         (maxValPt_tau > (maxValPt_jet - 20) ? rate_L1JetParticle->Fill(maxValPt_tau) : rate_L1JetParticle->Fill(maxValPt_jet - 20));
 
@@ -319,8 +345,10 @@ void EfficiencyRate_L1Ele::analyze(const edm::Event& iEvent, const edm::EventSet
         float maxValPt_ucttau = 0;
         float maxValPt_ucttau4x4 = 0;
         for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
-            if (ucttau->pt() > maxValPt_ucttau) maxValPt_ucttau = ucttau->pt();
-            if (ucttau->getFloat("associatedRegionEt", -4) > maxValPt_ucttau4x4) maxValPt_ucttau4x4 = ucttau->getFloat("associatedRegionEt", -4);
+            if (matchToElectron(ucttau->eta(), ucttau->phi(), iEvent)) {
+                if (ucttau->pt() > maxValPt_ucttau) maxValPt_ucttau = ucttau->pt();
+                if (ucttau->getFloat("associatedRegionEt", -4) > maxValPt_ucttau4x4) maxValPt_ucttau4x4 = ucttau->getFloat("associatedRegionEt", -4);
+            }
 
         }
         rate_UCTCandidate->Fill(maxValPt_ucttau);
@@ -330,9 +358,10 @@ void EfficiencyRate_L1Ele::analyze(const edm::Event& iEvent, const edm::EventSet
         float maxValPt_uctIsotau = 0;
         float maxValPt_uctIsotau4x4 = 0;
         for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++) {
-            if (uctIsotau->pt() > maxValPt_uctIsotau) maxValPt_uctIsotau = uctIsotau->pt();
-            if (uctIsotau->getFloat("associatedRegionEt", -4) > maxValPt_uctIsotau4x4) maxValPt_uctIsotau4x4 = uctIsotau->getFloat("associatedRegionEt", -4);
-
+            if (matchToElectron(uctIsotau->eta(), uctIsotau->phi(), iEvent)) {
+                if (uctIsotau->pt() > maxValPt_uctIsotau) maxValPt_uctIsotau = uctIsotau->pt();
+                if (uctIsotau->getFloat("associatedRegionEt", -4) > maxValPt_uctIsotau4x4) maxValPt_uctIsotau4x4 = uctIsotau->getFloat("associatedRegionEt", -4);
+            }
         }
         rate_UCTCandidateIso->Fill(maxValPt_uctIsotau);
         rate_UCTCandidateIso4x4->Fill(maxValPt_uctIsotau4x4);
