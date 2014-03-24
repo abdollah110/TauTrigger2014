@@ -1,0 +1,58 @@
+import FWCore.ParameterSet.Config as cms
+
+
+isData = False
+#isData = True
+
+process = cms.Process("Demo")
+
+process.load("FWCore.MessageService.MessageLogger_cfi")
+
+process.maxEvents = cms.untracked.PSet(input=cms.untracked.int32(-1))
+
+
+process.source = cms.Source("PoolSource",
+                            fileNames=cms.untracked.vstring(
+                            'file:file.root',
+                            ),
+                            secondaryFileNames=cms.untracked.vstring(
+                            ),
+                            inputCommands=cms.untracked.vstring(
+                            'keep *'
+                            )
+                            )
+
+
+if isData:
+    execfile("Files_EleTau_data.py")
+else:
+    execfile("Files_EleTau_mc.py")
+
+
+#process.isolatedOnlineMuons = cms.EDProducer(
+#                                             "ChargedCandidateFromTrigRefConverter",
+#                                             triggerFilterMuonsSrc=cms.InputTag("hltL3crIsoL1sMu14erORMu16erL1f0L2f14QL3f17QL3crIsoRhoFiltered0p15")
+#                                             )
+process.demo = cms.EDAnalyzer('EfficiencyRate_L1Ele',
+                              #rhoCenNeutralTight=cms.InputTag("kt6PFJetsCentralNeutralTight", "rho")
+                              srcIsData=cms.bool(isData),
+                              srcGenParticle=cms.InputTag("genParticles"),
+                              srcL1Mus=cms.InputTag("l1extraParticles"),
+                              srcL1Taus=cms.InputTag("l1extraParticles", "Tau"),
+                              srcL1Jets=cms.InputTag("l1extraParticles", "Central"),
+                              srcHLTCaloTowers=cms.InputTag('hltTowerMakerForPF'),
+                              srcL1UpgradeTaus=cms.InputTag('UCT2015Producer', 'RelaxedTauUnpacked'),
+                              srcL1UpgradeIsoTaus=cms.InputTag('UCT2015Producer', 'IsolatedTauUnpacked') #taus below 60 GeV will have isolation applied
+                              )
+
+if isData:
+    process.TFileService = cms.Service("TFileService",
+                                       fileName=cms.string('eleTau_L1Ele_rate.root')
+                                       )
+else:
+    process.TFileService = cms.Service("TFileService",
+                                       fileName=cms.string('eleTau_L1Ele_efficiency.root')
+                                       )
+
+process.p = cms.Path(process.demo)
+#process.p = cms.Path(process.isolatedOnlineMuons * process.demo)

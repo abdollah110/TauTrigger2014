@@ -52,60 +52,98 @@ def AddCostumText():
     t.SetTextAlign(12)
     t.SetTextSize(0.025)
     t.DrawLatex(0.1, .92, "CMS Preliminary")
+#    t.DrawLatex(0.35, .92, "#sqrt{s} = 8 TeV")
     t.SetTextColor(2)
     return 0
-
-def AddCostumMarker(Hist,Min,Max,size,marStyle,marColor,XTitke,YTitle):
-    Hist.SetMinimum(Min)
-    Hist.SetMaximum(Max)
-    Hist.SetMarkerSize(size);
-    Hist.SetMarkerStyle(marStyle);
-    Hist.SetMarkerColor(marColor);
-    Hist.GetXaxis().SetTitle(XTitke)
-    Hist.GetYaxis().SetTitle(YTitle)
-    return 0
-    
     
 def doRatio2D(num, denum, cut, marStyle, marColor):
     OneDNum = TH1F("NewNum", "", 100, 0, 100)
+#    OneDDenum = TH1F("NewDenum", "", 100, 0, 100)
     for ii in range(1, 100):
         ValDenum = 0
         ValNum = 0
         for jj in range(cut, 100):
             ValNum = ValNum + num.GetBinContent(ii, jj)
         OneDNum.SetBinContent(ii, ValNum)
+#        for jj in range(0, 100):
+#            ValDenum = ValDenum + denum.GetBinContent(ii, jj)
+#        OneDDenum.SetBinContent(ii, ValDenum)
+#        OneDNum.Fill(ii, ValNum)
+#        OneDDenum.Fill(ii, ValDenum)
+#        print ii, ValNum, ValDenum
     bins = array('d', [20, 25, 30, 35, 40, 45, 50, 55, 70, 100])
     num_R = OneDNum.Rebin(len(bins)-1, "Hinm", bins)
     denum_R = denum.Rebin(len(bins)-1, "Hin", bins)
     ratio = ROOT.TGraphAsymmErrors(num_R, denum_R, "")
-    AddCostumMarker(ratio,0.0,1.2,1.2,marStyle,marColor,"offLine #tau_{pT} [GeV]", "Efficiency")
-    ratio.SetLineColor(marColor)
-    ratio.SetLineWidth(2)
+    ratio.SetMinimum(0.0)
+    ratio.SetMaximum(1.2)
+    ratio.SetMarkerSize(1.2);
+    ratio.SetMarkerStyle(marStyle);
+    ratio.SetMarkerColor(marColor);
+    ratio.SetLineColor(marColor);
+    ratio.SetLineWidth(2);
+    ratio.GetXaxis().SetTitle("offLine #tau_{pT} [GeV]")
+    ratio.GetYaxis().SetTitle("Efficiency")
     return ratio
+
+#def doRatio(num, denum, marStyle, marColor):
+#    bins = array('d', [20, 25, 30, 35, 40, 45, 50, 55, 70, 100])
+#    num_R = num.Rebin(len(bins)-1, "Hinm", bins)
+#    denum_R = denum.Rebin(len(bins)-1, "Hin", bins)
+#    ratio = ROOT.TGraphAsymmErrors(num_R, denum_R, "")
+#    ratio.SetMinimum(0.0)
+#    ratio.SetMaximum(1.2)
+#    ratio.SetMarkerSize(1.2);
+#    ratio.SetMarkerStyle(marStyle);
+#    ratio.SetMarkerColor(marColor);
+#    ratio.SetLineColor(marColor);
+#    ratio.SetLineWidth(2);
+#    ratio.GetXaxis().SetTitle("#tau_{pT} [GeV]")
+#    ratio.GetYaxis().SetTitle("Efficiency")
+#    return ratio
+
 
 def doCommulative(num, denum, marStyle, marColor,type):
     commul = TH1F(str(num), "", 100, 0, 100)
     for ii in range(1, 100):
         commul.SetBinContent(ii + 1, (num.Integral(ii, 100) * 1.0) / denum.GetEntries());
-    AddCostumMarker(commul,0.001,1.2,1.2,marStyle,marColor, "L1 #tau_{pT} [GeV]",type)
+    commul.SetMinimum(0.001)
+    commul.SetMaximum(1.2)
+    commul.SetMarkerSize(1.2);
+    commul.SetMarkerStyle(marStyle);
+    commul.SetMarkerColor(marColor);
+    commul.GetXaxis().SetTitle("L1 #tau_{pT} [GeV]")
+    commul.GetYaxis().SetTitle(type)
     return commul
 
 def doCommulative2D(cut, num, denum, marStyle, marColor,type):
     commul = TH1F(str(num)+str(cut), "", 100, 0, 100)
     for ii in range(1,100):
         commul.SetBinContent(ii + 1, (num.Integral(cut, 100,ii,100) * 1.0) / denum.Integral(cut, 100));
-    AddCostumMarker(commul,0.001,1.2,1.2,marStyle,marColor,"L1 #tau_{pT} [GeV]",type )
+    commul.SetMinimum(0.001)
+    commul.SetMaximum(1.2)
+    commul.SetMarkerSize(1.2);
+    commul.SetMarkerStyle(marStyle);
+    commul.SetMarkerColor(marColor);
+    commul.GetXaxis().SetTitle("L1 #tau_{pT} [GeV]")
+    commul.GetYaxis().SetTitle(type)
     return commul
 
 def doROCCurve(cut,num1, denum1, num2, denum2, marStyle, marColor):
-    rocCurve = TH2F(str(num1)+str(cut), "", 120, 0, 1.2, 120, 0, 1.2)
+    rocCurve = TH2F(str(num1), "", 120, 0, 1.2, 120, 0, 1.2)
     for ii in range(1, 100):
         if (ii%10 == 0): print ii, "\t"
         for jj in range (1, 100):
             for kk in range (1, 100):
                 if (math.floor((num1.Integral(ii, 100) * 1.0) * 100 / denum1.Integral(cut,100)) == jj and math.floor((1 - ((num2.Integral(ii, 100) * 1.0) / denum2.GetEntries())) * 100) == kk):
-                    rocCurve.SetBinContent(jj + 1, kk + 1, 10)
-    AddCostumMarker(rocCurve,0.001,1.2,1.2,marStyle,marColor,"Efficiency","1-Rate")
+                    rocCurve.SetBinContent(jj + 1, kk + 1, 10);
+    rocCurve.SetMinimum(0.001)
+    rocCurve.SetMaximum(2)
+    rocCurve.SetMarkerSize(1.1);
+    rocCurve.SetMarkerStyle(marStyle);
+    rocCurve.SetMarkerColor(marColor);
+    rocCurve.GetXaxis().SetTitle("Efficiency")
+    rocCurve.GetYaxis().SetTitle("1-Rate")
     return rocCurve
 
 def doProject2DX(cut,num):
@@ -118,11 +156,29 @@ def doProject2DX(cut,num):
     return projectedHist
             
 
-##########################################################################################################
-##########################################################################################################
-######                                                                                              ######
-##########################################################################################################
-##########################################################################################################
+
+
+
+#FileRootEff = TFile("muTau_L1Mu_efficiency.root", "OPEN")
+#DenumEff = FileRootEff.Get("demo/offLineTauEff")
+#Num_l1extraEff = FileRootEff.Get("demo/l1extraParticlesEff")
+#Num_RelaxedTauEff = FileRootEff.Get("demo/RelaxedTauUnpackedEff")
+#Num_IsolatedTauEff = FileRootEff.Get("demo/IsolatedTauUnpackedEff")
+#l1extraEff = doRatio(Num_l1extraEff, DenumEff, 23, 2)
+#RelaxedTauEff = doRatio(Num_RelaxedTauEff, DenumEff, 21, 3)
+#IsolatedTauEff = doRatio(Num_IsolatedTauEff, DenumEff, 24, 4)
+#l1extraEff.Draw("PAE")
+#RelaxedTauEff.Draw("Psame")
+#IsolatedTauEff.Draw("Psame")
+#legend_ = TLegend(0.60, 0.78, 0.9, 0.9)
+#legend_.SetFillColor(0)
+#legend_.SetBorderSize(0)
+#legend_.SetTextSize(.03)
+#legend_.AddEntry(l1extraEff, "l1extra", "lp")
+#legend_.AddEntry(RelaxedTauEff, "UCTTau", "lp")
+#legend_.AddEntry(IsolatedTauEff, "IsoUCTTau", "lp")
+#legend_.Draw()
+#canvas.SaveAs("MuTauEfficiency.pdf")
 
 FileRootEff = TFile("muTau_L1Mu_efficiency.root", "OPEN")
 DenumEff = FileRootEff.Get("demo/offLineTauEff")
@@ -195,6 +251,35 @@ AddCostumText()
 canvas.SaveAs("MuTauEfficiencyDifferentL1Algo.pdf")
 
 
+#FileRootEff = TFile("muTau_L1Mu_efficiency.root", "OPEN")
+#DenumROC = FileRootEff.Get("demo/offLineTauROC")
+#Num_l1extraROC = FileRootEff.Get("demo/l1extraParticlesROC")
+#Num_RelaxedTauROC = FileRootEff.Get("demo/RelaxedTauUnpackedROC")
+#Num_IsolatedTauROC = FileRootEff.Get("demo/IsolatedTauUnpackedROC")
+#Num_RelaxedTauROC4x4 = FileRootEff.Get("demo/RelaxedTauUnpackedROC4x4")
+#Num_IsolatedTauROC4x4 = FileRootEff.Get("demo/IsolatedTauUnpackedROC4x4")
+#l1extraROC = doCommulative(Num_l1extraROC, DenumROC, 21, 2, "Efficiency")
+#RelaxedTauROC = doCommulative(Num_RelaxedTauROC, DenumROC, 22, 3, "Efficiency")
+#IsolatedTauROC = doCommulative(Num_IsolatedTauROC, DenumROC, 23, 4, "Efficiency")
+#RelaxedTau4x4ROC = doCommulative(Num_RelaxedTauROC4x4, DenumROC, 24, 6, "Efficiency")
+#IsolatedTau4x4ROC = doCommulative(Num_IsolatedTauROC4x4, DenumROC, 25, 7, "Efficiency")
+#l1extraROC.Draw("P")
+#RelaxedTauROC.Draw("Psame")
+#IsolatedTauROC.Draw("Psame")
+#RelaxedTau4x4ROC.Draw("Psame")
+#IsolatedTau4x4ROC.Draw("Psame")
+#legend_ = TLegend(0.50, 0.78, 0.85, 0.9)
+#legend_.SetFillColor(0)
+#legend_.SetBorderSize(0)
+#legend_.SetTextSize(.03)
+#legend_.AddEntry(l1extraROC, "L1tau or jet", "lp")
+#legend_.AddEntry(RelaxedTauROC, "UCTTau2x1", "lp")
+#legend_.AddEntry(IsolatedTauROC, "UCTIsoTau2x1", "lp")
+#legend_.AddEntry(RelaxedTau4x4ROC, "UCTTau4x4", "lp")
+#legend_.AddEntry(IsolatedTau4x4ROC, "UCTIsoTau4x4", "lp")
+#legend_.Draw()
+#AddCostumText()
+#canvas.SaveAs("MuTauEfficiencyCumulative.pdf")
 
 FileRootEff = TFile("muTau_L1Mu_efficiency.root", "OPEN")
 DenumROC = FileRootEff.Get("demo/offLineTauROC")
