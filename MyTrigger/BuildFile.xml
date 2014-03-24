@@ -8,6 +8,4 @@
 <use name="L1Trigger/UCT2015"/>
 <use name="DataFormats/HepMCCandidate"/>
 <flags EDM_PLUGIN="1"/>
-<export>
-   <lib name="1"/>
-</export>
+
