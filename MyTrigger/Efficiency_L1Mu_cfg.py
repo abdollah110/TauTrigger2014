@@ -1,8 +1,8 @@
 import FWCore.ParameterSet.Config as cms
 
 
-#isData = False
-isData = True
+isData = False
+#isData = True
 
 process = cms.Process("Demo")
 
