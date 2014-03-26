@@ -182,7 +182,7 @@ bool Efficiency_L1Mu::matchToMuon(float ieta, float iphi, const edm::Event& iEve
 
 
     bool dR03Mu = false;
-    for (vector<l1extra::L1EmParticle>::const_iterator mu = muonsHandle->begin(); mu != muonsHandle->end(); mu++) {
+    for (vector<l1extra::L1MuonParticle>::const_iterator mu = muonsHandle->begin(); mu != muonsHandle->end(); mu++) {
         if (mu->pt() > 12 && tool.dR2(mu->eta(), mu->phi(), ieta, iphi) < 0.3) {
             dR03Iso = true;
             break;
