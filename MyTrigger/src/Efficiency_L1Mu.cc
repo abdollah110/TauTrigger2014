@@ -61,6 +61,7 @@ public:
 private:
     virtual void analyze(const edm::Event&, const edm::EventSetup&);
     virtual bool matchToGenTau(float ieta, float iphi, const edm::Event&);
+    virtual bool matchToMuon(float ieta, float iphi, const edm::Event&);
     //    virtual std::vector<reco::Candidate::LorentzVector> getUCTCandidateP4s(const vector < UCTCandidate >& , int );
 
     TH1D *offLineTauROC;
@@ -171,6 +172,25 @@ Efficiency_L1Mu::~Efficiency_L1Mu() {
 //
 // member functions
 //
+
+bool Efficiency_L1Mu::matchToMuon(float ieta, float iphi, const edm::Event& iEvent) {
+    using namespace std;
+    using namespace edm;
+
+    Handle < vector < l1extra::L1MuonParticle >> muonsHandle;
+    iEvent.getByLabel(L1MuSource_, muonsHandle);
+
+
+    bool dR03Mu = false;
+    for (vector<l1extra::L1EmParticle>::const_iterator mu = muonsHandle->begin(); mu != muonsHandle->end(); mu++) {
+        if (mu->pt() > 12 && tool.dR2(mu->eta(), mu->phi(), ieta, iphi) < 0.3) {
+            dR03Iso = true;
+            break;
+        }
+    }
+
+    return (!(dR03Mu));
+}
 
 bool Efficiency_L1Mu::matchToGenTau(float ieta, float iphi, const edm::Event& iEvent) {
     using namespace std;
@@ -300,18 +320,18 @@ void Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& i
             }// if there is denumerator
 
         }//loop over OfflineTau
-    ////////////////////////////////////////////////////////////////////////////////
-    //  For rate measurement
-    ////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////
+        //  For rate measurement
+        ////////////////////////////////////////////////////////////////////////////////
     } else {
 
         float maxValPt_tau = 0;
         float maxValPt_jet = 0;
         for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
-            if (tau->pt() > maxValPt_tau) maxValPt_tau = tau->pt();
+            if (tau->pt() > maxValPt_tau && matchToMuon(tau->eta(), tau->phi(), iEvent)) maxValPt_tau = tau->pt();
         }
         for (vector<l1extra::L1JetParticle>::const_iterator jet = jetsHandle->begin(); jet != jetsHandle->end(); jet++) {
-            if (jet->pt() > maxValPt_jet) maxValPt_jet = jet->pt();
+            if (jet->pt() > maxValPt_jet && matchToMuon(jet->eta(), jet->phi(), iEvent)) maxValPt_jet = jet->pt();
         }
         (maxValPt_tau > (maxValPt_jet - 20) ? rate_L1JetParticle->Fill(maxValPt_tau) : rate_L1JetParticle->Fill(maxValPt_jet - 20));
 
@@ -319,9 +339,10 @@ void Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& i
         float maxValPt_ucttau = 0;
         float maxValPt_ucttau4x4 = 0;
         for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
-            if (ucttau->pt() > maxValPt_ucttau) maxValPt_ucttau = ucttau->pt();
-            if (ucttau->getFloat("associatedRegionEt", -4) > maxValPt_ucttau4x4) maxValPt_ucttau4x4 = ucttau->getFloat("associatedRegionEt", -4);
-
+            if (matchToMuon(ucttau->eta(), ucttau->phi(), iEvent)) {
+                if (ucttau->pt() > maxValPt_ucttau) maxValPt_ucttau = ucttau->pt();
+                if (ucttau->getFloat("associatedRegionEt", -4) > maxValPt_ucttau4x4) maxValPt_ucttau4x4 = ucttau->getFloat("associatedRegionEt", -4);
+            }
         }
         rate_UCTCandidate->Fill(maxValPt_ucttau);
         rate_UCTCandidate4x4->Fill(maxValPt_ucttau4x4);
@@ -330,9 +351,10 @@ void Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& i
         float maxValPt_uctIsotau = 0;
         float maxValPt_uctIsotau4x4 = 0;
         for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++) {
-            if (uctIsotau->pt() > maxValPt_uctIsotau) maxValPt_uctIsotau = uctIsotau->pt();
-            if (uctIsotau->getFloat("associatedRegionEt", -4) > maxValPt_uctIsotau4x4) maxValPt_uctIsotau4x4 = uctIsotau->getFloat("associatedRegionEt", -4);
-
+            if (matchToMuon(uctIsotau->eta(), uctIsotau->phi(), iEvent)) {
+                if (uctIsotau->pt() > maxValPt_uctIsotau) maxValPt_uctIsotau = uctIsotau->pt();
+                if (uctIsotau->getFloat("associatedRegionEt", -4) > maxValPt_uctIsotau4x4) maxValPt_uctIsotau4x4 = uctIsotau->getFloat("associatedRegionEt", -4);
+            }
         }
         rate_UCTCandidateIso->Fill(maxValPt_uctIsotau);
         rate_UCTCandidateIso4x4->Fill(maxValPt_uctIsotau4x4);
