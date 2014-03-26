@@ -208,8 +208,8 @@ bool EfficiencyRate_L1Ele::matchToElectron(float ieta, float iphi, const edm::Ev
             //            break;
         }
     }
-    return (!(dR03Iso || dR03NonIso));
     NumEle->Fill(numEle);
+    return (!(dR03Iso || dR03NonIso));
 
 }
 
