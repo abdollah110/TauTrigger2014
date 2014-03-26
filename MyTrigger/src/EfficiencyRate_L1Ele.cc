@@ -82,6 +82,8 @@ private:
     TH1D * rate_UCTCandidateIso4x4;
     TH1D * rate_UCTCandidate4x4;
 
+    TH1D * NumEle;
+
     TH2D * Eff2D_Num_l1extraParticles;
     TH2D * Eff2D_Num_RelaxedTauUnpacked;
     TH2D * Eff2D_Num_RelaxedTauUnpacked4x4;
@@ -148,6 +150,7 @@ EfficiencyRate_L1Ele::EfficiencyRate_L1Ele(const edm::ParameterSet& iConfig) {
     Eff2D_Num_IsolatedTauUnpacked = fs->make<TH2D > ("Eff2D_Num_IsolatedTauUnpacked", "", 100, 0, 100, 100, 0, 100);
     Eff2D_Num_IsolatedTauUnpacked4x4 = fs->make<TH2D > ("Eff2D_Num_IsolatedTauUnpacked4x4", "", 100, 0, 100, 100, 0, 100);
 
+    NumEle = fs->make<TH1D > ("NumEle", "", 10, 0, 10);
 
     srcGenParticle_ = iConfig.getParameter<edm::InputTag > ("srcGenParticle");
     L1MuSource_ = iConfig.getParameter<edm::InputTag > ("srcL1Mus");
@@ -190,19 +193,24 @@ bool EfficiencyRate_L1Ele::matchToElectron(float ieta, float iphi, const edm::Ev
 
     bool dR03Iso = false;
     bool dR03NonIso = false;
+    int numEle = 0;
     for (vector<l1extra::L1EmParticle>::const_iterator isoele = IsoElectronHandle->begin(); isoele != IsoElectronHandle->end(); isoele++) {
         if (isoele->pt() > 12 && tool.dR2(isoele->eta(), isoele->phi(), ieta, iphi) < 0.3) {
             dR03Iso = true;
-            break;
+            numEle++;
+            //            break;
         }
     }
     for (vector<l1extra::L1EmParticle>::const_iterator isoNele = NonIsoElectronHandle->begin(); isoNele != NonIsoElectronHandle->end(); isoNele++) {
         if (isoNele->pt() > 12 && tool.dR2(isoNele->eta(), isoNele->phi(), ieta, iphi) < 0.3) {
             dR03NonIso = true;
-            break;
+            numEle++;
+            //            break;
         }
     }
     return (!(dR03Iso || dR03NonIso));
+    NumEle->Fill(numEle)
+
 }
 
 bool EfficiencyRate_L1Ele::matchToGenTau(float ieta, float iphi, const edm::Event& iEvent) {
