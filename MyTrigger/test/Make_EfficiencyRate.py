@@ -224,7 +224,7 @@ AddCostumText()
 canvas.SaveAs("Plot/out_" + candidate + "TauEfficiencyDifferentL1Algo.pdf")
 
 
-ptL1 = [20, 60]
+ptL1 = [20, 40]
 for iipt in ptL1:
     l1extraROC = doCommulative2D(iipt, Num_l1extraEff, DenumROC, 21, 2, "Efficiency")
     RelaxedTauROC = doCommulative2D(iipt, Num_RelaxedTauEff_2x1, DenumROC, 22, 3, "Efficiency")
@@ -278,31 +278,31 @@ AddCostumText()
 canvas.SaveAs("Plot/out_" + candidate + "TauRateCumulative.pdf")
 
 
-ptL1 = [20, 60]
-for iipt in ptL1:
-    L1JetParticleROC = doROCCurve(iipt, doProject2DX(iipt, Num_l1extraEff), DenumROC, L1JetParticle, L1JetParticle, 21, 2)
-    UCTCandidateROC = doROCCurve(iipt, doProject2DX(iipt, Num_RelaxedTauEff_2x1), DenumROC, UCTCandidate, UCTCandidate, 22, 3)
-    UCTCandidateIsoROC = doROCCurve(iipt, doProject2DX(iipt, Num_IsolatedTauEff_2x1), DenumROC, UCTCandidateIso, UCTCandidateIso, 23, 4)
-    UCTCandidateROC4x4 = doROCCurve(iipt, doProject2DX(iipt, Num_RelaxedTauEff_4x4), DenumROC, UCTCandidate4x4, UCTCandidate4x4, 24, 6)
-    UCTCandidateIsoROC4x4 = doROCCurve(iipt, doProject2DX(iipt, Num_IsolatedTauEff_4x4), DenumROC, UCTCandidateIso4x4, UCTCandidateIso4x4, 25, 7)
-    L1JetParticleROC.Draw("P")
-    UCTCandidateROC.Draw("Psame")
-    UCTCandidateIsoROC.Draw("Psame")
-    UCTCandidateROC4x4.Draw("Psame")
-    UCTCandidateIsoROC4x4.Draw("Psame")
-    legend_ = TLegend(0.50, 0.78, 0.85, 0.9)
-    legend_.SetFillColor(0)
-    legend_.SetBorderSize(0)
-    legend_.SetTextSize(.03)
-    legend_.AddEntry(L1JetParticleROC, "L1Tau or Jet", "lp")
-    legend_.AddEntry(UCTCandidateROC, "UCTTau2x1", "lp")
-    legend_.AddEntry(UCTCandidateIsoROC, "UCTIsoTau2x1", "lp")
-    legend_.AddEntry(UCTCandidateROC4x4, "UCTTau4x4", "lp")
-    legend_.AddEntry(UCTCandidateIsoROC4x4, "UCTIsoTau4x4", "lp")
-    canvas.SetLogy(0)
-    legend_.Draw()
-    AddCostumText()
-    canvas.SaveAs("Plot/out_" + candidate + "TauROC" + str(iipt) + ".pdf")
-
+#ptL1 = [20, 60]
+#for iipt in ptL1:
+#    L1JetParticleROC = doROCCurve(iipt, doProject2DX(iipt, Num_l1extraEff), DenumROC, L1JetParticle, L1JetParticle, 21, 2)
+#    UCTCandidateROC = doROCCurve(iipt, doProject2DX(iipt, Num_RelaxedTauEff_2x1), DenumROC, UCTCandidate, UCTCandidate, 22, 3)
+#    UCTCandidateIsoROC = doROCCurve(iipt, doProject2DX(iipt, Num_IsolatedTauEff_2x1), DenumROC, UCTCandidateIso, UCTCandidateIso, 23, 4)
+#    UCTCandidateROC4x4 = doROCCurve(iipt, doProject2DX(iipt, Num_RelaxedTauEff_4x4), DenumROC, UCTCandidate4x4, UCTCandidate4x4, 24, 6)
+#    UCTCandidateIsoROC4x4 = doROCCurve(iipt, doProject2DX(iipt, Num_IsolatedTauEff_4x4), DenumROC, UCTCandidateIso4x4, UCTCandidateIso4x4, 25, 7)
+#    L1JetParticleROC.Draw("P")
+#    UCTCandidateROC.Draw("Psame")
+#    UCTCandidateIsoROC.Draw("Psame")
+#    UCTCandidateROC4x4.Draw("Psame")
+#    UCTCandidateIsoROC4x4.Draw("Psame")
+#    legend_ = TLegend(0.50, 0.78, 0.85, 0.9)
+#    legend_.SetFillColor(0)
+#    legend_.SetBorderSize(0)
+#    legend_.SetTextSize(.03)
+#    legend_.AddEntry(L1JetParticleROC, "L1Tau or Jet", "lp")
+#    legend_.AddEntry(UCTCandidateROC, "UCTTau2x1", "lp")
+#    legend_.AddEntry(UCTCandidateIsoROC, "UCTIsoTau2x1", "lp")
+#    legend_.AddEntry(UCTCandidateROC4x4, "UCTTau4x4", "lp")
+#    legend_.AddEntry(UCTCandidateIsoROC4x4, "UCTIsoTau4x4", "lp")
+#    canvas.SetLogy(0)
+#    legend_.Draw()
+#    AddCostumText()
+#    canvas.SaveAs("Plot/out_" + candidate + "TauROC" + str(iipt) + ".pdf")
+#
 
 
