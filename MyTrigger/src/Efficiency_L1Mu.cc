@@ -289,7 +289,7 @@ void Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& i
                         l1extraParticlesROC->Fill(tau->pt());
                         ValuePtTau = tau->pt();
                         if (ValuePtTau || ValuePtJet) (ValuePtTau > (ValuePtJet) ? Eff2D_Num_l1extraParticles->Fill(ipftau->pt(), ValuePtTau) : Eff2D_Num_l1extraParticles->Fill(ipftau->pt(), ValuePtJet));
-                        break;
+//                        break;
                     }
                 }
                 NumTau->Fill(counteL1Tau);
