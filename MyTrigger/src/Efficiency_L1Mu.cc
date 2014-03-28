@@ -288,23 +288,28 @@ void Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& i
                         l1extraParticlesEff->Fill(ipftau->pt());
                         l1extraParticlesROC->Fill(tau->pt());
                         ValuePtTau = tau->pt();
-                        if (ValuePtTau || ValuePtJet) (ValuePtTau > (ValuePtJet) ? Eff2D_Num_l1extraParticles->Fill(ipftau->pt(), ValuePtTau) : Eff2D_Num_l1extraParticles->Fill(ipftau->pt(), ValuePtJet));
-//                        break;
+                        break;
                     }
                 }
                 NumTau->Fill(counteL1Tau);
 
                 //  THis is tp be checke dlated on
                 //                if (!hasPassedL1Tau) { // Here we add OR between L1Tau and L1Jet
-                //                    for (vector<l1extra::L1JetParticle>::const_iterator jet = jetsHandle->begin(); jet != jetsHandle->end(); jet++) {
-                //                        if (matchToGenTau(jet->eta(), jet->phi(), iEvent)) {
-                //                            l1extraParticlesEff->Fill(ipftau->pt());
-                //                            l1extraParticlesROC->Fill(jet->pt() - 20);
-                //                            ValuePtJet = jet->pt() - 20;
-                //                            break;
-                //                        }
-                //                    }
+                for (vector<l1extra::L1JetParticle>::const_iterator jet = jetsHandle->begin(); jet != jetsHandle->end(); jet++) {
+                    if (matchToGenTau(jet->eta(), jet->phi(), iEvent)) {
+                        l1extraParticlesEff->Fill(ipftau->pt());
+                        l1extraParticlesROC->Fill(jet->pt() - 20);
+                        ValuePtJet = jet->pt() - 20;
+                        break;
+                    }
+                }
                 //                }
+                if (ValuePtTau || ValuePtJet) {
+                    if (ValuePtTau > ValuePtJet)
+                        Eff2D_Num_l1extraParticles->Fill(ipftau->pt(), ValuePtTau);
+                    else
+                        Eff2D_Num_l1extraParticles->Fill(ipftau->pt(), ValuePtJet);
+                }
                 // ############################## NEW tau HLT Algorithm UST2015
                 for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
                     if (matchToGenTau(ucttau->eta(), ucttau->phi(), iEvent)) {
