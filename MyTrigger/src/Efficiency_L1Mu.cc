@@ -81,6 +81,8 @@ private:
     TH1D * rate_UCTCandidate;
     TH1D * rate_UCTCandidateIso4x4;
     TH1D * rate_UCTCandidate4x4;
+    TH1D * NumEle;
+    TH1D * NumTau;
 
     TH2D * Eff2D_Num_l1extraParticles;
     TH2D * Eff2D_Num_RelaxedTauUnpacked;
@@ -145,7 +147,8 @@ Efficiency_L1Mu::Efficiency_L1Mu(const edm::ParameterSet& iConfig) {
     Eff2D_Num_RelaxedTauUnpacked4x4 = fs->make<TH2D > ("Eff2D_Num_RelaxedTauUnpacked4x4", "", 100, 0, 100, 100, 0, 100);
     Eff2D_Num_IsolatedTauUnpacked = fs->make<TH2D > ("Eff2D_Num_IsolatedTauUnpacked", "", 100, 0, 100, 100, 0, 100);
     Eff2D_Num_IsolatedTauUnpacked4x4 = fs->make<TH2D > ("Eff2D_Num_IsolatedTauUnpacked4x4", "", 100, 0, 100, 100, 0, 100);
-
+    NumEle = fs->make<TH1D > ("NumEle", "", 10, 0, 10);
+    NumTau = fs->make<TH1D > ("NumTau", "", 10, 0, 10);
 
     srcGenParticle_ = iConfig.getParameter<edm::InputTag > ("srcGenParticle");
     L1MuSource_ = iConfig.getParameter<edm::InputTag > ("srcL1Mus");
@@ -267,15 +270,20 @@ void Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& i
     ////////////////////////////////////////////////////////////////////////////////
     if (!srcIsData_) {
         for (pat::TauCollection::const_iterator ipftau = pftausHandle->begin(); ipftau != pftausHandle->end(); ipftau++) {
-            if (ipftau->pt() > 40 && fabs(ipftau->eta()) < 2.3 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits") > 0.5 && ipftau->tauID("againstMuonTight") > 0.5 && matchToGenTau(ipftau->eta(), ipftau->phi(), iEvent)) {
+            int counter = 0;
+            if (ipftau->pt() > 20 && fabs(ipftau->eta()) < 2.3 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits") > 0.5 && ipftau->tauID("againstMuonTight") > 0.5 && matchToGenTau(ipftau->eta(), ipftau->phi(), iEvent)) {
+                counter++;
                 offLineTauEff->Fill(ipftau->pt());
                 offLineTauROC->Fill(ipftau->pt());
+
                 // ############################## OLD tau HLT Algorithm
                 bool hasPassedL1Tau = false;
                 float ValuePtTau = 0;
                 float ValuePtJet = 0;
+                int counteL1Tau = 0;
                 for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
                     if (matchToGenTau(tau->eta(), tau->phi(), iEvent)) {
+                        counteL1Tau++;
                         hasPassedL1Tau = true;
                         l1extraParticlesEff->Fill(ipftau->pt());
                         l1extraParticlesROC->Fill(tau->pt());
@@ -284,6 +292,8 @@ void Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& i
                         break;
                     }
                 }
+                NumTau->Fill(counteL1Tau);
+
                 //  THis is tp be checke dlated on
                 //                if (!hasPassedL1Tau) { // Here we add OR between L1Tau and L1Jet
                 //                    for (vector<l1extra::L1JetParticle>::const_iterator jet = jetsHandle->begin(); jet != jetsHandle->end(); jet++) {
@@ -319,6 +329,7 @@ void Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& i
                 }
 
             }// if there is denumerator
+            NumEle->Fill(counter);
 
         }//loop over OfflineTau
         ////////////////////////////////////////////////////////////////////////////////

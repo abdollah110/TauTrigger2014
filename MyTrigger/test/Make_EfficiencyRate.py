@@ -224,7 +224,7 @@ AddCostumText()
 canvas.SaveAs("Plot/out_" + candidate + "TauEfficiencyDifferentL1Algo.pdf")
 
 
-ptL1 = [20, 40]
+ptL1 = [50, 60]
 for iipt in ptL1:
     l1extraROC = doCommulative2D(iipt, Num_l1extraEff, DenumROC, 21, 2, "Efficiency")
     RelaxedTauROC = doCommulative2D(iipt, Num_RelaxedTauEff_2x1, DenumROC, 22, 3, "Efficiency")
