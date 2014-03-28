@@ -285,19 +285,16 @@ void EfficiencyRate_L1Ele::analyze(const edm::Event& iEvent, const edm::EventSet
                 offLineTauEff->Fill(ipftau->pt());
                 offLineTauROC->Fill(ipftau->pt());
                 // ############################## OLD tau HLT Algorithm
-                bool hasPassedL1Tau = false;
                 float ValuePtTau = 0;
                 float ValuePtJet = 0;
                 for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
                     if (matchToGenTau(tau->eta(), tau->phi(), iEvent)) {
-                        hasPassedL1Tau = true;
                         l1extraParticlesEff->Fill(ipftau->pt());
                         l1extraParticlesROC->Fill(tau->pt());
                         ValuePtTau = tau->pt();
                         break;
                     }
                 }
-                if (!hasPassedL1Tau) { // Here we add OR between L1Tau and L1Jet
                     for (vector<l1extra::L1JetParticle>::const_iterator jet = jetsHandle->begin(); jet != jetsHandle->end(); jet++) {
                         if (matchToGenTau(jet->eta(), jet->phi(), iEvent)) {
                             l1extraParticlesEff->Fill(ipftau->pt());
@@ -306,8 +303,7 @@ void EfficiencyRate_L1Ele::analyze(const edm::Event& iEvent, const edm::EventSet
                             break;
                         }
                     }
-                }
-                if (ValuePtTau || ValuePtJet) (ValuePtTau > (ValuePtJet) ? Eff2D_Num_l1extraParticles->Fill(ipftau->pt(), ValuePtTau) : Eff2D_Num_l1extraParticles->Fill(ipftau->pt(), ValuePtJet));
+                if (ValuePtTau || ValuePtJet) (ValuePtTau > ValuePtJet ? Eff2D_Num_l1extraParticles->Fill(ipftau->pt(), ValuePtTau) : Eff2D_Num_l1extraParticles->Fill(ipftau->pt(), ValuePtJet));
                 // ############################## NEW tau HLT Algorithm UST2015
                 for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
                     if (matchToGenTau(ucttau->eta(), ucttau->phi(), iEvent)) {

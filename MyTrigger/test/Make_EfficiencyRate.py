@@ -105,7 +105,7 @@ def doCommulative(num, denum, marStyle, marColor, type):
 def doCommulative2D(cut, num, denum, marStyle, marColor, type):
     commul = TH1F(str(num) + str(cut), "", 100, 0, 100)
     for ii in range(1, 100):
-        commul.SetBinContent(ii + 1, (num.Integral(cut, 100, ii, 100) * 1.0) / denum.Integral(cut, 100));
+        commul.SetBinContent(ii + 1, (num.Integral(cut, 101, ii, 101) * 1.0) / denum.Integral(cut, 101));
     AddCostumMarker(commul, 0.001, 1.2, 1.2, marStyle, marColor, "L1 #tau_{pT} [GeV]", type)
     return commul
 
@@ -136,7 +136,7 @@ def doProject2DX(cut, num):
 ##########################################################################################################
 ##########################################################################################################
 
-FileRootEff = TFile(candidate + "Tau_L1" + candidate + "_efficiency_40.root", "OPEN")
+FileRootEff = TFile(candidate + "Tau_L1" + candidate + "_efficiency.root", "OPEN")
 FileRootRate = TFile(candidate + "Tau_L1" + candidate + "_rate.root", "OPEN")
 
 DenumEff = FileRootEff.Get("demo/offLineTauEff")
@@ -224,7 +224,7 @@ AddCostumText()
 canvas.SaveAs("Plot/out_" + candidate + "TauEfficiencyDifferentL1Algo.pdf")
 
 
-ptL1 = [50, 60]
+ptL1 = [20,30,40,50, 60]
 for iipt in ptL1:
     l1extraROC = doCommulative2D(iipt, Num_l1extraEff, DenumROC, 21, 2, "Efficiency")
     RelaxedTauROC = doCommulative2D(iipt, Num_RelaxedTauEff_2x1, DenumROC, 22, 3, "Efficiency")
