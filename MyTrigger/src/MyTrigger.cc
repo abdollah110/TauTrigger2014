@@ -65,8 +65,8 @@ private:
     TH1D *demohisto_17;
     TH1D * Histo_tauPt;
     TH1D * Histo_tauPt_20;
-    TH1D * Histo_Denumerator;
-    TH1D * Histo_DenumeratorSV;
+    TH1D * Histo_RateReduction;
+    TH1D * Histo_RateReductionSV;
     TH1D * Histo_Step1;
     TH1D * Histo_Step2;
     TH1D * Histo_Step3;
@@ -106,30 +106,30 @@ MyTrigger::MyTrigger(const edm::ParameterSet& iConfig) {
     //now do what ever initialization is needed
     using namespace edm;
     edm::Service<TFileService> fs;
-    demohisto = fs->make<TH1D > ("MuPt", "MuPt", 50, 0, 250);
-    demohisto_17 = fs->make<TH1D > ("MuPt_17", "MuPt_17", 50, 0, 250);
-    Histo_tauPt = fs->make<TH1D > ("TauPt", "TauPt", 50, 0, 250);
-    Histo_tauPt_20 = fs->make<TH1D > ("TauPt_20", "TauPt_20", 50, 0, 250);
-    Histo_Denumerator = fs->make<TH1D > ("TriggerRate", "TriggerRate", 10, 0, 10);
-    Histo_DenumeratorSV = fs->make<TH1D > ("TriggerRateStdVtx", "TriggerRateStdVtx", 10, 0, 10);
-    Histo_Step1 = fs->make<TH1D > ("Step1-Multiplicity", "Step1-Multiplicity", 10, 0, 10);
-    Histo_Step2 = fs->make<TH1D > ("Step2-Multiplicity", "Step2-Multiplicity", 10, 0, 10);
-    Histo_Step3 = fs->make<TH1D > ("Step3-Multiplicity", "Step3-Multiplicity", 10, 0, 10);
-    Histo_StepSV1 = fs->make<TH1D > ("StepSV1-Multiplicity", "StepSV1-Multiplicity", 10, 0, 10);
-    Histo_StepSV2 = fs->make<TH1D > ("StepSV2-Multiplicity", "StepSV2-Multiplicity", 10, 0, 10);
-    Histo_StepSV3 = fs->make<TH1D > ("StepSV3-Multiplicity", "StepSV3-Multiplicity", 10, 0, 10);
-    Pt_StepSV1 = fs->make<TH1D > ("Pt_StepSV1", "Pt_StepSV1", 40, 0, 200);
-    Eta_StepSV1 = fs->make<TH1D > ("Eta_StepSV1", "Eta_StepSV1", 50, -2.5, 2.5);
-    Pt_StepSV2 = fs->make<TH1D > ("Pt_StepSV2", "Pt_StepSV2", 40, 0, 200);
-    Eta_StepSV2 = fs->make<TH1D > ("Eta_StepSV2", "Eta_StepSV2", 50, -2.5, 2.5);
-    Pt_StepSV3 = fs->make<TH1D > ("Pt_StepSV3", "Pt_StepSV3", 40, 0, 200);
-    Eta_StepSV3 = fs->make<TH1D > ("Eta_StepSV3", "Eta_StepSV3", 50, -2.5, 2.5);
-    Pt_Step1 = fs->make<TH1D > ("Pt_Step1", "Pt_Step1", 40, 0, 200);
-    Eta_Step1 = fs->make<TH1D > ("Eta_Step1", "Eta_Step1", 50, -2.5, 2.5);
-    Pt_Step2 = fs->make<TH1D > ("Pt_Step2", "Pt_Step2", 40, 0, 200);
-    Eta_Step2 = fs->make<TH1D > ("Eta_Step2", "Eta_Step2", 50, -2.5, 2.5);
-    Pt_Step3 = fs->make<TH1D > ("Pt_Step3", "Pt_Step3", 40, 0, 200);
-    Eta_Step3 = fs->make<TH1D > ("Eta_Step3", "Eta_Step3", 50, -2.5, 2.5);
+    //    demohisto = fs->make<TH1D > ("MuPt", "MuPt", 50, 0, 250);
+    //    demohisto_17 = fs->make<TH1D > ("MuPt_17", "MuPt_17", 50, 0, 250);
+    //    Histo_tauPt = fs->make<TH1D > ("TauPt", "TauPt", 50, 0, 250);
+    //    Histo_tauPt_20 = fs->make<TH1D > ("TauPt_20", "TauPt_20", 50, 0, 250);
+    Histo_RateReduction = fs->make<TH1D > ("Histo_RateReduction", "Histo_RateReduction", 10, 0, 10);
+    //    Histo_RateReductionSV = fs->make<TH1D > ("TriggerRateStdVtx", "TriggerRateStdVtx", 10, 0, 10);
+    //    Histo_Step1 = fs->make<TH1D > ("Step1-Multiplicity", "Step1-Multiplicity", 10, 0, 10);
+    //    Histo_Step2 = fs->make<TH1D > ("Step2-Multiplicity", "Step2-Multiplicity", 10, 0, 10);
+    //    Histo_Step3 = fs->make<TH1D > ("Step3-Multiplicity", "Step3-Multiplicity", 10, 0, 10);
+    //    Histo_StepSV1 = fs->make<TH1D > ("StepSV1-Multiplicity", "StepSV1-Multiplicity", 10, 0, 10);
+    //    Histo_StepSV2 = fs->make<TH1D > ("StepSV2-Multiplicity", "StepSV2-Multiplicity", 10, 0, 10);
+    //    Histo_StepSV3 = fs->make<TH1D > ("StepSV3-Multiplicity", "StepSV3-Multiplicity", 10, 0, 10);
+    //    Pt_StepSV1 = fs->make<TH1D > ("Pt_StepSV1", "Pt_StepSV1", 40, 0, 200);
+    //    Eta_StepSV1 = fs->make<TH1D > ("Eta_StepSV1", "Eta_StepSV1", 50, -2.5, 2.5);
+    //    Pt_StepSV2 = fs->make<TH1D > ("Pt_StepSV2", "Pt_StepSV2", 40, 0, 200);
+    //    Eta_StepSV2 = fs->make<TH1D > ("Eta_StepSV2", "Eta_StepSV2", 50, -2.5, 2.5);
+    //    Pt_StepSV3 = fs->make<TH1D > ("Pt_StepSV3", "Pt_StepSV3", 40, 0, 200);
+    //    Eta_StepSV3 = fs->make<TH1D > ("Eta_StepSV3", "Eta_StepSV3", 50, -2.5, 2.5);
+    //    Pt_Step1 = fs->make<TH1D > ("Pt_Step1", "Pt_Step1", 40, 0, 200);
+    //    Eta_Step1 = fs->make<TH1D > ("Eta_Step1", "Eta_Step1", 50, -2.5, 2.5);
+    //    Pt_Step2 = fs->make<TH1D > ("Pt_Step2", "Pt_Step2", 40, 0, 200);
+    //    Eta_Step2 = fs->make<TH1D > ("Eta_Step2", "Eta_Step2", 50, -2.5, 2.5);
+    //    Pt_Step3 = fs->make<TH1D > ("Pt_Step3", "Pt_Step3", 40, 0, 200);
+    //    Eta_Step3 = fs->make<TH1D > ("Eta_Step3", "Eta_Step3", 50, -2.5, 2.5);
 }
 
 MyTrigger::~MyTrigger() {
@@ -357,99 +357,57 @@ MyTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 
         if (muTauPair && ptCut && hasOverlapMu) {
             step1++;
-            Pt_Step1->Fill(itau->pt());
-            Eta_Step1->Fill(itau->eta());
         }
         if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding) {
             step2++;
-            Pt_Step2->Fill(itau->pt());
-            Eta_Step2->Fill(itau->eta());
         }
-        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByMuLoose) {
+        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation) {
             step3++;
-            Pt_Step3->Fill(itau->pt());
-            Eta_Step3->Fill(itau->eta());
         }
-        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByMuLoose && discByIsolation) {
+        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation && discByMuLoose) {
             step4++;
-            //            Pt_Step4->Fill(itau->pt());
-            //            Eta_Step4->Fill(itau->eta());
         }
-        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByMuLoose && discByIsolation5hits) {
+        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation5hits) {
             step5++;
-            //            Pt_Step4->Fill(itau->pt());
-            //            Eta_Step4->Fill(itau->eta());
         }
-        //        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation && matchToOfflineTaus(1, itau->eta(), itau->phi(), iEvent, iSetup)) {
-        //            step4++;
-        //            //            Pt_Step3->Fill(itau->pt());
-        //            //            Eta_Step3->Fill(itau->eta());
-        //        }
-        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation && discByMuLoose && matchToOfflineTaus(6, itau->eta(), itau->phi(), iEvent, iSetup)) {
+        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation5hits && discByMuLoose) {
             step6++;
-            //            Pt_Step3->Fill(itau->pt());
-            //            Eta_Step3->Fill(itau->eta());
+        }
+        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation && discByMuLoose && matchToOfflineTaus(6, itau->eta(), itau->phi(), iEvent, iSetup)) {
+            step7++;
         }
         if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation && discByMuLoose && matchToOfflineTaus(2, itau->eta(), itau->phi(), iEvent, iSetup)) {
-            step7++;
-            //            Pt_Step3->Fill(itau->pt());
-            //            Eta_Step3->Fill(itau->eta());
+            step8++;
         }
-        //        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation && discByMuLoose && matchToOfflineTaus(4, itau->eta(), itau->phi(), iEvent, iSetup)) {
-        //            step7++;
-        //            //            Pt_Step3->Fill(itau->pt());
-        //            //            Eta_Step3->Fill(itau->eta());
-        //        }
-        ////        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation && discByMuLoose && matchToOfflineTaus(5, itau->eta(), itau->phi(), iEvent, iSetup)) {
-        //            step8++;
-        //            //            Pt_Step3->Fill(itau->pt());
-        //            //            Eta_Step3->Fill(itau->eta());
-        //        }
-        //        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation && discByMuLoose && matchToOfflineTaus(6, itau->eta(), itau->phi(), iEvent, iSetup)) {
-        //            step9++;
-        //            //            Pt_Step3->Fill(itau->pt());
-        //            //            Eta_Step3->Fill(itau->eta());
-        //        }
-
-
     }
 
-    Histo_Denumerator->Fill(0);
+    Histo_RateReduction->Fill(0);
     if (step1 > 0) {
-        Histo_Denumerator->Fill(1);
-        Histo_Step1->Fill(step1);
+        Histo_RateReduction->Fill(1);
     }
     if (step2 > 0) {
-        Histo_Denumerator->Fill(2);
-        Histo_Step2->Fill(step2);
+        Histo_RateReduction->Fill(2);
     }
     if (step3 > 0) {
-        Histo_Denumerator->Fill(3);
-        Histo_Step3->Fill(step3);
+        Histo_RateReduction->Fill(3);
     }
     if (step4 > 0) {
-        Histo_Denumerator->Fill(4);
-        //        Histo_Step4->Fill(step4);
+        Histo_RateReduction->Fill(4);
     }
     if (step5 > 0) {
-        Histo_Denumerator->Fill(5);
-        //        Histo_Step4->Fill(step4);
+        Histo_RateReduction->Fill(5);
     }
     if (step6 > 0) {
-        Histo_Denumerator->Fill(6);
-        //        Histo_Step4->Fill(step4);
+        Histo_RateReduction->Fill(6);
     }
     if (step7 > 0) {
-        Histo_Denumerator->Fill(7);
-        //        Histo_Step4->Fill(step4);
+        Histo_RateReduction->Fill(7);
     }
     if (step8 > 0) {
-        Histo_Denumerator->Fill(8);
-        //        Histo_Step4->Fill(step4);
+        Histo_RateReduction->Fill(8);
     }
     if (step9 > 0) {
-        Histo_Denumerator->Fill(9);
-        //        Histo_Step4->Fill(step4);
+        Histo_RateReduction->Fill(9);
     }
 
 
@@ -523,37 +481,37 @@ MyTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     //            //            Eta_StepSV3->Fill(itauSV->eta());
     //        }
     //    }
-    //    Histo_DenumeratorSV->Fill(0);
+    //    Histo_RateReductionSV->Fill(0);
     //    if (stepSV1 > 0) {
-    //        Histo_DenumeratorSV->Fill(1);
+    //        Histo_RateReductionSV->Fill(1);
     //        Histo_StepSV1->Fill(stepSV1);
     //    }
     //    if (stepSV2 > 0) {
-    //        Histo_DenumeratorSV->Fill(2);
+    //        Histo_RateReductionSV->Fill(2);
     //        Histo_StepSV2->Fill(stepSV2);
     //    }
     //    if (stepSV3 > 0) {
-    //        Histo_DenumeratorSV->Fill(3);
+    //        Histo_RateReductionSV->Fill(3);
     //        Histo_StepSV3->Fill(stepSV3);
     //    }
     //    if (stepSV4 > 0) {
-    //        Histo_DenumeratorSV->Fill(4);
+    //        Histo_RateReductionSV->Fill(4);
     //        //        Histo_StepSV3->Fill(stepSV3);
     //    }
     //    if (stepSV5 > 0) {
-    //        Histo_DenumeratorSV->Fill(5);
+    //        Histo_RateReductionSV->Fill(5);
     //        //        Histo_StepSV3->Fill(stepSV3);
     //    }
     //    if (stepSV6 > 0) {
-    //        Histo_DenumeratorSV->Fill(6);
+    //        Histo_RateReductionSV->Fill(6);
     //        //        Histo_StepSV3->Fill(stepSV3);
     //    }
     //    if (stepSV7 > 0) {
-    //        Histo_DenumeratorSV->Fill(7);
+    //        Histo_RateReductionSV->Fill(7);
     //        //        Histo_StepSV3->Fill(stepSV3);
     //    }
     //    if (stepSV8 > 0) {
-    //        Histo_DenumeratorSV->Fill(8);
+    //        Histo_RateReductionSV->Fill(8);
     //        //        Histo_StepSV3->Fill(stepSV3);
     //    }
 
