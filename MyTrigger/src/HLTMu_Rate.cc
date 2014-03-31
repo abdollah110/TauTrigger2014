@@ -1,9 +1,9 @@
 // -*- C++ -*-
 //
-// Package:    MyTrigger
-// Class:      MyTrigger
+// Package:    HLTMu_Rate
+// Class:      HLTMu_Rate
 // 
-/**\class MyTrigger MyTrigger.cc TauTrigger2014/MyTrigger/src/MyTrigger.cc
+/**\class HLTMu_Rate HLTMu_Rate.cc TauTrigger2014/HLTMu_Rate/src/HLTMu_Rate.cc
 
  Description: [one line class summary]
 
@@ -43,10 +43,10 @@
 // class declaration
 //
 
-class MyTrigger : public edm::EDAnalyzer {
+class HLTMu_Rate : public edm::EDAnalyzer {
 public:
-    explicit MyTrigger(const edm::ParameterSet&);
-    ~MyTrigger();
+    explicit HLTMu_Rate(const edm::ParameterSet&);
+    ~HLTMu_Rate();
 private:
     virtual void analyze(const edm::Event&);
     TH1D * Histo_RateReduction;
@@ -54,13 +54,13 @@ private:
     // ----------member data ---------------------------
 };
 
-MyTrigger::MyTrigger(const edm::ParameterSet& iConfig) {
+HLTMu_Rate::HLTMu_Rate(const edm::ParameterSet& iConfig) {
     using namespace edm;
     edm::Service<TFileService> fs;
     Histo_RateReduction = fs->make<TH1D > ("Histo_RateReduction", "Histo_RateReduction", 10, 0, 10);
 }
 
-MyTrigger::~MyTrigger() {
+HLTMu_Rate::~HLTMu_Rate() {
 }
 
 
@@ -144,7 +144,7 @@ bool matchToOfflineTaus(int isoOption, float eta_, float phi_, const edm::Event&
 // ------------ method called for each event  ------------
 
 void
-MyTrigger::analyze(const edm::Event& iEvent) {
+HLTMu_Rate::analyze(const edm::Event& iEvent) {
     using reco::Muon;
     using reco::MuonCollection;
     using reco::RecoChargedCandidate;
@@ -247,4 +247,4 @@ MyTrigger::analyze(const edm::Event& iEvent) {
 
 
 //define this as a plug-in
-DEFINE_FWK_MODULE(MyTrigger);
+DEFINE_FWK_MODULE(HLTMu_Rate);
