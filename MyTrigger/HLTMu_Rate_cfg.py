@@ -84,7 +84,7 @@ process.demo = cms.EDAnalyzer('HLTMu_Rate'
                               )
 
 process.TFileService = cms.Service("TFileService",
-                                   fileName=cms.string('Results1.root')
+                                   fileName=cms.string('hltMu_Rate.root')
                                    )
 
 process.p = cms.Path(process.isolatedOnlineMuons * process.demo)
