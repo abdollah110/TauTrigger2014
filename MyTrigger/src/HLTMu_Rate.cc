@@ -48,7 +48,7 @@ public:
     explicit HLTMu_Rate(const edm::ParameterSet&);
     ~HLTMu_Rate();
 private:
-    virtual void analyze(const edm::Event&);
+    virtual void analyze(const edm::Event& , const edm::EventSetup& );
     TH1D * Histo_RateReduction;
 
     // ----------member data ---------------------------
@@ -144,7 +144,7 @@ bool matchToOfflineTaus(int isoOption, float eta_, float phi_, const edm::Event&
 // ------------ method called for each event  ------------
 
 void
-HLTMu_Rate::analyze(const edm::Event& iEvent) {
+HLTMu_Rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     using reco::Muon;
     using reco::MuonCollection;
     using reco::RecoChargedCandidate;
