@@ -202,23 +202,20 @@ HLTMu_Rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         bool discByIsolation5hits = (itau->tauID("byTrkIsolation5hits") < 3.0 ? true : false);
         bool discByMuLoose = (itau->tauID("againstMuonLoose") > 0.5 ? true : false);
 
-        if (muTauPair && ptCut && hasOverlapMu) {
+        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding) {
             step1++;
         }
-        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding) {
+        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation) {
             step2++;
         }
-        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation) {
+        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation5hits) {
             step3++;
         }
-        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation5hits) {
+        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation5hits && discByMuLoose) {
             step4++;
         }
-        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation5hits && discByMuLoose) {
-            step5++;
-        }
         if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation5hits && discByMuLoose && matchToOfflineTaus(3, itau->eta(), itau->phi(), iEvent)) {
-            step6++;
+            step5++;
         }
     }
 
@@ -237,9 +234,6 @@ HLTMu_Rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     }
     if (step5 > 0) {
         Histo_RateReduction->Fill(5);
-    }
-    if (step6 > 0) {
-        Histo_RateReduction->Fill(6);
     }
 
 }
