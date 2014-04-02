@@ -213,7 +213,9 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         float Tau_hcal3x3OverPLead_ = itau->hcal3x3OverPLead();
 
         //        EgammaFraction, Photon Eta Momenta and Phi Momenta are calculated as follows :
-
+        std::vector<float> GammasdEta_;
+        std::vector<float> GammasdPhi_;
+        std::vector<float> GammasPt_;
         GammasdEta_.clear();
         GammasdPhi_.clear();
         GammasPt_.clear();
