@@ -59,12 +59,12 @@ private:
     virtual bool hasOverLap(float eta_, float phi_, const edm::Event& iEvent);
     virtual bool matchToOfflineTaus(int isoOption, float eta_, float phi_, const edm::Event& iEvent);
     virtual bool matchToOfflineTausForEleVeto(float eta_, float phi_, const edm::Event& iEvent);
-    std::vector<float> GammasdEta_;
-    std::vector<float> GammasdPhi_;
-    std::vector<float> GammasPt_;
 
 
     TH1D * Histo_Rate;
+    std::vector<float> GammasdEta_;
+    std::vector<float> GammasdPhi_;
+    std::vector<float> GammasPt_;
     // ----------member data ---------------------------
 };
 
@@ -207,6 +207,9 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     int step8 = 0;
     int step9 = 0;
 
+
+
+    cout <<"Here os the size of tau in the events=   "<<tau.size()<<endl;
     for (; itau != jtau; ++itau) {
 
 
