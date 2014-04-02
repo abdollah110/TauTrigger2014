@@ -235,6 +235,9 @@ HLTMu_Rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     if (step5 > 0) {
         Histo_RateReduction->Fill(5);
     }
+    if (step6 > 0) {
+        Histo_RateReduction->Fill(6);
+    }
 
 }
 
@@ -242,3 +245,6 @@ HLTMu_Rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 
 //define this as a plug-in
 DEFINE_FWK_MODULE(HLTMu_Rate);
+
+
+
