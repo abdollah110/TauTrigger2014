@@ -223,17 +223,17 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         GammasPt_.clear();
         const std::vector<reco::PFCandidatePtr>& signalPFGammaCands = itau->signalPFGammaCands();
         cout << "signalPFGammaCands->size()= " << signalPFGammaCands.size() << endl;
-        for (std::vector<reco::PFCandidatePtr>::const_iterator pfGamma = signalPFGammaCands.begin();
-                pfGamma != signalPFGammaCands.end(); ++pfGamma) {
-            if (itau->leadPFChargedHadrCand().isNonnull()) {
-                GammasdEta_.push_back((*pfGamma)->eta() - itau->leadPFChargedHadrCand()->eta());
-                GammasdPhi_.push_back((*pfGamma)->phi() - itau->leadPFChargedHadrCand()->phi());
-            } else {
-                GammasdEta_.push_back((*pfGamma)->eta() - itau->eta());
-                GammasdPhi_.push_back((*pfGamma)->phi() - itau->phi());
-            }
-            GammasPt_.push_back((*pfGamma)->pt());
-        }
+//        for (std::vector<reco::PFCandidatePtr>::const_iterator pfGamma = signalPFGammaCands.begin();
+//                pfGamma != signalPFGammaCands.end(); ++pfGamma) {
+//            if (itau->leadPFChargedHadrCand().isNonnull()) {
+//                GammasdEta_.push_back((*pfGamma)->eta() - itau->leadPFChargedHadrCand()->eta());
+//                GammasdPhi_.push_back((*pfGamma)->phi() - itau->leadPFChargedHadrCand()->phi());
+//            } else {
+//                GammasdEta_.push_back((*pfGamma)->eta() - itau->eta());
+//                GammasdPhi_.push_back((*pfGamma)->phi() - itau->phi());
+//            }
+//            GammasPt_.push_back((*pfGamma)->pt());
+//        }
         float sumPt = 0.;
         float dEta = 0.;
         float dEta2 = 0.;
