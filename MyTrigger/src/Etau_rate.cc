@@ -222,7 +222,7 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         GammasdPhi_.clear();
         GammasPt_.clear();
         const std::vector<reco::PFCandidatePtr>& signalPFGammaCands = itau->signalPFGammaCands();
-        cout << "signalPFGammaCands->size()= " << signalPFGammaCands->size() << endl;
+        cout << "signalPFGammaCands->size()= " << signalPFGammaCands.size() << endl;
         for (std::vector<reco::PFCandidatePtr>::const_iterator pfGamma = signalPFGammaCands.begin();
                 pfGamma != signalPFGammaCands.end(); ++pfGamma) {
             if (itau->leadPFChargedHadrCand().isNonnull()) {
