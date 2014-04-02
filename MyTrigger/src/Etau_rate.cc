@@ -222,19 +222,19 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         GammasdEta_.clear();
         GammasdPhi_.clear();
         GammasPt_.clear();
-        //        const std::vector<reco::PFCandidatePtr>& signalPFGammaCands = itau->signalPFGammaCands();
-        //        cout << "signalPFGammaCands->size()= " << signalPFGammaCands.size() << endl;
-        //        for (std::vector<reco::PFCandidatePtr>::const_iterator pfGamma = signalPFGammaCands.begin();
-        //                pfGamma != signalPFGammaCands.end(); ++pfGamma) {
-        //            if (itau->leadPFChargedHadrCand().isNonnull()) {
-        //                GammasdEta_.push_back((*pfGamma)->eta() - itau->leadPFChargedHadrCand()->eta());
-        //                GammasdPhi_.push_back((*pfGamma)->phi() - itau->leadPFChargedHadrCand()->phi());
-        //            } else {
-        //                GammasdEta_.push_back((*pfGamma)->eta() - itau->eta());
-        //                GammasdPhi_.push_back((*pfGamma)->phi() - itau->phi());
-        //            }
-        //            GammasPt_.push_back((*pfGamma)->pt());
-        //        }
+        const std::vector<reco::PFCandidatePtr>& signalPFGammaCands = itau->signalPFGammaCands();
+        cout << "signalPFGammaCands->size()= " << signalPFGammaCands.size() << endl;
+        for (std::vector<reco::PFCandidatePtr>::const_iterator pfGamma = signalPFGammaCands.begin();
+                pfGamma != signalPFGammaCands.end(); ++pfGamma) {
+            if (itau->leadPFChargedHadrCand().isNonnull()) {
+                GammasdEta_.push_back((*pfGamma)->eta() - itau->leadPFChargedHadrCand()->eta());
+                GammasdPhi_.push_back((*pfGamma)->phi() - itau->leadPFChargedHadrCand()->phi());
+            } else {
+                GammasdEta_.push_back((*pfGamma)->eta() - itau->eta());
+                GammasdPhi_.push_back((*pfGamma)->phi() - itau->phi());
+            }
+            GammasPt_.push_back((*pfGamma)->pt());
+        }
         float sumPt = 0.;
         float dEta = 0.;
         float dEta2 = 0.;
@@ -246,35 +246,35 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         cout << GammasdEta_.size() << "\t";
         cout << GammasdPhi_.size() << "\n";
 
-        //        size_t numPFGammas = GammasPt_.size();
-        //        assert(GammasdEta_.size() == numPFGammas);
-        //        assert(GammasdPhi_.size() == numPFGammas);
-        //        for (size_t idxPFGamma = 0; idxPFGamma < numPFGammas; ++idxPFGamma) {
-        //            float pt = GammasPt_[idxPFGamma];
-        //            float dPhi = GammasdPhi_[idxPFGamma];
-        //            if (dPhi > TMath::Pi()) dPhi -= 2. * TMath::Pi();
-        //            else if (dPhi < -TMath::Pi()) dPhi += 2. * TMath::Pi();
-        //            float dEta = GammasdEta_[idxPFGamma];
-        //            sumPt += pt;
-        //            sumPt2 += (pt * pt);
-        //            dEta += (pt * dEta);
-        //            dEta2 += (pt * dEta * dEta);
-        //            dPhi += (pt * dPhi);
-        //            dPhi2 += (pt * dPhi * dPhi);
-        //        }
-        //
-        //        float gammadPt = sumPt / itau->pt();
-        //
-        //        if (sumPt > 0.) {
-        //            dEta /= sumPt;
-        //            dPhi /= sumPt;
-        //            dEta2 /= sumPt;
-        //            dPhi2 /= sumPt;
-        //        }
-        //
-        //        float Tau_GammaEtaMom_ = TMath::Sqrt(dEta2) * TMath::Sqrt(gammadPt) * itau->pt();
-        //        float Tau_GammaPhiMom_ = TMath::Sqrt(dPhi2) * TMath::Sqrt(gammadPt) * itau->pt();
-        //        float Tau_GammaEnFrac_ = gammadPt;
+        size_t numPFGammas = GammasPt_.size();
+        assert(GammasdEta_.size() == numPFGammas);
+        assert(GammasdPhi_.size() == numPFGammas);
+        for (size_t idxPFGamma = 0; idxPFGamma < numPFGammas; ++idxPFGamma) {
+            float pt = GammasPt_[idxPFGamma];
+            float dPhi = GammasdPhi_[idxPFGamma];
+            if (dPhi > TMath::Pi()) dPhi -= 2. * TMath::Pi();
+            else if (dPhi < -TMath::Pi()) dPhi += 2. * TMath::Pi();
+            float dEta = GammasdEta_[idxPFGamma];
+            sumPt += pt;
+            sumPt2 += (pt * pt);
+            dEta += (pt * dEta);
+            dEta2 += (pt * dEta * dEta);
+            dPhi += (pt * dPhi);
+            dPhi2 += (pt * dPhi * dPhi);
+        }
+
+        float gammadPt = sumPt / itau->pt();
+
+        if (sumPt > 0.) {
+            dEta /= sumPt;
+            dPhi /= sumPt;
+            dEta2 /= sumPt;
+            dPhi2 /= sumPt;
+        }
+
+        float Tau_GammaEtaMom_ = TMath::Sqrt(dEta2) * TMath::Sqrt(gammadPt) * itau->pt();
+        float Tau_GammaPhiMom_ = TMath::Sqrt(dPhi2) * TMath::Sqrt(gammadPt) * itau->pt();
+        float Tau_GammaEnFrac_ = gammadPt;
 
         //   I remove electrons / Taus from ecal cracks :
         //        TCut TauAvoidCracks("!(TMath::Abs(Tau_LeadChargedPFCandEtaAtEcalEntrance)<0.018 || (TMath::Abs(Tau_LeadChargedPFCandEtaAtEcalEntrance)>0.423 && TMath::Abs(Tau_LeadChargedPFCandEtaAtEcalEntrance)<0.461) || (TMath::Abs(Tau_LeadChargedPFCandEtaAtEcalEntrance)>0.770 && TMath::Abs(Tau_LeadChargedPFCandEtaAtEcalEntrance)<0.806) || (TMath::Abs(Tau_LeadChargedPFCandEtaAtEcalEntrance)>1.127 && TMath::Abs(Tau_LeadChargedPFCandEtaAtEcalEntrance)<1.163) || (TMath::Abs(Tau_LeadChargedPFCandEtaAtEcalEntrance)>1.460 && TMath::Abs(Tau_LeadChargedPFCandEtaAtEcalEntrance)<1.558))");
