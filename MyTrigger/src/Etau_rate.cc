@@ -206,44 +206,44 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 
     for (; itau != jtau; ++itau) {
 
-
-        //        E_lead / P :
-        float Tau_HadrEoP_ = itau->leadPFChargedHadrCand()->ecalEnergy() / itau->leadPFChargedHadrCand()->p();
-        cout << "Tau_HadrEoP_= " << Tau_HadrEoP_ << "\n";
-        //        H_3x3 / P :
-        float Tau_hcal3x3OverPLead_ = itau->hcal3x3OverPLead();
-        cout << "Tau_hcal3x3OverPLead_= " << Tau_hcal3x3OverPLead_ << "\n";
-
-        //        EgammaFraction, Photon Eta Momenta and Phi Momenta are calculated as follows :
-        std::vector<float> GammasdEta_;
-        std::vector<float> GammasdPhi_;
-        std::vector<float> GammasPt_;
-        GammasdEta_.clear();
-        GammasdPhi_.clear();
-        GammasPt_.clear();
-        const std::vector<reco::PFCandidatePtr>& signalPFGammaCands = itau->signalPFGammaCands();
-        cout << "signalPFGammaCands->size()= " << signalPFGammaCands.size() << endl;
-        for (std::vector<reco::PFCandidatePtr>::const_iterator pfGamma = signalPFGammaCands.begin();
-                pfGamma != signalPFGammaCands.end(); ++pfGamma) {
-            if (itau->leadPFChargedHadrCand().isNonnull()) {
-                GammasdEta_.push_back((*pfGamma)->eta() - itau->leadPFChargedHadrCand()->eta());
-                GammasdPhi_.push_back((*pfGamma)->phi() - itau->leadPFChargedHadrCand()->phi());
-            } else {
-                GammasdEta_.push_back((*pfGamma)->eta() - itau->eta());
-                GammasdPhi_.push_back((*pfGamma)->phi() - itau->phi());
-            }
-            GammasPt_.push_back((*pfGamma)->pt());
-        }
-        float sumPt = 0.;
-        float dEta = 0.;
-        float dEta2 = 0.;
-        float dPhi = 0.;
-        float dPhi2 = 0.;
-        float sumPt2 = 0.;
-
-        cout << "sizez pt, eta, phi =" << GammasPt_.size() << "\t";
-        cout << GammasdEta_.size() << "\t";
-        cout << GammasdPhi_.size() << "\n";
+//
+//        //        E_lead / P :
+//        float Tau_HadrEoP_ = itau->leadPFChargedHadrCand()->ecalEnergy() / itau->leadPFChargedHadrCand()->p();
+//        cout << "Tau_HadrEoP_= " << Tau_HadrEoP_ << "\n";
+//        //        H_3x3 / P :
+//        float Tau_hcal3x3OverPLead_ = itau->hcal3x3OverPLead();
+//        cout << "Tau_hcal3x3OverPLead_= " << Tau_hcal3x3OverPLead_ << "\n";
+//
+//        //        EgammaFraction, Photon Eta Momenta and Phi Momenta are calculated as follows :
+//        std::vector<float> GammasdEta_;
+//        std::vector<float> GammasdPhi_;
+//        std::vector<float> GammasPt_;
+//        GammasdEta_.clear();
+//        GammasdPhi_.clear();
+//        GammasPt_.clear();
+//        const std::vector<reco::PFCandidatePtr>& signalPFGammaCands = itau->signalPFGammaCands();
+//        cout << "signalPFGammaCands->size()= " << signalPFGammaCands.size() << endl;
+//        for (std::vector<reco::PFCandidatePtr>::const_iterator pfGamma = signalPFGammaCands.begin();
+//                pfGamma != signalPFGammaCands.end(); ++pfGamma) {
+//            if (itau->leadPFChargedHadrCand().isNonnull()) {
+//                GammasdEta_.push_back((*pfGamma)->eta() - itau->leadPFChargedHadrCand()->eta());
+//                GammasdPhi_.push_back((*pfGamma)->phi() - itau->leadPFChargedHadrCand()->phi());
+//            } else {
+//                GammasdEta_.push_back((*pfGamma)->eta() - itau->eta());
+//                GammasdPhi_.push_back((*pfGamma)->phi() - itau->phi());
+//            }
+//            GammasPt_.push_back((*pfGamma)->pt());
+//        }
+//        float sumPt = 0.;
+//        float dEta = 0.;
+//        float dEta2 = 0.;
+//        float dPhi = 0.;
+//        float dPhi2 = 0.;
+//        float sumPt2 = 0.;
+//
+//        cout << "sizez pt, eta, phi =" << GammasPt_.size() << "\t";
+//        cout << GammasdEta_.size() << "\t";
+//        cout << GammasdPhi_.size() << "\n";
 
 //        size_t numPFGammas = GammasPt_.size();
 //        assert(GammasdEta_.size() == numPFGammas);
