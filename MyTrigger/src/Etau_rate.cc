@@ -214,7 +214,7 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 
 
         //        E_lead / P :
-        float Tau_HadrEoP_;
+        float Tau_HadrEoP_ = 0;
         if (itau->leadPFChargedHadrCand().isNonnull()) {
             Tau_HadrEoP_ = itau->leadPFChargedHadrCand()->ecalEnergy() / itau->leadPFChargedHadrCand()->p();
         }
@@ -285,6 +285,64 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         //   I remove electrons / Taus from ecal cracks :
         //        TCut TauAvoidCracks("!(TMath::Abs(Tau_LeadChargedPFCandEtaAtEcalEntrance)<0.018 || (TMath::Abs(Tau_LeadChargedPFCandEtaAtEcalEntrance)>0.423 && TMath::Abs(Tau_LeadChargedPFCandEtaAtEcalEntrance)<0.461) || (TMath::Abs(Tau_LeadChargedPFCandEtaAtEcalEntrance)>0.770 && TMath::Abs(Tau_LeadChargedPFCandEtaAtEcalEntrance)<0.806) || (TMath::Abs(Tau_LeadChargedPFCandEtaAtEcalEntrance)>1.127 && TMath::Abs(Tau_LeadChargedPFCandEtaAtEcalEntrance)<1.163) || (TMath::Abs(Tau_LeadChargedPFCandEtaAtEcalEntrance)>1.460 && TMath::Abs(Tau_LeadChargedPFCandEtaAtEcalEntrance)<1.558))");
 
+        //****************  Barrel
+        bool Barrel_1 = Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01 || Tau_hcal3x3OverPLead_ > 0.2;
+        //        Tau Eff. : 0.936, Elec. Eff. : 0.069
+        bool Barrel_2 = (Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01 || Tau_hcal3x3OverPLead_ > 0.2 || Tau_GammaEnFrac_ > 0.15);
+        //        Tau Eff. : 0.98, Elec. Eff. : 0.113
+        bool Barrel_3 = (Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01 || Tau_hcal3x3OverPLead_ > 0.2 || Tau_GammaEtaMom__ > 4.0);
+        //        Tau Eff. : 0.966, Elec. Eff. : 0.11
+        bool Barrel_4 = (Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01 || Tau_hcal3x3OverPLead_ > 0.2 || Tau_GammaPhiMom__ > 4.0);
+        //        Tau Eff. : 0.97, Elec. Eff. : 0.126
+
+        //****************  EndCap
+        bool EndCap_1 = Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01;
+        //Tau Eff. : 0.954, Elec. Eff. : 0.22
+        bool EndCap_2 = (Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01) && (Tau_HadrEoP_ < 0.7 || Tau_HadrEoP_ > 1.3 || Tau_hcal3x3OverPLead_ > 0.1);
+        //        Tau Eff. : 0.944, Elec. Eff. : 0.18
+        bool EndCap_3 = Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01 || Tau_GammaEnFrac_ > 0.2;
+        //        Tau Eff. : 0.969, Elec. Eff. : 0.25
+        bool EndCap_4 = ((Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01) && (Tau_HadrEoP_ < 0.7 || Tau_HadrEoP_ > 1.3 || Tau_hcal3x3OverPLead_ > 0.1)) || Tau_GammaEnFrac_ > 0.2;
+        //Tau Eff. : 0.965, Elec. Eff. : 0.24
+        bool EndCap_5 = Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01 || Tau_GammaEtaMom__ > 10.0;
+        //Tau Eff. : 0.961, Elec. Eff. : 0.233
+        bool EndCap_6 = ((Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01) && (Tau_HadrEoP_ < 0.7 || Tau_HadrEoP_ > 1.3 || Tau_hcal3x3OverPLead_ > 0.1)) || Tau_GammaEtaMom__ > 10.0;
+        //Tau Eff. : 0.955, Elec. Eff. : 0.198
+        bool EndCap_7 = Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01 || Tau_GammaPhiMom__ > 5.0;
+        //Tau Eff. : 0.965, Elec. Eff. : 0.246
+        bool EndCap_8 = ((Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01) && (Tau_HadrEoP_ < 0.7 || Tau_HadrEoP_ > 1.3 || Tau_hcal3x3OverPLead_ > 0.1)) || Tau_GammaPhiMom__ > 10.0;
+        //Tau Eff. : 0.959, Elec. Eff. : 0.216
+
+
+        //        //****************  Barrel
+        //        Elead / P < 0.99 OR Elead / P > 1.01 || H3x3 / P > 0.2;
+        //        //        Tau Eff. : 0.936, Elec. Eff. : 0.069
+        //        (Elead / P < 0.99 OR Elead / P > 1.01 OR H3x3 / P > 0.2 OR EgF > 0.15);
+        //        //        Tau Eff. : 0.98, Elec. Eff. : 0.113
+        //        (Elead / P < 0.99 OR Elead / P > 1.01 OR H3x3 / P > 0.2 OR ghmom > 4.0);
+        //        //        Tau Eff. : 0.966, Elec. Eff. : 0.11
+        //        (Elead / P < 0.99 OR Elead / P > 1.01 OR H3x3 / P > 0.2 OR gfmom > 4.0);
+        //        //        Tau Eff. : 0.97, Elec. Eff. : 0.126
+        //
+        //        //****************  EndCap
+        //        E / P < 0.99 OR E / P > 1.01;
+        //        //Tau Eff. : 0.954, Elec. Eff. : 0.22
+        //        (Elead / P < 0.99 OR Elead / P > 1.01) AND(Elead / P < 0.7 OR Elead / P > 1.3 OR H3x3 / P > 0.1);
+        //        //        Tau Eff. : 0.944, Elec. Eff. : 0.18
+        //        Elead / P < 0.99 OR Elead / P > 1.01 OR EgF > 0.2;
+        //        //        Tau Eff. : 0.969, Elec. Eff. : 0.25
+        //        ((Elead / P < 0.99 OR Elead / P > 1.01) AND(Elead / P < 0.7 OR Elead / P > 1.3 OR H3x3 / P > 0.1)) OR EgF > 0.2;
+        //        //Tau Eff. : 0.965, Elec. Eff. : 0.24
+        //        Elead / P < 0.99 OR Elead / P > 1.01 OR ghmom > 10.0;
+        //        //Tau Eff. : 0.961, Elec. Eff. : 0.233
+        //        ((Elead / P < 0.99 OR Elead / P > 1.01) AND(Elead / P < 0.7 OR Elead / P > 1.3 OR H3x3 / P > 0.1)) OR ghmom > 10.0;
+        //        //Tau Eff. : 0.955, Elec. Eff. : 0.198
+        //        Elead / P < 0.99 OR Elead / P > 1.01 OR gfmom > 5.0;
+        //        //Tau Eff. : 0.965, Elec. Eff. : 0.246
+        //        ((Elead / P < 0.99 OR Elead / P > 1.01) AND(Elead / P < 0.7 OR Elead / P > 1.3 OR H3x3 / P > 0.1)) OR gfmom > 10.0;
+        //        //Tau Eff. : 0.959, Elec. Eff. : 0.216
+        //
+        //
 
         bool ptCut = itau->pt() > 20 && fabs(itau->eta()) < 2.3;
         bool EleTauPair = ipfele > 0;
@@ -295,6 +353,8 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         bool discByEleLoose = 1;
         //        bool discByIsolation = (itau->tauID("byIsolation") > 0.5 ? true : false);
         //        bool discByIsolation = (itau->tauID("byTrkIsolation") < 3.0 ? true : false);
+
+
 
         if (EleTauPair && ptCut && hasOverlapEle) step1++;
         if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding) step2++;
