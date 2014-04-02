@@ -209,8 +209,10 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 
         //        E_lead / P :
         float Tau_HadrEoP_ = itau->leadPFChargedHadrCand()->ecalEnergy() / itau->leadPFChargedHadrCand()->p();
+        cout << "Tau_HadrEoP_= " << Tau_HadrEoP_ << "\n";
         //        H_3x3 / P :
         float Tau_hcal3x3OverPLead_ = itau->hcal3x3OverPLead();
+        cout << "Tau_hcal3x3OverPLead_= " << Tau_hcal3x3OverPLead_ << "\n";
 
         //        EgammaFraction, Photon Eta Momenta and Phi Momenta are calculated as follows :
         std::vector<float> GammasdEta_;
@@ -220,6 +222,7 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         GammasdPhi_.clear();
         GammasPt_.clear();
         const std::vector<reco::PFCandidatePtr>& signalPFGammaCands = itau->signalPFGammaCands();
+        cout << "signalPFGammaCands->size()= " << signalPFGammaCands->size() << endl;
         for (std::vector<reco::PFCandidatePtr>::const_iterator pfGamma = signalPFGammaCands.begin();
                 pfGamma != signalPFGammaCands.end(); ++pfGamma) {
             if (itau->leadPFChargedHadrCand().isNonnull()) {
