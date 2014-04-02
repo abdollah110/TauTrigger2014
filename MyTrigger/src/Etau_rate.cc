@@ -245,35 +245,35 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         cout << GammasdEta_.size() << "\t";
         cout << GammasdPhi_.size() << "\n";
 
-        size_t numPFGammas = GammasPt_.size();
-        assert(GammasdEta_.size() == numPFGammas);
-        assert(GammasdPhi_.size() == numPFGammas);
-        for (size_t idxPFGamma = 0; idxPFGamma < numPFGammas; ++idxPFGamma) {
-            float pt = GammasPt_[idxPFGamma];
-            float dPhi = GammasdPhi_[idxPFGamma];
-            if (dPhi > TMath::Pi()) dPhi -= 2. * TMath::Pi();
-            else if (dPhi < -TMath::Pi()) dPhi += 2. * TMath::Pi();
-            float dEta = GammasdEta_[idxPFGamma];
-            sumPt += pt;
-            sumPt2 += (pt * pt);
-            dEta += (pt * dEta);
-            dEta2 += (pt * dEta * dEta);
-            dPhi += (pt * dPhi);
-            dPhi2 += (pt * dPhi * dPhi);
-        }
-
-        float gammadPt = sumPt / itau->pt();
-
-        if (sumPt > 0.) {
-            dEta /= sumPt;
-            dPhi /= sumPt;
-            dEta2 /= sumPt;
-            dPhi2 /= sumPt;
-        }
-
-        float Tau_GammaEtaMom_ = TMath::Sqrt(dEta2) * TMath::Sqrt(gammadPt) * itau->pt();
-        float Tau_GammaPhiMom_ = TMath::Sqrt(dPhi2) * TMath::Sqrt(gammadPt) * itau->pt();
-        float Tau_GammaEnFrac_ = gammadPt;
+//        size_t numPFGammas = GammasPt_.size();
+//        assert(GammasdEta_.size() == numPFGammas);
+//        assert(GammasdPhi_.size() == numPFGammas);
+//        for (size_t idxPFGamma = 0; idxPFGamma < numPFGammas; ++idxPFGamma) {
+//            float pt = GammasPt_[idxPFGamma];
+//            float dPhi = GammasdPhi_[idxPFGamma];
+//            if (dPhi > TMath::Pi()) dPhi -= 2. * TMath::Pi();
+//            else if (dPhi < -TMath::Pi()) dPhi += 2. * TMath::Pi();
+//            float dEta = GammasdEta_[idxPFGamma];
+//            sumPt += pt;
+//            sumPt2 += (pt * pt);
+//            dEta += (pt * dEta);
+//            dEta2 += (pt * dEta * dEta);
+//            dPhi += (pt * dPhi);
+//            dPhi2 += (pt * dPhi * dPhi);
+//        }
+//
+//        float gammadPt = sumPt / itau->pt();
+//
+//        if (sumPt > 0.) {
+//            dEta /= sumPt;
+//            dPhi /= sumPt;
+//            dEta2 /= sumPt;
+//            dPhi2 /= sumPt;
+//        }
+//
+//        float Tau_GammaEtaMom_ = TMath::Sqrt(dEta2) * TMath::Sqrt(gammadPt) * itau->pt();
+//        float Tau_GammaPhiMom_ = TMath::Sqrt(dPhi2) * TMath::Sqrt(gammadPt) * itau->pt();
+//        float Tau_GammaEnFrac_ = gammadPt;
 
         //   I remove electrons / Taus from ecal cracks :
         //        TCut TauAvoidCracks("!(TMath::Abs(Tau_LeadChargedPFCandEtaAtEcalEntrance)<0.018 || (TMath::Abs(Tau_LeadChargedPFCandEtaAtEcalEntrance)>0.423 && TMath::Abs(Tau_LeadChargedPFCandEtaAtEcalEntrance)<0.461) || (TMath::Abs(Tau_LeadChargedPFCandEtaAtEcalEntrance)>0.770 && TMath::Abs(Tau_LeadChargedPFCandEtaAtEcalEntrance)<0.806) || (TMath::Abs(Tau_LeadChargedPFCandEtaAtEcalEntrance)>1.127 && TMath::Abs(Tau_LeadChargedPFCandEtaAtEcalEntrance)<1.163) || (TMath::Abs(Tau_LeadChargedPFCandEtaAtEcalEntrance)>1.460 && TMath::Abs(Tau_LeadChargedPFCandEtaAtEcalEntrance)<1.558))");
