@@ -240,6 +240,11 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         float dPhi = 0.;
         float dPhi2 = 0.;
         float sumPt2 = 0.;
+
+        cout << "sizez pt, eta, phi =" << GammasPt_.size() << "\t";
+        cout << GammasdEta_.size() << "\t";
+        cout << GammasdPhi_.size() << "\n";
+
         size_t numPFGammas = GammasPt_.size();
         assert(GammasdEta_.size() == numPFGammas);
         assert(GammasdPhi_.size() == numPFGammas);
@@ -280,6 +285,7 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         bool discByDecayModeFinding = (itau->tauID("decayModeFinding") > 0.5 ? true : false);
         bool discByIsolation5hits = (itau->tauID("byTrkIsolation5hits") < 3.0 ? true : false);
         bool discByEleLoose = matchToOfflineTausForEleVeto(itau->eta(), itau->phi(), iEvent);
+        bool discByEleLoose = 1;
         //        bool discByIsolation = (itau->tauID("byIsolation") > 0.5 ? true : false);
         //        bool discByIsolation = (itau->tauID("byTrkIsolation") < 3.0 ? true : false);
 
