@@ -290,9 +290,9 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         //        Tau Eff. : 0.936, Elec. Eff. : 0.069
         bool Barrel_2 = (Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01 || Tau_hcal3x3OverPLead_ > 0.2 || Tau_GammaEnFrac_ > 0.15);
         //        Tau Eff. : 0.98, Elec. Eff. : 0.113
-        bool Barrel_3 = (Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01 || Tau_hcal3x3OverPLead_ > 0.2 || Tau_GammaEtaMom__ > 4.0);
+        bool Barrel_3 = (Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01 || Tau_hcal3x3OverPLead_ > 0.2 || Tau_GammaEtaMom_ > 4.0);
         //        Tau Eff. : 0.966, Elec. Eff. : 0.11
-        bool Barrel_4 = (Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01 || Tau_hcal3x3OverPLead_ > 0.2 || Tau_GammaPhiMom__ > 4.0);
+        bool Barrel_4 = (Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01 || Tau_hcal3x3OverPLead_ > 0.2 || Tau_GammaPhiMom_ > 4.0);
         //        Tau Eff. : 0.97, Elec. Eff. : 0.126
 
         //****************  EndCap
@@ -304,13 +304,13 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         //        Tau Eff. : 0.969, Elec. Eff. : 0.25
         bool EndCap_4 = ((Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01) && (Tau_HadrEoP_ < 0.7 || Tau_HadrEoP_ > 1.3 || Tau_hcal3x3OverPLead_ > 0.1)) || Tau_GammaEnFrac_ > 0.2;
         //Tau Eff. : 0.965, Elec. Eff. : 0.24
-        bool EndCap_5 = Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01 || Tau_GammaEtaMom__ > 10.0;
+        bool EndCap_5 = Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01 || Tau_GammaEtaMom_ > 10.0;
         //Tau Eff. : 0.961, Elec. Eff. : 0.233
-        bool EndCap_6 = ((Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01) && (Tau_HadrEoP_ < 0.7 || Tau_HadrEoP_ > 1.3 || Tau_hcal3x3OverPLead_ > 0.1)) || Tau_GammaEtaMom__ > 10.0;
+        bool EndCap_6 = ((Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01) && (Tau_HadrEoP_ < 0.7 || Tau_HadrEoP_ > 1.3 || Tau_hcal3x3OverPLead_ > 0.1)) || Tau_GammaEtaMom_ > 10.0;
         //Tau Eff. : 0.955, Elec. Eff. : 0.198
-        bool EndCap_7 = Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01 || Tau_GammaPhiMom__ > 5.0;
+        bool EndCap_7 = Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01 || Tau_GammaPhiMom_ > 5.0;
         //Tau Eff. : 0.965, Elec. Eff. : 0.246
-        bool EndCap_8 = ((Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01) && (Tau_HadrEoP_ < 0.7 || Tau_HadrEoP_ > 1.3 || Tau_hcal3x3OverPLead_ > 0.1)) || Tau_GammaPhiMom__ > 10.0;
+        bool EndCap_8 = ((Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01) && (Tau_HadrEoP_ < 0.7 || Tau_HadrEoP_ > 1.3 || Tau_hcal3x3OverPLead_ > 0.1)) || Tau_GammaPhiMom_ > 10.0;
         //Tau Eff. : 0.959, Elec. Eff. : 0.216
 
 
