@@ -62,6 +62,7 @@ private:
 
 
     TH1D * Histo_Rate;
+    TH2D * Histo_2DRateAniEle;
     std::vector<float> GammasdEta_;
     std::vector<float> GammasdPhi_;
     std::vector<float> GammasPt_;
@@ -72,6 +73,7 @@ Etau_rate::Etau_rate(const edm::ParameterSet& iConfig) {
     using namespace edm;
     edm::Service<TFileService> fs;
     Histo_Rate = fs->make<TH1D > ("TriggerRate", "TriggerRate", 10, 0, 10);
+    Histo_2DRateAniEle = fs->make<TH2D > ("TriggerRate2D", "TriggerRate2D", 5, 0, 5, 10, 0, 10);
 }
 
 Etau_rate::~Etau_rate() {
@@ -206,6 +208,7 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     int step7 = 0;
     int step8 = 0;
     int step9 = 0;
+    int arrayAntiEle[48] = {0};
 
 
 
@@ -285,34 +288,40 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         //   I remove electrons / Taus from ecal cracks :
         //        TCut TauAvoidCracks("!(TMath::Abs(Tau_LeadChargedPFCandEtaAtEcalEntrance)<0.018 || (TMath::Abs(Tau_LeadChargedPFCandEtaAtEcalEntrance)>0.423 && TMath::Abs(Tau_LeadChargedPFCandEtaAtEcalEntrance)<0.461) || (TMath::Abs(Tau_LeadChargedPFCandEtaAtEcalEntrance)>0.770 && TMath::Abs(Tau_LeadChargedPFCandEtaAtEcalEntrance)<0.806) || (TMath::Abs(Tau_LeadChargedPFCandEtaAtEcalEntrance)>1.127 && TMath::Abs(Tau_LeadChargedPFCandEtaAtEcalEntrance)<1.163) || (TMath::Abs(Tau_LeadChargedPFCandEtaAtEcalEntrance)>1.460 && TMath::Abs(Tau_LeadChargedPFCandEtaAtEcalEntrance)<1.558))");
 
+        float EtaLTrk = (itau->leadPFChargedHadrCand().isNonnull() ? itau->leadPFChargedHadrCand()->eta() : itau->eta());
+        bool EtaLTrk_Barrel = TMath::Abs(EtaLTrk) < 1.460;
+        bool EtaLTrk_EndCap = TMath::Abs(EtaLTrk) > 1.558;
         //****************  Barrel
-        bool Barrel_1 = Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01 || Tau_hcal3x3OverPLead_ > 0.2;
+        bool Barrel_1 = EtaLTrk_Barrel && (Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01 || Tau_hcal3x3OverPLead_ > 0.2);
         //        Tau Eff. : 0.936, Elec. Eff. : 0.069
-        bool Barrel_2 = (Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01 || Tau_hcal3x3OverPLead_ > 0.2 || Tau_GammaEnFrac_ > 0.15);
+        bool Barrel_2 = EtaLTrk_Barrel && ((Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01 || Tau_hcal3x3OverPLead_ > 0.2 || Tau_GammaEnFrac_ > 0.15));
         //        Tau Eff. : 0.98, Elec. Eff. : 0.113
-        bool Barrel_3 = (Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01 || Tau_hcal3x3OverPLead_ > 0.2 || Tau_GammaEtaMom_ > 4.0);
+        bool Barrel_3 = EtaLTrk_Barrel && ((Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01 || Tau_hcal3x3OverPLead_ > 0.2 || Tau_GammaEtaMom_ > 4.0));
         //        Tau Eff. : 0.966, Elec. Eff. : 0.11
-        bool Barrel_4 = (Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01 || Tau_hcal3x3OverPLead_ > 0.2 || Tau_GammaPhiMom_ > 4.0);
+        bool Barrel_4 = EtaLTrk_Barrel && ((Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01 || Tau_hcal3x3OverPLead_ > 0.2 || Tau_GammaPhiMom_ > 4.0));
         //        Tau Eff. : 0.97, Elec. Eff. : 0.126
 
         //****************  EndCap
-        bool EndCap_1 = Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01;
+        bool EndCap_1 = EtaLTrk_EndCap && (Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01);
         //Tau Eff. : 0.954, Elec. Eff. : 0.22
-        bool EndCap_2 = (Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01) && (Tau_HadrEoP_ < 0.7 || Tau_HadrEoP_ > 1.3 || Tau_hcal3x3OverPLead_ > 0.1);
+        bool EndCap_2 = EtaLTrk_EndCap && ((Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01) && (Tau_HadrEoP_ < 0.7 || Tau_HadrEoP_ > 1.3 || Tau_hcal3x3OverPLead_ > 0.1));
         //        Tau Eff. : 0.944, Elec. Eff. : 0.18
-        bool EndCap_3 = Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01 || Tau_GammaEnFrac_ > 0.2;
+        bool EndCap_3 = EtaLTrk_EndCap && (Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01 || Tau_GammaEnFrac_ > 0.2);
         //        Tau Eff. : 0.969, Elec. Eff. : 0.25
-        bool EndCap_4 = ((Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01) && (Tau_HadrEoP_ < 0.7 || Tau_HadrEoP_ > 1.3 || Tau_hcal3x3OverPLead_ > 0.1)) || Tau_GammaEnFrac_ > 0.2;
+        bool EndCap_4 = EtaLTrk_EndCap && (((Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01) && (Tau_HadrEoP_ < 0.7 || Tau_HadrEoP_ > 1.3 || Tau_hcal3x3OverPLead_ > 0.1)) || Tau_GammaEnFrac_ > 0.2);
         //Tau Eff. : 0.965, Elec. Eff. : 0.24
-        bool EndCap_5 = Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01 || Tau_GammaEtaMom_ > 10.0;
+        bool EndCap_5 = EtaLTrk_EndCap && (Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01 || Tau_GammaEtaMom_ > 10.0);
         //Tau Eff. : 0.961, Elec. Eff. : 0.233
-        bool EndCap_6 = ((Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01) && (Tau_HadrEoP_ < 0.7 || Tau_HadrEoP_ > 1.3 || Tau_hcal3x3OverPLead_ > 0.1)) || Tau_GammaEtaMom_ > 10.0;
+        bool EndCap_6 = EtaLTrk_EndCap && (((Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01) && (Tau_HadrEoP_ < 0.7 || Tau_HadrEoP_ > 1.3 || Tau_hcal3x3OverPLead_ > 0.1)) || Tau_GammaEtaMom_ > 10.0);
         //Tau Eff. : 0.955, Elec. Eff. : 0.198
-        bool EndCap_7 = Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01 || Tau_GammaPhiMom_ > 5.0;
+        bool EndCap_7 = EtaLTrk_EndCap && (Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01 || Tau_GammaPhiMom_ > 5.0);
         //Tau Eff. : 0.965, Elec. Eff. : 0.246
-        bool EndCap_8 = ((Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01) && (Tau_HadrEoP_ < 0.7 || Tau_HadrEoP_ > 1.3 || Tau_hcal3x3OverPLead_ > 0.1)) || Tau_GammaPhiMom_ > 10.0;
+        bool EndCap_8 = EtaLTrk_EndCap && (((Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01) && (Tau_HadrEoP_ < 0.7 || Tau_HadrEoP_ > 1.3 || Tau_hcal3x3OverPLead_ > 0.1)) || Tau_GammaPhiMom_ > 10.0);
         //Tau Eff. : 0.959, Elec. Eff. : 0.216
 
+        bool BB[4] = {Barrel_1, Barrel_2, Barrel_3, Barrel_4};
+        bool EE[8] = {EndCap_1, EndCap_2, EndCap_3, EndCap_4, EndCap_5, EndCap_6, EndCap_7, EndCap_8};
+        bool AntiEle[4][8] = {0};
 
         //        //****************  Barrel
         //        Elead / P < 0.99 OR Elead / P > 1.01 || H3x3 / P > 0.2;
@@ -360,10 +369,18 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding) step2++;
         if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding && discByEleLoose) step3++;
         if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding && discByIsolation5hits)step4++;
-        if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding && discByIsolation5hits && discByEleLoose) step5++;
-        if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding && discByIsolation5hits && discByEleLoose && matchToOfflineTaus(1, itau->eta(), itau->phi(), iEvent)) step6++;
-        if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding && discByIsolation5hits && discByEleLoose && matchToOfflineTaus(2, itau->eta(), itau->phi(), iEvent)) step7++;
-        if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding && discByIsolation5hits && discByEleLoose && matchToOfflineTaus(3, itau->eta(), itau->phi(), iEvent)) step8++;
+        for (int ii = 0; ii < 4; ii++) {
+            for (int jj = 0; jj < 8; jj++) {
+                if (BB[ii] || EE[jj]) AntiEle[ii][jj]++;
+            }
+        }
+
+
+
+        //        if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding && discByIsolation5hits && discByEleLoose) step5++;
+        //        if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding && discByIsolation5hits && discByEleLoose && matchToOfflineTaus(1, itau->eta(), itau->phi(), iEvent)) step6++;
+        //        if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding && discByIsolation5hits && discByEleLoose && matchToOfflineTaus(2, itau->eta(), itau->phi(), iEvent)) step7++;
+        //        if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding && discByIsolation5hits && discByEleLoose && matchToOfflineTaus(3, itau->eta(), itau->phi(), iEvent)) step8++;
     } // end of loop over taus
 
     Histo_Rate->Fill(0);
@@ -376,6 +393,13 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     if (step7 > 0) Histo_Rate->Fill(7);
     if (step8 > 0) Histo_Rate->Fill(8);
     if (step9 > 0) Histo_Rate->Fill(9);
+
+    for (int ii = 0; ii < 4; ii++) {
+        for (int jj = 0; jj < 8; jj++) {
+            if (AntiEle[ii][jj] > 0) Histo_2DRateAniEle->Fill(ii + 1, jj + 1);
+        }
+    }
+
     //        cout << iEvent.id().run() << ":" << iEvent.id().luminosityBlock() << ":" << iEvent.id().event() << "\n";
 
 }// end of Analyze
