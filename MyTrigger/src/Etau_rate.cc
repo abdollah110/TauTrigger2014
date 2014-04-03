@@ -404,7 +404,7 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 
     for (int ii = 0; ii < 4; ii++) {
         for (int jj = 0; jj < 8; jj++) {
-            if (AntiEle[ii][jj] > 0) Histo_2DRateAniEle->Fill(ii + 1, jj + 1);
+            if (AntiEle[ii][jj] > 0) Histo_2DRateAniEle->Fill(ii , jj );
         }
     }
 
