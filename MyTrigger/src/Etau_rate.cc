@@ -56,7 +56,7 @@ public:
 
 private:
     virtual void analyze(const edm::Event&, const edm::EventSetup&);
-    virtual bool hasOverLap(float eta_, float phi_, const edm::Event& iEvent);
+    virtual bool hasNoOverLapETau(float eta_, float phi_, const edm::Event& iEvent);
     virtual bool matchToOfflineTaus(int isoOption, float eta_, float phi_, const edm::Event& iEvent);
     virtual bool matchToOfflineTausForEleVeto(float eta_, float phi_, const edm::Event& iEvent);
 
@@ -79,7 +79,7 @@ Etau_rate::Etau_rate(const edm::ParameterSet& iConfig) {
 Etau_rate::~Etau_rate() {
 }
 
-bool Etau_rate::hasOverLap(float eta_, float phi_, const edm::Event& iEvent) {
+bool Etau_rate::hasNoOverLapETau(float eta_, float phi_, const edm::Event& iEvent) {
     using reco::Electron;
     using namespace std;
     using namespace reco;
@@ -92,11 +92,14 @@ bool Etau_rate::hasOverLap(float eta_, float phi_, const edm::Event& iEvent) {
     std::vector<reco::Electron>::const_iterator iele = elestrons.begin();
     std::vector<reco::Electron>::const_iterator jele = elestrons.end();
 
-    bool dR05 = 1;
+    bool HasNoOverLap = true;
     for (; iele != jele; ++iele) {
-        if (iele->pt() > 22 && fabs(iele->eta()) < 2.5) dR05 = (tool.dR2(iele->eta(), iele->phi(), eta_, phi_) < 0.4 ? 0 : 1);
+        if (iele->pt() > 15 && fabs(iele->eta()) < 2.5 && tool.dR2(iele->eta(), iele->phi(), eta_, phi_) < 0.4) {
+            HasNoOverLap = false;
+            break;
+        }
     }
-    return dR05;
+    return HasNoOverLap;
 }
 
 bool Etau_rate::matchToOfflineTaus(int isoOption, float eta_, float phi_, const edm::Event& iEvent) {
@@ -125,6 +128,7 @@ bool Etau_rate::matchToOfflineTaus(int isoOption, float eta_, float phi_, const 
         }
         if (isoOption == 3 && ipftau->pt() > 20 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byLooseCombinedIsolationDeltaBetaCorr3Hits") > 0.5 && ipftau->tauID("againstElectronLooseMVA5") > 0.5 && tool.dR2(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5) {
             hasMatched = true;
+
             break;
         }
     }
@@ -155,6 +159,7 @@ bool Etau_rate::matchToOfflineTausForEleVeto(float eta_, float phi_, const edm::
     }
     if (numMatchedEleVeto > 0 || numMatched < 1)
         return true;
+
     else
         return false;
 
@@ -356,7 +361,7 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 
         bool ptCut = itau->pt() > 20 && fabs(itau->eta()) < 2.3;
         bool EleTauPair = ipfele > 0;
-        bool hasOverlapEle = hasOverLap(itau->eta(), itau->phi(), iEvent);
+        bool hasOverlapEle = hasNoOverLapETau(itau->eta(), itau->phi(), iEvent);
         bool discByDecayModeFinding = (itau->tauID("decayModeFinding") > 0.5 ? true : false);
         bool discByIsolation5hits = (itau->tauID("byTrkIsolation5hits") < 3.0 ? true : false);
         //        bool discByEleLoose = matchToOfflineTausForEleVeto(itau->eta(), itau->phi(), iEvent);
