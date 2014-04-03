@@ -213,7 +213,7 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 
 
 
-    cout << "Here os the size of tau in the events=   " << tau.size() << endl;
+    //    cout << "Here os the size of tau in the events=   " << tau.size() << endl;
     for (; itau != jtau; ++itau) {
 
 
@@ -222,10 +222,10 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         if (itau->leadPFChargedHadrCand().isNonnull()) {
             Tau_HadrEoP_ = itau->leadPFChargedHadrCand()->ecalEnergy() / itau->leadPFChargedHadrCand()->p();
         }
-        cout << "Tau_HadrEoP_= " << Tau_HadrEoP_ << "\n";
+        //        cout << "Tau_HadrEoP_= " << Tau_HadrEoP_ << "\n";
         //        H_3x3 / P :
         float Tau_hcal3x3OverPLead_ = itau->hcal3x3OverPLead();
-        cout << "Tau_hcal3x3OverPLead_= " << Tau_hcal3x3OverPLead_ << "\n";
+        //        cout << "Tau_hcal3x3OverPLead_= " << Tau_hcal3x3OverPLead_ << "\n";
 
         //        EgammaFraction, Photon Eta Momenta and Phi Momenta are calculated as follows :
 
@@ -233,7 +233,7 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         GammasdPhi_.clear();
         GammasPt_.clear();
         const std::vector<reco::PFCandidatePtr>& signalPFGammaCands = itau->signalPFGammaCands();
-        cout << "signalPFGammaCands->size()= " << signalPFGammaCands.size() << endl;
+        //        cout << "signalPFGammaCands->size()= " << signalPFGammaCands.size() << endl;
         for (std::vector<reco::PFCandidatePtr>::const_iterator pfGamma = signalPFGammaCands.begin();
                 pfGamma != signalPFGammaCands.end(); ++pfGamma) {
             if (itau->leadPFChargedHadrCand().isNonnull()) {
@@ -252,9 +252,9 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         float dPhi2 = 0.;
         float sumPt2 = 0.;
 
-        cout << "sizez pt, eta, phi =" << GammasPt_.size() << "\t";
-        cout << GammasdEta_.size() << "\t";
-        cout << GammasdPhi_.size() << "\n";
+        //        cout << "sizez pt, eta, phi =" << GammasPt_.size() << "\t";
+        //        cout << GammasdEta_.size() << "\t";
+        //        cout << GammasdPhi_.size() << "\n";
 
         size_t numPFGammas = GammasPt_.size();
         assert(GammasdEta_.size() == numPFGammas);
@@ -369,13 +369,14 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         if (EleTauPair && ptCut && hasOverlapEle) step1++;
         if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding) step2++;
         if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding && discByEleLoose) step3++;
-        if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding && discByIsolation5hits)step4++;
-        for (int ii = 0; ii < 4; ii++) {
-            for (int jj = 0; jj < 8; jj++) {
-                if (BB[ii] || EE[jj]) AntiEle[ii][jj]++;
+        if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding && discByIsolation5hits) {
+            step4++;
+            for (int ii = 0; ii < 4; ii++) {
+                for (int jj = 0; jj < 8; jj++) {
+                    if (BB[ii] || EE[jj]) AntiEle[ii][jj]++;
+                }
             }
         }
-
 
 
         //        if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding && discByIsolation5hits && discByEleLoose) step5++;
