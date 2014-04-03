@@ -7,7 +7,7 @@ process.source.fileNames = [
     'root://eoscms//eos/cms/store/user/abdollah/TauTrigger2014/TauPlusX-SkimmedHLT_Ele22_PFTau20-Run2012D-22Jan2013-v1-v3-RAWAOD-PatTuple/patTuple_skimElePlusTauTrg_22_1_BDP.root',
     'root://eoscms//eos/cms/store/user/abdollah/TauTrigger2014/TauPlusX-SkimmedHLT_Ele22_PFTau20-Run2012D-22Jan2013-v1-v3-RAWAOD-PatTuple/patTuple_skimElePlusTauTrg_26_1_uXR.root',
     'root://eoscms//eos/cms/store/user/abdollah/TauTrigger2014/TauPlusX-SkimmedHLT_Ele22_PFTau20-Run2012D-22Jan2013-v1-v3-RAWAOD-PatTuple/patTuple_skimElePlusTauTrg_33_1_o8k.root',
-    'root://eoscms//eos/cms/store/user/abdollah/TauTrigger2014/TauPlusX-SkimmedHLT_Ele22_PFTau20-Run2012D-22Jan2013-v1-v3-RAWAOD-PatTuple/patTuple_skimElePlusTauTrg_34_1_GPb.root',
+#    'root://eoscms//eos/cms/store/user/abdollah/TauTrigger2014/TauPlusX-SkimmedHLT_Ele22_PFTau20-Run2012D-22Jan2013-v1-v3-RAWAOD-PatTuple/patTuple_skimElePlusTauTrg_34_1_GPb.root',
     'root://eoscms//eos/cms/store/user/abdollah/TauTrigger2014/TauPlusX-SkimmedHLT_Ele22_PFTau20-Run2012D-22Jan2013-v1-v3-RAWAOD-PatTuple/patTuple_skimElePlusTauTrg_35_1_yDb.root',
     'root://eoscms//eos/cms/store/user/abdollah/TauTrigger2014/TauPlusX-SkimmedHLT_Ele22_PFTau20-Run2012D-22Jan2013-v1-v3-RAWAOD-PatTuple/patTuple_skimElePlusTauTrg_37_1_Z9C.root',
     'root://eoscms//eos/cms/store/user/abdollah/TauTrigger2014/TauPlusX-SkimmedHLT_Ele22_PFTau20-Run2012D-22Jan2013-v1-v3-RAWAOD-PatTuple/patTuple_skimElePlusTauTrg_38_1_c57.root',
