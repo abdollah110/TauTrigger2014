@@ -315,7 +315,7 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         //Tau Eff. : 0.961, Elec. Eff. : 0.233
         bool EndCap_6 = EtaLTrk_EndCap && (((Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01) && (Tau_HadrEoP_ < 0.7 || Tau_HadrEoP_ > 1.3 || Tau_hcal3x3OverPLead_ > 0.1)) || Tau_GammaEtaMom_ > 10.0);
         //Tau Eff. : 0.955, Elec. Eff. : 0.198
-        bool EndCap_7 = EtaLTrk_EndCap && (Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01 || Tau_GammaPhiMom_ > 5.0);
+        bool EndCap_7 = EtaLTrk_EndCap && (Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01 || Tau_GammaPhiMom_ > 10.0);
         //Tau Eff. : 0.965, Elec. Eff. : 0.246
         bool EndCap_8 = EtaLTrk_EndCap && (((Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01) && (Tau_HadrEoP_ < 0.7 || Tau_HadrEoP_ > 1.3 || Tau_hcal3x3OverPLead_ > 0.1)) || Tau_GammaPhiMom_ > 10.0);
         //Tau Eff. : 0.959, Elec. Eff. : 0.216
@@ -398,7 +398,7 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 
     for (int ii = 0; ii < 4; ii++) {
         for (int jj = 0; jj < 8; jj++) {
-            if (AntiEle[ii][jj] > 0) Histo_2DRateAniEle->Fill(ii + 1, jj + 1);
+            if (step4 > 0 &&  AntiEle[ii][jj] > 0) Histo_2DRateAniEle->Fill(ii + 1, jj + 1);
         }
     }
 
