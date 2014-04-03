@@ -208,7 +208,8 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     int step7 = 0;
     int step8 = 0;
     int step9 = 0;
-    int arrayAntiEle[48] = {0};
+    bool AntiEle[4][8];
+    memset(AntiEle, 0, 4 * 8 * sizeof (bool));
 
 
 
@@ -321,8 +322,7 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 
         bool BB[4] = {Barrel_1, Barrel_2, Barrel_3, Barrel_4};
         bool EE[8] = {EndCap_1, EndCap_2, EndCap_3, EndCap_4, EndCap_5, EndCap_6, EndCap_7, EndCap_8};
-        bool AntiEle[4][8] ;
-        memset(AntiEle, 0, 4 * 8 * sizeof(bool));
+
 
         //        //****************  Barrel
         //        Elead / P < 0.99 OR Elead / P > 1.01 || H3x3 / P > 0.2;
