@@ -287,11 +287,11 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         float Tau_GammaEnFrac_ = gammadPt;
 
         //   I remove electrons / Taus from ecal cracks :
-        //        TCut TauAvoidCracks("!(TMath::Abs(Tau_LeadChargedPFCandEtaAtEcalEntrance)<0.018 || (TMath::Abs(Tau_LeadChargedPFCandEtaAtEcalEntrance)>0.423 && TMath::Abs(Tau_LeadChargedPFCandEtaAtEcalEntrance)<0.461) || (TMath::Abs(Tau_LeadChargedPFCandEtaAtEcalEntrance)>0.770 && TMath::Abs(Tau_LeadChargedPFCandEtaAtEcalEntrance)<0.806) || (TMath::Abs(Tau_LeadChargedPFCandEtaAtEcalEntrance)>1.127 && TMath::Abs(Tau_LeadChargedPFCandEtaAtEcalEntrance)<1.163) || (TMath::Abs(Tau_LeadChargedPFCandEtaAtEcalEntrance)>1.460 && TMath::Abs(Tau_LeadChargedPFCandEtaAtEcalEntrance)<1.558))");
 
         float EtaLTrk = (itau->leadPFChargedHadrCand().isNonnull() ? itau->leadPFChargedHadrCand()->eta() : itau->eta());
         bool EtaLTrk_Barrel = TMath::Abs(EtaLTrk) < 1.460;
         bool EtaLTrk_EndCap = TMath::Abs(EtaLTrk) > 1.558;
+        bool TauInCracks = (TMath::Abs(EtaLTrk) < 0.018 || (TMath::Abs(EtaLTrk) > 0.423 && TMath::Abs(EtaLTrk) < 0.461) || (TMath::Abs(EtaLTrk) > 0.770 && TMath::Abs(EtaLTrk) < 0.806) || (TMath::Abs(EtaLTrk) > 1.127 && TMath::Abs(EtaLTrk) < 1.163) || (TMath::Abs(EtaLTrk) > 1.460 && TMath::Abs(EtaLTrk) < 1.558));
         //****************  Barrel
         bool Barrel_1 = EtaLTrk_Barrel && (Tau_HadrEoP_ < 0.99 || Tau_HadrEoP_ > 1.01 || Tau_hcal3x3OverPLead_ > 0.2);
         //        Tau Eff. : 0.936, Elec. Eff. : 0.069
@@ -374,6 +374,7 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
             for (int ii = 0; ii < 4; ii++) {
                 for (int jj = 0; jj < 8; jj++) {
                     if (BB[ii] || EE[jj]) AntiEle[ii][jj]++;
+                    if (TauInCracks) AntiEle[ii][jj]++;
                 }
             }
         }
