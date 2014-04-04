@@ -89,7 +89,7 @@ double Etau_rate::doInVarMass(float itauE, float itaupx, float itaupy, float ita
     iEvent.getByLabel("isolatedOnlineElectrons", electronHandle);
 
     for (vector<reco::Electron>::const_iterator iele = electronHandle->begin(); iele != electronHandle->end(); iele++) {
-        return sqrt((pow(iele->E() + itauE), 2) - pow(iele->px() + itaupx, 2) - pow(iele->py() + itaupy, 2) - pow(iele->pz() + itaupz, 2));
+        return sqrt((pow(iele->energy() + itauE), 2) - pow(iele->px() + itaupx, 2) - pow(iele->py() + itaupy, 2) - pow(iele->pz() + itaupz, 2));
     }
 
 }
@@ -412,7 +412,7 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding && discByEleLoose) step3++;
         if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding && discByIsolation5hits) {
             step4++;
-            double InvarMass_Mass_ETau = doInVarMass(itau->E(), itau->px(), itau->py(), itau->pz(), iEvent);
+            double InvarMass_Mass_ETau = doInVarMass(itau->energy(), itau->px(), itau->py(), itau->pz(), iEvent);
             cout << InvarMass_Mass_ETau << endl;
 
             for (int ii = 0; ii < 4; ii++) {
