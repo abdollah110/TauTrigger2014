@@ -80,7 +80,7 @@ Etau_rate::Etau_rate(const edm::ParameterSet& iConfig) {
 Etau_rate::~Etau_rate() {
 }
 
-double Etau_rate::doInVarMass(float itauE, float itaupx, float itaupy, float itaupz, const edm::Event& iEvent) {
+float Etau_rate::doInVarMass(float itauE, float itaupx, float itaupy, float itaupz, const edm::Event& iEvent) {
     using reco::Electron;
     using namespace std;
     using namespace reco;
@@ -412,7 +412,7 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding && discByEleLoose) step3++;
         if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding && discByIsolation5hits) {
             step4++;
-            double InvarMass_Mass_ETau = doInVarMass(itau->energy(), itau->px(), itau->py(), itau->pz(), iEvent);
+            float InvarMass_Mass_ETau = doInVarMass(itau->energy(), itau->px(), itau->py(), itau->pz(), iEvent);
             cout << InvarMass_Mass_ETau << endl;
 
             for (int ii = 0; ii < 4; ii++) {
