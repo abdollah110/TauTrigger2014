@@ -374,22 +374,22 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         //
         //
 
-        double MET20TriggerEmulator::getTauPt(edm::Event & iEvent) {
-            double tauPt = 0;
-
-            edm::Handle<reco::PFTauCollection> htaus;
-            iEvent.getByLabel(offlineTauSrc, htaus);
-
-            edm::Handle<reco::PFTauDiscriminator> thePFTauDiscriminatorByIsolation;
-            iEvent.getByLabel("shrinkingConePFTauDiscriminationByTrackIsolation", thePFTauDiscriminatorByIsolation);
-
-            for (size_t iPFTau = 0; iPFTau < htaus->size(); ++iPFTau) {
-                reco::PFTauRef thePFTau(htaus, iPFTau);
-                if ((*thePFTauDiscriminatorByIsolation)[thePFTau] < 0.5) continue;
-                tauPt = thePFTau->pt();
-            }
-            return tauPt;
-        }
+//        double MET20TriggerEmulator::getTauPt(edm::Event & iEvent) {
+//            double tauPt = 0;
+//
+//            edm::Handle<reco::PFTauCollection> htaus;
+//            iEvent.getByLabel(offlineTauSrc, htaus);
+//
+//            edm::Handle<reco::PFTauDiscriminator> thePFTauDiscriminatorByIsolation;
+//            iEvent.getByLabel("shrinkingConePFTauDiscriminationByTrackIsolation", thePFTauDiscriminatorByIsolation);
+//
+//            for (size_t iPFTau = 0; iPFTau < htaus->size(); ++iPFTau) {
+//                reco::PFTauRef thePFTau(htaus, iPFTau);
+//                if ((*thePFTauDiscriminatorByIsolation)[thePFTau] < 0.5) continue;
+//                tauPt = thePFTau->pt();
+//            }
+//            return tauPt;
+//        }
 
 
 
