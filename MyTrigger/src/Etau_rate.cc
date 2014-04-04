@@ -429,7 +429,8 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
                     if (TauInCracks) AntiEle[ii][jj]++;
                 }
             }
-            if (BB[0] || EE[0] || TauInCracks) {
+//            if (BB[0] || EE[0] || TauInCracks) {
+            if (BB[0] || EE[0] ) {
                 Mass_AfterAntiEle->Fill(InvarMass_Mass_ETau);
             }
 
