@@ -425,11 +425,15 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
                 for (int jj = 0; jj < 8; jj++) {
                     if (BB[ii] || EE[jj]) {
                         AntiEle[ii][jj]++;
-                        Mass_AfterAntiEle->Fill(InvarMass_Mass_ETau);
                     }
                     if (TauInCracks) AntiEle[ii][jj]++;
                 }
             }
+            if (BB[0] || EE[0]) {
+                Mass_AfterAntiEle->Fill(InvarMass_Mass_ETau);
+            }
+
+
         }
 
 
