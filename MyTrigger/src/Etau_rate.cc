@@ -89,7 +89,7 @@ float Etau_rate::doInVarMass(float itauE, float itaupx, float itaupy, float itau
     iEvent.getByLabel("isolatedOnlineElectrons", electronHandle);
 
     for (vector<reco::Electron>::const_iterator iele = electronHandle->begin(); iele != electronHandle->end(); iele++) {
-        return sqrt((TMath::Power(iele->energy() + itauE, 2) - TMath::Power(iele->px() + itaupx, 2) - TMath::Power(iele->py() + itaupy, 2) - TMath::Power(iele->pz() + itaupz, 2));
+        return sqrt(TMath::Power(iele->energy() + itauE, 2) - TMath::Power(iele->px() + itaupx, 2) - TMath::Power(iele->py() + itaupy, 2) - TMath::Power(iele->pz() + itaupz, 2));
     }
 
 }
