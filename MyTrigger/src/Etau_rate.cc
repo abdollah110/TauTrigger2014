@@ -87,7 +87,7 @@ float Etau_rate::doInVarMass(float eta_, float phi_, float itauE, float itaupx, 
     using namespace edm;
     Handle < std::vector < reco::Electron >> electronHandle;
     iEvent.getByLabel("isolatedOnlineElectrons", electronHandle);
-    float mass_ = 0
+    float mass_ = 0;
     for (vector<reco::Electron>::const_iterator iele = electronHandle->begin(); iele != electronHandle->end(); iele++) {
         if (iele->pt() > 22 && fabs(iele->eta()) < 2.5 && tool.dR2(iele->eta(), iele->phi(), eta_, phi_) > 0.4) {
             mass_ = sqrt(TMath::Power(iele->energy() + itauE, 2) - TMath::Power(iele->px() + itaupx, 2) - TMath::Power(iele->py() + itaupy, 2) - TMath::Power(iele->pz() + itaupz, 2));
