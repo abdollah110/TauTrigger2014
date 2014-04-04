@@ -59,7 +59,7 @@ private:
     virtual bool hasNoOverLapETau(float eta_, float phi_, const edm::Event& iEvent);
     virtual bool matchToOfflineTaus(int isoOption, float eta_, float phi_, const edm::Event& iEvent);
     virtual bool matchToOfflineTausForEleVeto(float eta_, float phi_, const edm::Event& iEvent);
-    virtual double doInVarMass(float itauE, float itaupx, float itaupy, float itaupz, const edm::Event& iEvent);
+    virtual float doInVarMass(float itauE, float itaupx, float itaupy, float itaupz, const edm::Event& iEvent);
 
 
     TH1D * Histo_Rate;
