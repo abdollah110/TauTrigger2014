@@ -101,7 +101,9 @@ bool hasOverLap(float eta_, float phi_, const edm::Event& iEvent) {
 
 
 
-
+//&&&&&&&&&&&&&&&&&
+// Here apply the same logic as ETau  --> Use Break
+//&&&&&&&&&&&&&&&&&
     bool dR05 = 0;
     for (; imu != jmu; ++imu) {
         if (imu->pt() > 17 && fabs(imu->eta()) < 2.1) dR05 = (dR(imu->eta(), imu->phi(), eta_, phi_) > 0.4 ? 1 : 0);

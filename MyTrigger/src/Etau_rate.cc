@@ -92,14 +92,14 @@ bool Etau_rate::hasNoOverLapETau(float eta_, float phi_, const edm::Event& iEven
     std::vector<reco::Electron>::const_iterator iele = elestrons.begin();
     std::vector<reco::Electron>::const_iterator jele = elestrons.end();
 
-    bool HasNoOverLap = true;
+    bool OneNonOverLappedElectronExist = false;
     for (; iele != jele; ++iele) {
-        if (iele->pt() > 15 && fabs(iele->eta()) < 2.5 && tool.dR2(iele->eta(), iele->phi(), eta_, phi_) < 0.4) {
-            HasNoOverLap = false;
+        if (iele->pt() > 22 && fabs(iele->eta()) < 2.5 && tool.dR2(iele->eta(), iele->phi(), eta_, phi_) > 0.4) {
+            OneNonOverLappedElectronExist = true;
             break;
         }
     }
-    return HasNoOverLap;
+    return OneNonOverLappedElectronExist;
 }
 
 bool Etau_rate::matchToOfflineTaus(int isoOption, float eta_, float phi_, const edm::Event& iEvent) {
@@ -366,7 +366,7 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         bool discByIsolation5hits = (itau->tauID("byTrkIsolation5hits") < 3.0 ? true : false);
         //        bool discByEleLoose = matchToOfflineTausForEleVeto(itau->eta(), itau->phi(), iEvent);
         bool discByEleLoose = 1;
-        //        bool discByIsolation = (itau->tauID("byIsolation") > 0.5 ? true : false);
+//        bool discByIsolation = (itau->tauID("byIsolation") > 0.5 ? true : false);
         //        bool discByIsolation = (itau->tauID("byTrkIsolation") < 3.0 ? true : false);
 
 
@@ -404,7 +404,7 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 
     for (int ii = 0; ii < 4; ii++) {
         for (int jj = 0; jj < 8; jj++) {
-            if (AntiEle[ii][jj] > 0) Histo_2DRateAniEle->Fill(ii , jj );
+            if (AntiEle[ii][jj] > 0) Histo_2DRateAniEle->Fill(ii, jj);
         }
     }
 

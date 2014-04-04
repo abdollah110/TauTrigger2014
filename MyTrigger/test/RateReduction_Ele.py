@@ -67,6 +67,6 @@ HistoRate.GetYaxis().SetBinLabel(8, "EndCap_8")
 
 #HistoRate.SetMaximum(60000)
 #HistoRate.SetMarkerSize(1.7)
-HistoRate.Scale(1/16216.)
+HistoRate.Scale(1/27235.)
 HistoRate.Draw("text")
 canvas.SaveAs("EleRateReduction.pdf")
