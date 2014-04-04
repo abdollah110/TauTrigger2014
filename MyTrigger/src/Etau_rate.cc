@@ -63,6 +63,8 @@ private:
 
 
     TH1D * Histo_Rate;
+    TH1D * Mass_BeforAntiEle;
+    TH1D * Mass_AfterAntiEle;
     TH2D * Histo_2DRateAniEle;
     std::vector<float> GammasdEta_;
     std::vector<float> GammasdPhi_;
@@ -74,6 +76,8 @@ Etau_rate::Etau_rate(const edm::ParameterSet& iConfig) {
     using namespace edm;
     edm::Service<TFileService> fs;
     Histo_Rate = fs->make<TH1D > ("TriggerRate", "TriggerRate", 10, 0, 10);
+    Mass_BeforAntiEle = fs->make<TH1D > ("Mass_BeforAntiEle", "", 200, 0, 200);
+    Mass_AfterAntiEle = fs->make<TH1D > ("Mass_AfterAntiEle", "", 200, 0, 200);
     Histo_2DRateAniEle = fs->make<TH2D > ("TriggerRate2D", "TriggerRate2D", 5, 0, 5, 10, 0, 10);
 }
 
@@ -408,18 +412,21 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         //        bool discByIsolation = (itau->tauID("byTrkIsolation") < 3.0 ? true : false);
 
 
+        float InvarMass_Mass_ETau = doInVarMass(itau->eta(), itau->phi(), itau->energy(), itau->px(), itau->py(), itau->pz(), iEvent);
 
         if (EleTauPair && ptCut && hasOverlapEle) step1++;
         if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding) step2++;
         if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding && discByEleLoose) step3++;
         if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding && discByIsolation5hits) {
             step4++;
-            float InvarMass_Mass_ETau = doInVarMass(itau->eta(), itau->phi(), itau->energy(), itau->px(), itau->py(), itau->pz(), iEvent);
-            cout << InvarMass_Mass_ETau << endl;
-
+            //            cout << InvarMass_Mass_ETau << endl;
+            Mass_BeforAntiEle->Fill(InvarMass_Mass_ETau);
             for (int ii = 0; ii < 4; ii++) {
                 for (int jj = 0; jj < 8; jj++) {
-                    if (BB[ii] || EE[jj]) AntiEle[ii][jj]++;
+                    if (BB[ii] || EE[jj]) {
+                        AntiEle[ii][jj]++;
+                        Mass_AfterAntiEle->Fill(InvarMass_Mass_ETau);
+                    }
                     if (TauInCracks) AntiEle[ii][jj]++;
                 }
             }
