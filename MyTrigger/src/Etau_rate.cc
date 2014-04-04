@@ -59,7 +59,7 @@ private:
     virtual bool hasNoOverLapETau(float eta_, float phi_, const edm::Event& iEvent);
     virtual bool matchToOfflineTaus(int isoOption, float eta_, float phi_, const edm::Event& iEvent);
     virtual bool matchToOfflineTausForEleVeto(float eta_, float phi_, const edm::Event& iEvent);
-    virtual float doInVarMass(float itauE, float itaupx, float itaupy, float itaupz, const edm::Event& iEvent);
+    virtual float doInVarMass(float eta_, float phi_, float itauE, float itaupx, float itaupy, float itaupz, const edm::Event& iEvent);
 
 
     TH1D * Histo_Rate;
@@ -80,18 +80,20 @@ Etau_rate::Etau_rate(const edm::ParameterSet& iConfig) {
 Etau_rate::~Etau_rate() {
 }
 
-float Etau_rate::doInVarMass(float itauE, float itaupx, float itaupy, float itaupz, const edm::Event& iEvent) {
+float Etau_rate::doInVarMass(float eta_, float phi_, float itauE, float itaupx, float itaupy, float itaupz, const edm::Event& iEvent) {
     using reco::Electron;
     using namespace std;
     using namespace reco;
     using namespace edm;
     Handle < std::vector < reco::Electron >> electronHandle;
     iEvent.getByLabel("isolatedOnlineElectrons", electronHandle);
-
+    float mass_ = 0
     for (vector<reco::Electron>::const_iterator iele = electronHandle->begin(); iele != electronHandle->end(); iele++) {
-        return sqrt(TMath::Power(iele->energy() + itauE, 2) - TMath::Power(iele->px() + itaupx, 2) - TMath::Power(iele->py() + itaupy, 2) - TMath::Power(iele->pz() + itaupz, 2));
+        if (iele->pt() > 22 && fabs(iele->eta()) < 2.5 && tool.dR2(iele->eta(), iele->phi(), eta_, phi_) > 0.4) {
+            mass_ = sqrt(TMath::Power(iele->energy() + itauE, 2) - TMath::Power(iele->px() + itaupx, 2) - TMath::Power(iele->py() + itaupy, 2) - TMath::Power(iele->pz() + itaupz, 2));
+        }
     }
-
+    return mass_;
 }
 
 bool Etau_rate::hasNoOverLapETau(float eta_, float phi_, const edm::Event& iEvent) {
@@ -374,22 +376,22 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         //
         //
 
-//        double MET20TriggerEmulator::getTauPt(edm::Event & iEvent) {
-//            double tauPt = 0;
-//
-//            edm::Handle<reco::PFTauCollection> htaus;
-//            iEvent.getByLabel(offlineTauSrc, htaus);
-//
-//            edm::Handle<reco::PFTauDiscriminator> thePFTauDiscriminatorByIsolation;
-//            iEvent.getByLabel("shrinkingConePFTauDiscriminationByTrackIsolation", thePFTauDiscriminatorByIsolation);
-//
-//            for (size_t iPFTau = 0; iPFTau < htaus->size(); ++iPFTau) {
-//                reco::PFTauRef thePFTau(htaus, iPFTau);
-//                if ((*thePFTauDiscriminatorByIsolation)[thePFTau] < 0.5) continue;
-//                tauPt = thePFTau->pt();
-//            }
-//            return tauPt;
-//        }
+        //        double MET20TriggerEmulator::getTauPt(edm::Event & iEvent) {
+        //            double tauPt = 0;
+        //
+        //            edm::Handle<reco::PFTauCollection> htaus;
+        //            iEvent.getByLabel(offlineTauSrc, htaus);
+        //
+        //            edm::Handle<reco::PFTauDiscriminator> thePFTauDiscriminatorByIsolation;
+        //            iEvent.getByLabel("shrinkingConePFTauDiscriminationByTrackIsolation", thePFTauDiscriminatorByIsolation);
+        //
+        //            for (size_t iPFTau = 0; iPFTau < htaus->size(); ++iPFTau) {
+        //                reco::PFTauRef thePFTau(htaus, iPFTau);
+        //                if ((*thePFTauDiscriminatorByIsolation)[thePFTau] < 0.5) continue;
+        //                tauPt = thePFTau->pt();
+        //            }
+        //            return tauPt;
+        //        }
 
 
 
@@ -398,7 +400,7 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         bool hasOverlapEle = hasNoOverLapETau(itau->eta(), itau->phi(), iEvent);
         bool discByDecayModeFinding = (itau->tauID("decayModeFinding") > 0.5 ? true : false);
         bool discByIsolation5hits = (itau->tauID("byTrkIsolation5hits") < 3.0 ? true : false);
-//        cout << "itau->PFRecoTauDiscriminationAgainstElectron2 = " << end;
+        //        cout << "itau->PFRecoTauDiscriminationAgainstElectron2 = " << end;
         //        cout << itau->PFRecoTauDiscriminationAgainstElectron2() << end;
         //        bool discByEleLoose = matchToOfflineTausForEleVeto(itau->eta(), itau->phi(), iEvent);
         bool discByEleLoose = 1;
@@ -412,7 +414,7 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding && discByEleLoose) step3++;
         if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding && discByIsolation5hits) {
             step4++;
-            float InvarMass_Mass_ETau = doInVarMass(itau->energy(), itau->px(), itau->py(), itau->pz(), iEvent);
+            float InvarMass_Mass_ETau = doInVarMass(itau->eta(), itau->phi(), itau->energy(), itau->px(), itau->py(), itau->pz(), iEvent);
             cout << InvarMass_Mass_ETau << endl;
 
             for (int ii = 0; ii < 4; ii++) {
