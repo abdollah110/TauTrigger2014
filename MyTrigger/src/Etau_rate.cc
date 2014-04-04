@@ -398,7 +398,7 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         bool hasOverlapEle = hasNoOverLapETau(itau->eta(), itau->phi(), iEvent);
         bool discByDecayModeFinding = (itau->tauID("decayModeFinding") > 0.5 ? true : false);
         bool discByIsolation5hits = (itau->tauID("byTrkIsolation5hits") < 3.0 ? true : false);
-        cout << "itau->PFRecoTauDiscriminationAgainstElectron2 = " << end;
+//        cout << "itau->PFRecoTauDiscriminationAgainstElectron2 = " << end;
         //        cout << itau->PFRecoTauDiscriminationAgainstElectron2() << end;
         //        bool discByEleLoose = matchToOfflineTausForEleVeto(itau->eta(), itau->phi(), iEvent);
         bool discByEleLoose = 1;
