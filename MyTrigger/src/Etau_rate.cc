@@ -65,7 +65,9 @@ private:
     TH1D * Histo_Rate;
     TH1D * Mass_BeforAntiEle;
     TH1D * Mass_AfterAntiEle;
+    TH1D * Mass_AfterAntiEle_NOCutCrack;
     TH2D * Histo_2DRateAniEle;
+    TH2D * Histo_2DRateAniEle_NOCutCrack;
     std::vector<float> GammasdEta_;
     std::vector<float> GammasdPhi_;
     std::vector<float> GammasPt_;
@@ -76,9 +78,11 @@ Etau_rate::Etau_rate(const edm::ParameterSet& iConfig) {
     using namespace edm;
     edm::Service<TFileService> fs;
     Histo_Rate = fs->make<TH1D > ("TriggerRate", "TriggerRate", 10, 0, 10);
-    Mass_BeforAntiEle = fs->make<TH1D > ("Mass_BeforAntiEle", "", 200, 0, 200);
-    Mass_AfterAntiEle = fs->make<TH1D > ("Mass_AfterAntiEle", "", 200, 0, 200);
+    Mass_BeforAntiEle = fs->make<TH1D > ("Mass_BeforAntiEle", "Mass_BeforAntiEle", 200, 0, 200);
+    Mass_AfterAntiEle = fs->make<TH1D > ("Mass_AfterAntiEle", "Mass_AfterAntiEle", 200, 0, 200);
+    Mass_AfterAntiEle_NOCutCrack = fs->make<TH1D > ("Mass_AfterAntiEle_NOCutCrack", "Mass_AfterAntiEle_NOCutCrack", 200, 0, 200);
     Histo_2DRateAniEle = fs->make<TH2D > ("TriggerRate2D", "TriggerRate2D", 5, 0, 5, 10, 0, 10);
+    Histo_2DRateAniEle_NOCutCrack = fs->make<TH2D > ("TriggerRate2D_NOCutCrack", "TriggerRate2D_NOCutCrack", 5, 0, 5, 10, 0, 10);
 }
 
 Etau_rate::~Etau_rate() {
@@ -419,18 +423,25 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding && discByEleLoose) step3++;
         if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding && discByIsolation5hits) {
             step4++;
-            //            cout << InvarMass_Mass_ETau << endl;
+
+
             Mass_BeforAntiEle->Fill(InvarMass_Mass_ETau);
+
             for (int ii = 0; ii < 4; ii++) {
                 for (int jj = 0; jj < 8; jj++) {
-                    if (BB[ii] || EE[jj]) {
+                    if (BB[ii] || EE[jj] || TauInCracks) {
                         AntiEle[ii][jj]++;
                     }
-                    if (TauInCracks) AntiEle[ii][jj]++;
+                    if (BB[ii] || EE[jj]) {
+                        AntiEle_NOCutCrack[ii][jj]++;
+                    }
                 }
             }
-//            if (BB[0] || EE[0] || TauInCracks) {
-            if (BB[0] || EE[0] ) {
+
+            if (BB[0] || EE[0] || TauInCracks) {
+                Mass_AfterAntiEle_NOCutCrack->Fill(InvarMass_Mass_ETau);
+            }
+            if (BB[0] || EE[0]) {
                 Mass_AfterAntiEle->Fill(InvarMass_Mass_ETau);
             }
 
@@ -458,6 +469,7 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     for (int ii = 0; ii < 4; ii++) {
         for (int jj = 0; jj < 8; jj++) {
             if (AntiEle[ii][jj] > 0) Histo_2DRateAniEle->Fill(ii, jj);
+            if (AntiEle[ii][jj] > 0) Histo_2DRateAniEle_NOCutCrack->Fill(ii, jj);
         }
     }
 
