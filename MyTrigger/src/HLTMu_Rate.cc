@@ -48,8 +48,10 @@ public:
     explicit HLTMu_Rate(const edm::ParameterSet&);
     ~HLTMu_Rate();
 private:
-    virtual void analyze(const edm::Event& , const edm::EventSetup& );
+    virtual void analyze(const edm::Event&, const edm::EventSetup&);
     TH1D * Histo_RateReduction;
+    TH1D * Mass_BeforAntiEle;
+    TH1D * Mass_AfterAntiEle;
 
     // ----------member data ---------------------------
 };
@@ -58,6 +60,8 @@ HLTMu_Rate::HLTMu_Rate(const edm::ParameterSet& iConfig) {
     using namespace edm;
     edm::Service<TFileService> fs;
     Histo_RateReduction = fs->make<TH1D > ("Histo_RateReduction", "Histo_RateReduction", 10, 0, 10);
+    Mass_BeforAntiEle = fs->make<TH1D > ("Mass_BeforAntiMu", "Mass_BeforAntiMu", 200, 0, 200);
+    Mass_AfterAntiEle = fs->make<TH1D > ("Mass_AfterAntiMu", "Mass_AfterAntiMu", 200, 0, 200);
 }
 
 HLTMu_Rate::~HLTMu_Rate() {
@@ -81,6 +85,22 @@ float dR(float l1eta, float l1phi, float l2eta, float l2phi) {
     return sqrt(deta * deta + dphi * dphi);
 }
 
+float doInVarMass(float eta_, float phi_, float itauE, float itaupx, float itaupy, float itaupz, const edm::Event& iEvent) {
+    using reco::RecoChargedCandidate;
+    using namespace std;
+    using namespace reco;
+    using namespace edm;
+    Handle < std::vector < reco::RecoChargedCandidate >> muonsHandle;
+    iEvent.getByLabel("isolatedOnlineMuons", muonsHandle);
+    float mass_ = 0;
+    for (vector<reco::RecoChargedCandidate>::const_iterator imu = muonsHandle->begin(); imu != muonsHandle->end(); imu++) {
+        if (imu->pt() > 17 && fabs(imu->eta()) < 2.4 && dR(imu->eta(), imu->phi(), eta_, phi_) > 0.4) {
+            mass_ = sqrt(TMath::Power(imu->energy() + itauE, 2) - TMath::Power(imu->px() + itaupx, 2) - TMath::Power(imu->py() + itaupy, 2) - TMath::Power(imu->pz() + itaupz, 2));
+        }
+    }
+    return mass_;
+}
+
 bool hasOverLap(float eta_, float phi_, const edm::Event& iEvent) {
     using reco::Muon;
     using reco::MuonCollection;
@@ -101,9 +121,9 @@ bool hasOverLap(float eta_, float phi_, const edm::Event& iEvent) {
 
 
 
-//&&&&&&&&&&&&&&&&&
-// Here apply the same logic as ETau  --> Use Break
-//&&&&&&&&&&&&&&&&&
+    //&&&&&&&&&&&&&&&&&
+    // Here apply the same logic as MuTau  --> Use Break
+    //&&&&&&&&&&&&&&&&&
     bool dR05 = 0;
     for (; imu != jmu; ++imu) {
         if (imu->pt() > 17 && fabs(imu->eta()) < 2.1) dR05 = (dR(imu->eta(), imu->phi(), eta_, phi_) > 0.4 ? 1 : 0);
@@ -112,7 +132,7 @@ bool hasOverLap(float eta_, float phi_, const edm::Event& iEvent) {
     return dR05;
 }
 
-bool matchToOfflineTaus(int isoOption, float eta_, float phi_, const edm::Event& iEvent) {
+bool matchToOfflinMuTaus(int isoOption, float eta_, float phi_, const edm::Event& iEvent) {
     using namespace std;
     using namespace reco;
     using namespace edm;
@@ -203,6 +223,7 @@ HLTMu_Rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         bool discByIsolation = (itau->tauID("byTrkIsolation") < 3.0 ? true : false);
         bool discByIsolation5hits = (itau->tauID("byTrkIsolation5hits") < 3.0 ? true : false);
         bool discByMuLoose = (itau->tauID("againstMuonLoose") > 0.5 ? true : false);
+        float InvarMass_Mass_MuTau = doInVarMass(itau->eta(), itau->phi(), itau->energy(), itau->px(), itau->py(), itau->pz(), iEvent);
 
         if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding) {
             step1++;
@@ -212,11 +233,14 @@ HLTMu_Rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         }
         if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation5hits) {
             step3++;
+            Mass_BeforAntiEle->Fill(InvarMass_Mass_MuTau);
+
         }
         if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation5hits && discByMuLoose) {
             step4++;
+            Mass_AfterAntiEle->Fill(InvarMass_Mass_MuTau);
         }
-        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation5hits && discByMuLoose && matchToOfflineTaus(3, itau->eta(), itau->phi(), iEvent)) {
+        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation5hits && discByMuLoose && matchToOfflinMuTaus(3, itau->eta(), itau->phi(), iEvent)) {
             step5++;
         }
     }
