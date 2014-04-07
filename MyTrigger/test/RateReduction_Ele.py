@@ -46,6 +46,16 @@ canvas.SetFrameBorderMode(0)
 #canvas.SetGridy(10)
 
 
+def AddCostumText(candidate):
+    t = TLatex()
+    t.SetNDC()
+    t.SetTextFont(62)
+    t.SetTextAlign(12)
+    t.SetTextSize(0.025)
+    t.DrawLatex(0.1, .92, "CMS Preliminary")
+    t.DrawLatex(0.7, .92, candidate+"Tau Channel")
+    t.SetTextColor(2)
+    return 0
 
 
 FileRootEff = TFile("eTau.root", "OPEN")
@@ -70,3 +80,59 @@ HistoRate.GetYaxis().SetBinLabel(8, "EndCap_8")
 HistoRate.Scale(1/7768.)
 HistoRate.Draw("text")
 canvas.SaveAs("EleRateReduction.pdf")
+
+
+Mass_BeforAntiEle = FileRootEff.Get("demo/Mass_BeforAntiEle")
+Mass_AfterAntiEle = FileRootEff.Get("demo/Mass_AfterAntiEle")
+Mass_BeforAntiEle.Rebin(10)
+Mass_BeforAntiEle.SetLineColor(2)
+Mass_BeforAntiEle.SetLineWidth(2)
+Mass_BeforAntiEle.GetXaxis().SetTitle("M_{e#tau} [GeV]")
+Mass_BeforAntiEle.GetYaxis().SetTitle("Events")
+Mass_BeforAntiEle.GetYaxis().SetTitleOffset(1.5)
+Mass_BeforAntiEle.GetYaxis().SetLabelSize(0.03)
+Mass_BeforAntiEle.Draw()
+Mass_AfterAntiEle.Rebin(10)
+Mass_AfterAntiEle.SetLineColor(3)
+Mass_AfterAntiEle.SetLineWidth(2)
+Mass_AfterAntiEle.Draw("same")
+
+legend_ = TLegend(0.60, 0.78, 0.90, 0.9)
+legend_.SetFillColor(0)
+legend_.SetBorderSize(0)
+legend_.SetTextSize(.03)
+legend_.AddEntry(Mass_BeforAntiEle, "BeforAntiElectron", "l")
+legend_.AddEntry(Mass_AfterAntiEle, "AfterAntiElectron", "l")
+AddCostumText("Ele")
+
+legend_.Draw()
+canvas.SaveAs("MassOverLaidEle.pdf")
+
+
+FileRootEffMu = TFile("hltMu_Rate.root", "OPEN")
+Mass_BeforAntiEle = FileRootEffMu.Get("demo/Mass_BeforAntiMu")
+Mass_AfterAntiEle = FileRootEffMu.Get("demo/Mass_AfterAntiMu")
+Mass_BeforAntiEle.Rebin(10)
+Mass_BeforAntiEle.SetLineColor(2)
+Mass_BeforAntiEle.SetLineWidth(2)
+Mass_BeforAntiEle.GetXaxis().SetTitle("M_{#mu#tau} [GeV]")
+Mass_BeforAntiEle.GetYaxis().SetTitle("Events")
+Mass_BeforAntiEle.GetYaxis().SetTitleOffset(1.5)
+Mass_BeforAntiEle.GetYaxis().SetLabelSize(0.03)
+Mass_BeforAntiEle.Draw()
+Mass_AfterAntiEle.Rebin(10)
+Mass_AfterAntiEle.SetLineColor(3)
+Mass_AfterAntiEle.SetLineWidth(2)
+Mass_AfterAntiEle.Draw("same")
+
+legend_ = TLegend(0.60, 0.78, 0.90, 0.9)
+legend_.SetFillColor(0)
+legend_.SetBorderSize(0)
+legend_.SetTextSize(.03)
+legend_.AddEntry(Mass_BeforAntiEle, "BeforAntiMu", "l")
+legend_.AddEntry(Mass_AfterAntiEle, "AfterAntiMu", "l")
+AddCostumText("Mu")
+
+legend_.Draw()
+canvas.SaveAs("MassOverLaidMu.pdf")
+

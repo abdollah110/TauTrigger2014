@@ -66,6 +66,7 @@ private:
     TH1D * Mass_BeforAntiEle;
     TH1D * Mass_AfterAntiEle;
     TH1D * Mass_AfterAntiEle_NOCutCrack;
+    TH1D * Mass_AfterAntiEle_VetoTauInCrack;
     TH2D * Histo_2DRateAniEle;
     TH2D * Histo_2DRateAniEle_NOCutCrack;
     std::vector<float> GammasdEta_;
@@ -81,6 +82,7 @@ Etau_rate::Etau_rate(const edm::ParameterSet& iConfig) {
     Mass_BeforAntiEle = fs->make<TH1D > ("Mass_BeforAntiEle", "Mass_BeforAntiEle", 200, 0, 200);
     Mass_AfterAntiEle = fs->make<TH1D > ("Mass_AfterAntiEle", "Mass_AfterAntiEle", 200, 0, 200);
     Mass_AfterAntiEle_NOCutCrack = fs->make<TH1D > ("Mass_AfterAntiEle_NOCutCrack", "Mass_AfterAntiEle_NOCutCrack", 200, 0, 200);
+    Mass_AfterAntiEle_VetoTauInCrack = fs->make<TH1D > ("Mass_AfterAntiEle_VetoTauInCrack", "Mass_AfterAntiEle_VetoTauInCrack", 200, 0, 200);
     Histo_2DRateAniEle = fs->make<TH2D > ("TriggerRate2D", "TriggerRate2D", 5, 0, 5, 10, 0, 10);
     Histo_2DRateAniEle_NOCutCrack = fs->make<TH2D > ("TriggerRate2D_NOCutCrack", "TriggerRate2D_NOCutCrack", 5, 0, 5, 10, 0, 10);
 }
@@ -408,6 +410,7 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         bool EleTauPair = ipfele > 0;
         bool hasOverlapEle = hasNoOverLapETau(itau->eta(), itau->phi(), iEvent);
         bool discByDecayModeFinding = (itau->tauID("decayModeFinding") > 0.5 ? true : false);
+        bool discByIsolation = (itau->tauID("byTrkIsolation") < 3.0 ? true : false);
         bool discByIsolation5hits = (itau->tauID("byTrkIsolation5hits") < 3.0 ? true : false);
         //        cout << "itau->PFRecoTauDiscriminationAgainstElectron2 = " << end;
         //        cout << itau->PFRecoTauDiscriminationAgainstElectron2() << end;
@@ -421,7 +424,7 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 
         if (EleTauPair && ptCut && hasOverlapEle) step1++;
         if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding) step2++;
-        if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding && discByEleLoose) step3++;
+        if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding && discByIsolation) step3++;
         if (EleTauPair && ptCut && hasOverlapEle && discByDecayModeFinding && discByIsolation5hits) {
             step4++;
 
@@ -444,6 +447,9 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
             }
             if (BB[0] || EE[0]) {
                 Mass_AfterAntiEle->Fill(InvarMass_Mass_ETau);
+            }
+            if (!TauInCracks && (BB[0] || EE[0])) {
+                Mass_AfterAntiEle_VetoTauInCrack->Fill(InvarMass_Mass_ETau);
             }
 
 
