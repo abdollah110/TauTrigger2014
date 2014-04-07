@@ -69,6 +69,7 @@ private:
     TH1D * Mass_AfterAntiEle_VetoTauInCrack;
     TH2D * Histo_2DRateAniEle;
     TH2D * Histo_2DRateAniEle_NOCutCrack;
+    TH2D * Histo_2DRateAniEle_VetoTauInCrack;
     std::vector<float> GammasdEta_;
     std::vector<float> GammasdPhi_;
     std::vector<float> GammasPt_;
@@ -85,6 +86,7 @@ Etau_rate::Etau_rate(const edm::ParameterSet& iConfig) {
     Mass_AfterAntiEle_VetoTauInCrack = fs->make<TH1D > ("Mass_AfterAntiEle_VetoTauInCrack", "Mass_AfterAntiEle_VetoTauInCrack", 200, 0, 200);
     Histo_2DRateAniEle = fs->make<TH2D > ("TriggerRate2D", "TriggerRate2D", 5, 0, 5, 10, 0, 10);
     Histo_2DRateAniEle_NOCutCrack = fs->make<TH2D > ("TriggerRate2D_NOCutCrack", "TriggerRate2D_NOCutCrack", 5, 0, 5, 10, 0, 10);
+    Histo_2DRateAniEle_VetoTauInCrack = fs->make<TH2D > ("TriggerRate2D_VetoTauInCrack", "TriggerRate2D_VetoTauInCrack", 5, 0, 5, 10, 0, 10);
 }
 
 Etau_rate::~Etau_rate() {
@@ -241,8 +243,11 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     int step8 = 0;
     int step9 = 0;
     bool AntiEle[4][8];
-    bool AntiEle_NOCutCrack[4][8];
     memset(AntiEle, 0, 4 * 8 * sizeof (bool));
+    bool AntiEle_NOCutCrack[4][8];
+    memset(AntiEle_NOCutCrack, 0, 4 * 8 * sizeof (bool));
+    bool AntiEle_VetoTauInCrack[4][8];
+    memset(AntiEle_VetoTauInCrack, 0, 4 * 8 * sizeof (bool));
 
 
 
@@ -439,6 +444,9 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
                     if (BB[ii] || EE[jj]) {
                         AntiEle_NOCutCrack[ii][jj]++;
                     }
+                    if (!TauInCracks && (BB[ii] || EE[jj])) {
+                        AntiEle_VetoTauInCrack[ii][jj]++;
+                    }
                 }
             }
 
@@ -477,6 +485,7 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         for (int jj = 0; jj < 8; jj++) {
             if (AntiEle[ii][jj] > 0) Histo_2DRateAniEle->Fill(ii, jj);
             if (AntiEle_NOCutCrack[ii][jj] > 0) Histo_2DRateAniEle_NOCutCrack->Fill(ii, jj);
+            if (AntiEle_VetoTauInCrack[ii][jj] > 0) Histo_2DRateAniEle_VetoTauInCrack->Fill(ii, jj);
         }
     }
 
