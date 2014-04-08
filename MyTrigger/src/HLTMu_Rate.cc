@@ -196,7 +196,8 @@ HLTMu_Rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     //******************************************************
     Handle<pat::TauCollection> tausHandle;
     //    iEvent.getByLabel("selectedHltPatTaus", tausHandle);
-    iEvent.getByLabel("selectedHltPatTausPxl2NP", tausHandle);
+    //    iEvent.getByLabel("selectedHltPatTausPxl2NP", tausHandle);
+    iEvent.getByLabel("selectedHltPatTausPxl2R18NInfNP", tausHandle); //Legacy
     const TauCollection &tau = *(tausHandle.product());
     pat::TauCollection::const_iterator itau = tau.begin();
     pat::TauCollection::const_iterator jtau = tau.end();
@@ -219,8 +220,8 @@ HLTMu_Rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         bool muTauPair = 1 > 0;
         bool hasOverlapMu = hasOverLap(itau->eta(), itau->phi(), iEvent);
         bool discByDecayModeFinding = (itau->tauID("decayModeFinding") > 0.5 ? true : false);
-        //        bool discByIsolation = (itau->tauID("byIsolation") > 0.5 ? true : false);
-        bool discByIsolation = (itau->tauID("byTrkIsolation") < 3.0 ? true : false);
+        bool discByIsolation = (itau->tauID("byIsolation") > 0.5 ? true : false);
+        //        bool discByIsolation = (itau->tauID("byTrkIsolation") < 3.0 ? true : false);
         bool discByIsolation5hits = (itau->tauID("byTrkIsolation5hits") < 3.0 ? true : false);
         bool discByMuLoose = (itau->tauID("againstMuonLoose") > 0.5 ? true : false);
         float InvarMass_Mass_MuTau = doInVarMass(itau->eta(), itau->phi(), itau->energy(), itau->px(), itau->py(), itau->pz(), iEvent);

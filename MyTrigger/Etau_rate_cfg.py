@@ -28,7 +28,7 @@ process.isolatedOnlineElectrons = cms.EDProducer(
 process.demo = cms.EDAnalyzer('Etau_rate')
                               
 process.TFileService = cms.Service("TFileService",
-                                   fileName=cms.string('eTau.root')
+                                   fileName=cms.string('eTau_LegacyTau.root')
                                    )
 process.p = cms.Path(process.isolatedOnlineElectrons * process.demo)
 
