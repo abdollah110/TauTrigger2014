@@ -229,7 +229,8 @@ Etau_rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     Handle<pat::TauCollection> tausHandle;
     //    iEvent.getByLabel("selectedHltPatTaus", tausHandle);
     //    iEvent.getByLabel("selectedHltPatTausPxl2NP", tausHandle);
-    iEvent.getByLabel("selectedHltPatTausPxl2R18NInfNP", tausHandle); //Legacy
+//    iEvent.getByLabel("selectedHltPatTausPxl2R18NInfNP", tausHandle); //Legacy
+    iEvent.getByLabel("selectedHltPatTausNP", tausHandle); //Close to Legacy
     const TauCollection &tau = *(tausHandle.product());
     pat::TauCollection::const_iterator itau = tau.begin();
     pat::TauCollection::const_iterator jtau = tau.end();
