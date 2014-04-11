@@ -52,6 +52,7 @@ private:
     TH1D * Histo_RateReduction;
     TH1D * Mass_BeforAntiEle;
     TH1D * Mass_AfterAntiEle;
+    edm::InputTag srcTriggerResults_;
 
     // ----------member data ---------------------------
 };
@@ -62,6 +63,8 @@ HLTMu_Rate::HLTMu_Rate(const edm::ParameterSet& iConfig) {
     Histo_RateReduction = fs->make<TH1D > ("Histo_RateReduction", "Histo_RateReduction", 10, 0, 10);
     Mass_BeforAntiEle = fs->make<TH1D > ("Mass_BeforAntiMu", "Mass_BeforAntiMu", 200, 0, 200);
     Mass_AfterAntiEle = fs->make<TH1D > ("Mass_AfterAntiMu", "Mass_AfterAntiMu", 200, 0, 200);
+
+    srcTriggerResults_ = iConfig.getParameter<edm::InputTag > ("srcTriggerResults");
 }
 
 HLTMu_Rate::~HLTMu_Rate() {
@@ -175,6 +178,21 @@ HLTMu_Rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     using namespace edm;
     using namespace pat;
 
+    edm::Handle<TriggerResults> triggerResults;
+    iEvent.getByLabel(srcTriggerResults_, triggerResults);
+
+    int ntrigs = triggerResults->size();
+    TriggerNames const &triggerNames = iEvent.triggerNames(*triggerResults);
+    for (int itrig = 0; itrig < ntrigs; itrig++) {
+        string name = triggerNames.triggerName(itrig);
+        bool result = triggerResults->accept(itrig);
+        (m->HLT)[name] = result;
+
+
+        if (name == "HLT_Ele17_CaloIdL_CaloIsoVL_Ele8_CaloIdL_CaloIsoVL_v2")
+            cout << name << " = "result << endl;
+    }//for itrig
+
 
 
     //******************************************************
@@ -197,7 +215,7 @@ HLTMu_Rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     Handle<pat::TauCollection> tausHandle;
     //    iEvent.getByLabel("selectedHltPatTaus", tausHandle);
     //    iEvent.getByLabel("selectedHltPatTausPxl2NP", tausHandle);
-//    iEvent.getByLabel("selectedHltPatTausPxl2R18NInfNP", tausHandle); //Legacy
+    //    iEvent.getByLabel("selectedHltPatTausPxl2R18NInfNP", tausHandle); //Legacy
     iEvent.getByLabel("selectedHltPatTausNP", tausHandle); //Close to Legacy in 53X
     const TauCollection &tau = *(tausHandle.product());
     pat::TauCollection::const_iterator itau = tau.begin();

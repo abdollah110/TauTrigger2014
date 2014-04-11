@@ -78,9 +78,12 @@ process.source = cms.Source("PoolSource",
 process.isolatedOnlineMuons = cms.EDProducer(
                                              "ChargedCandidateFromTrigRefConverter",
                                              triggerFilterMuonsSrc=cms.InputTag("hltL3crIsoL1sMu14erORMu16erL1f0L2f14QL3f17QL3crIsoRhoFiltered0p15")
-                                             )
-process.demo = cms.EDAnalyzer('HLTMu_Rate'
+#trigger::TriggerEvent                 "hltTriggerSummaryAOD"      ""                "HLT"
+#trigger::TriggerEvent                 "hltTriggerSummaryAOD"      ""                "TauHLT"                                              )
+process.demo = cms.EDAnalyzer('HLTMu_Rate',
                               #rhoCenNeutralTight=cms.InputTag("kt6PFJetsCentralNeutralTight", "rho")
+#                              srcTriggerResults=cms.InputTag("TriggerResults", "", "TauHLT")
+                              srcTriggerResults=cms.InputTag("hltTriggerSummaryAOD", "", "TauHLT")
                               )
 
 process.TFileService = cms.Service("TFileService",
