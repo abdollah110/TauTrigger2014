@@ -192,7 +192,7 @@ HLTMu_Rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     if (triggerResults.isValid()) {
         int ntrigs = triggerResults->size();
         TriggerNames const &triggerNames = iEvent.triggerNames(*triggerResults);
-
+        cout << "ntrigs size = " << ntrigs << "\n";
         for (int itrig = 0; itrig < ntrigs; itrig++) {
             string name = triggerNames.triggerName(itrig);
             bool result = triggerResults->accept(itrig);
@@ -213,9 +213,11 @@ HLTMu_Rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
             //                // cout << "HLT_DoubleMu7_v1" << endl;
             //            }
 
+            size_t foundEl = name.find("mu");
 
-            if (name == "HLT_Ele17_CaloIdL_CaloIsoVL_Ele8_CaloIdL_CaloIsoVL_v2")
+            if (foundEl != string::npos) {
                 cout << name << " = " << result << endl;
+            }
         }//for itrig
     }//if triggerResults valid
 
