@@ -213,7 +213,7 @@ HLTMu_Rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
             //                // cout << "HLT_DoubleMu7_v1" << endl;
             //            }
 
-            size_t foundEl = name.find("mu");
+            size_t foundEl = name.find("HLT");
 
             if (foundEl != string::npos) {
                 cout << name << " = " << result << endl;
@@ -335,3 +335,42 @@ HLTMu_Rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 //define this as a plug-in
 DEFINE_FWK_MODULE(HLTMu_Rate);
 
+ntrigs size = 443
+HLT_DoubleMu3_4_Dimuon5_Bs_Central_v5 = 0
+HLT_DoubleMu3p5_4_Dimuon5_Bs_Central_v5 = 0
+HLT_DoubleMu4_Dimuon7_Bs_Forward_v5 = 0
+HLT_Dimuon0_Jpsi_v17 = 0
+HLT_Dimuon0_Jpsi_NoVertexing_v14 = 0
+HLT_Dimuon0_Upsilon_v17 = 0
+HLT_Dimuon0_PsiPrime_v6 = 0
+HLT_Dimuon5_Upsilon_v6 = 0
+HLT_Dimuon5_PsiPrime_v6 = 0
+HLT_Dimuon7_Upsilon_v7 = 0
+HLT_Dimuon7_PsiPrime_v3 = 0
+HLT_Dimuon8_Jpsi_v7 = 0
+HLT_Dimuon8_Upsilon_v6 = 0
+HLT_Dimuon10_Jpsi_v6 = 0
+HLT_Dimuon11_Upsilon_v6 = 0
+HLT_Dimuon0_Jpsi_Muon_v18 = 0
+HLT_Dimuon0_Upsilon_Muon_v18 = 0
+HLT_Dimuon3p5_SameSign_v6 = 0
+Begin processing the 44391st record. Run 204577, Event 220637143, LumiSection 158 at 14-Apr-2014 14:33:02.480 CEST
+ntrigs size = 443
+HLT_DoubleMu3_4_Dimuon5_Bs_Central_v5 = 0
+HLT_DoubleMu3p5_4_Dimuon5_Bs_Central_v5 = 0
+HLT_DoubleMu4_Dimuon7_Bs_Forward_v5 = 0
+HLT_Dimuon0_Jpsi_v17 = 0
+HLT_Dimuon0_Jpsi_NoVertexing_v14 = 0
+HLT_Dimuon0_Upsilon_v17 = 0
+HLT_Dimuon0_PsiPrime_v6 = 0
+HLT_Dimuon5_Upsilon_v6 = 0
+HLT_Dimuon5_PsiPrime_v6 = 0
+HLT_Dimuon7_Upsilon_v7 = 0
+HLT_Dimuon7_PsiPrime_v3 = 0
+HLT_Dimuon8_Jpsi_v7 = 0
+HLT_Dimuon8_Upsilon_v6 = 0
+HLT_Dimuon10_Jpsi_v6 = 0
+HLT_Dimuon11_Upsilon_v6 = 0
+HLT_Dimuon0_Jpsi_Muon_v18 = 0
+HLT_Dimuon0_Upsilon_Muon_v18 = 0
+HLT_Dimuon3p5_SameSign_v6 = 0
