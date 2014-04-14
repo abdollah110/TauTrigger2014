@@ -215,8 +215,10 @@ HLTMu_Rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 
             size_t foundMu = name.find("IsoMu17_eta2p1_LooseIsoPFTau20");
 
+            Histo_RateReduction->Fill(1);
             if (foundMu != string::npos) {
                 cout << name << " = " << result << endl;
+                if (result == 1) Histo_RateReduction->Fill(2);
             }
         }//for itrig
     }//if triggerResults valid
@@ -256,15 +258,17 @@ HLTMu_Rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     //  Making Loop over Taus
     //******************************************************
     Handle<pat::TauCollection> tausHandle;
+    iEvent.getByLabel("selectedHltPatTausNP", tausHandle); //Close to Legacy in 53X
     //    iEvent.getByLabel("selectedHltPatTaus", tausHandle);
     //    iEvent.getByLabel("selectedHltPatTausPxl2NP", tausHandle);
     //    iEvent.getByLabel("selectedHltPatTausPxl2R18NInfNP", tausHandle); //Legacy
-    iEvent.getByLabel("selectedHltPatTausNP", tausHandle); //Close to Legacy in 53X
-    const TauCollection &tau = *(tausHandle.product());
-    pat::TauCollection::const_iterator itau = tau.begin();
-    pat::TauCollection::const_iterator jtau = tau.end();
+    //    const TauCollection &tau = *(tausHandle.product());
+    //    pat::TauCollection::const_iterator itau = tau.begin();
+    //    pat::TauCollection::const_iterator jtau = tau.end();
 
 
+    Handle<pat::TauCollection> tausHandleNew;
+    iEvent.getByLabel("selectedHltPatTausPxl2NP", tausHandleNew); //New One
 
 
     int step1 = 0;
@@ -274,11 +278,10 @@ HLTMu_Rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     int step5 = 0;
     int step6 = 0;
 
-
-    for (; itau != jtau; ++itau) {
+    //    for (; itau != jtau; ++itau) {
+    for (pat::TauCollection::const_iterator itau = tausHandle->begin(); itau != tausHandle->end(); itau++) {
 
         bool ptCut = itau->pt() > 20 && fabs(itau->eta()) < 2.3;
-        //        bool muTauPair = ipfmu > 0;
         bool muTauPair = 1 > 0;
         bool hasOverlapMu = hasOverLap(itau->eta(), itau->phi(), iEvent);
         bool discByDecayModeFinding = (itau->tauID("decayModeFinding") > 0.5 ? true : false);
@@ -294,39 +297,59 @@ HLTMu_Rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation) {
             step2++;
         }
-        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation5hits) {
+        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation && discByMuLoose) {
             step3++;
+        }
+    }
+
+
+    for (pat::TauCollection::const_iterator itau = tausHandleNew->begin(); itau != tausHandleNew->end(); itau++) {
+
+        bool ptCut = itau->pt() > 20 && fabs(itau->eta()) < 2.3;
+        //        bool muTauPair = ipfmu > 0;
+        bool muTauPair = 1 > 0;
+        bool hasOverlapMu = hasOverLap(itau->eta(), itau->phi(), iEvent);
+        bool discByDecayModeFinding = (itau->tauID("decayModeFinding") > 0.5 ? true : false);
+        bool discByIsolation = (itau->tauID("byIsolation") > 0.5 ? true : false);
+        //        bool discByIsolation = (itau->tauID("byTrkIsolation") < 3.0 ? true : false);
+        bool discByIsolation5hits = (itau->tauID("byTrkIsolation5hits") < 3.0 ? true : false);
+        bool discByMuLoose = (itau->tauID("againstMuonLoose") > 0.5 ? true : false);
+        float InvarMass_Mass_MuTau = doInVarMass(itau->eta(), itau->phi(), itau->energy(), itau->px(), itau->py(), itau->pz(), iEvent);
+
+
+        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation5hits) {
+            step4++;
             Mass_BeforAntiEle->Fill(InvarMass_Mass_MuTau);
 
         }
         if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation5hits && discByMuLoose) {
-            step4++;
+            step5++;
             Mass_AfterAntiEle->Fill(InvarMass_Mass_MuTau);
         }
-        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation5hits && discByMuLoose && matchToOfflinMuTaus(3, itau->eta(), itau->phi(), iEvent)) {
-            step5++;
-        }
+//        if (muTauPair && ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation5hits && discByMuLoose && matchToOfflinMuTaus(3, itau->eta(), itau->phi(), iEvent)) {
+//            step6++;
+//        }
     }
 
     Histo_RateReduction->Fill(0);
     if (step1 > 0) {
-        Histo_RateReduction->Fill(1);
-    }
-    if (step2 > 0) {
-        Histo_RateReduction->Fill(2);
-    }
-    if (step3 > 0) {
         Histo_RateReduction->Fill(3);
     }
-    if (step4 > 0) {
+    if (step2 > 0) {
         Histo_RateReduction->Fill(4);
     }
-    if (step5 > 0) {
+    if (step3 > 0) {
         Histo_RateReduction->Fill(5);
     }
-    if (step6 > 0) {
+    if (step4 > 0) {
         Histo_RateReduction->Fill(6);
     }
+    if (step5 > 0) {
+        Histo_RateReduction->Fill(7);
+    }
+//    if (step6 > 0) {
+//        Histo_RateReduction->Fill(8);
+//    }
 
 }
 
