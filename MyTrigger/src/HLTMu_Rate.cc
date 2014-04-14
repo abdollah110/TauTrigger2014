@@ -195,7 +195,7 @@ HLTMu_Rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 
 
         if (name == "HLT_Ele17_CaloIdL_CaloIsoVL_Ele8_CaloIdL_CaloIsoVL_v2")
-            cout << name << " = "result << endl;
+            cout << name << " = "<<result << endl;
     }//for itrig
 
 
