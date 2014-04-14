@@ -213,9 +213,9 @@ HLTMu_Rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
             //                // cout << "HLT_DoubleMu7_v1" << endl;
             //            }
 
-            size_t foundEl = name.find("HLT");
+            size_t foundMu = name.find("IsoMu17_eta2p1_LooseIsoPFTau20");
 
-            if (foundEl != string::npos) {
+            if (foundMu != string::npos) {
                 cout << name << " = " << result << endl;
             }
         }//for itrig
@@ -335,3 +335,10 @@ HLTMu_Rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 //define this as a plug-in
 DEFINE_FWK_MODULE(HLTMu_Rate);
 
+
+//HLT_IsoMu8_eta2p1_LooseIsoPFTau20_L1ETM26_v1 = 0
+//HLT_IsoMu8_eta2p1_LooseIsoPFTau20_v1 = 0
+//HLT_Mu8_eta2p1_LooseIsoPFTau20_L1ETM26_v1 = 0
+//HLT_Ele13_eta2p1_WP90Rho_LooseIsoPFTau20_L1ETM36_v1 = 0
+//HLT_Ele13_eta2p1_WP90NoIso_LooseIsoPFTau20_L1ETM36_v1 = 0
+//HLT_Ele13_eta2p1_WP90Rho_LooseIsoPFTau20_v1 = 0
