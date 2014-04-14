@@ -37,6 +37,11 @@
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
 #include "DataFormats/RecoCandidate/interface/RecoChargedCandidate.h"
+//for trigger results
+#include "DataFormats/Common/interface/TriggerResults.h"
+#include "FWCore/Common/interface/TriggerNames.h"
+//HLT
+#include "DataFormats/HLTReco/interface/TriggerEvent.h"
 #include "TH1.h"
 
 //
@@ -184,9 +189,9 @@ HLTMu_Rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     int ntrigs = triggerResults->size();
     TriggerNames const &triggerNames = iEvent.triggerNames(*triggerResults);
     for (int itrig = 0; itrig < ntrigs; itrig++) {
-        string name = triggerNames.triggerName(itrig);
+        std::string name = triggerNames.triggerName(itrig);
         bool result = triggerResults->accept(itrig);
-        (m->HLT)[name] = result;
+//        (m->HLT)[name] = result;
 
 
         if (name == "HLT_Ele17_CaloIdL_CaloIsoVL_Ele8_CaloIdL_CaloIsoVL_v2")
