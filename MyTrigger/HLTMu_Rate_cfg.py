@@ -83,7 +83,7 @@ process.isolatedOnlineMuons = cms.EDProducer(
 )
 process.demo = cms.EDAnalyzer(
                                 "HLTMu_Rate",
-                              srcTriggerResults=cms.InputTag("hltTriggerSummaryAOD", "", "TauHLT")
+                              srcTriggerResults=cms.InputTag("hltTriggerSummaryAOD", "", "HLT")
                               #rhoCenNeutralTight=cms.InputTag("kt6PFJetsCentralNeutralTight", "rho")
 #                              srcTriggerResults=cms.InputTag("TriggerResults", "", "TauHLT")
                               )
