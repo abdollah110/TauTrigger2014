@@ -186,17 +186,53 @@ HLTMu_Rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     edm::Handle<TriggerResults> triggerResults;
     iEvent.getByLabel(srcTriggerResults_, triggerResults);
 
-    int ntrigs = triggerResults->size();
-    TriggerNames const &triggerNames = iEvent.triggerNames(*triggerResults);
-    for (int itrig = 0; itrig < ntrigs; itrig++) {
-        std::string name = triggerNames.triggerName(itrig);
-        bool result = triggerResults->accept(itrig);
-//        (m->HLT)[name] = result;
 
 
-        if (name == "HLT_Ele17_CaloIdL_CaloIsoVL_Ele8_CaloIdL_CaloIsoVL_v2")
-            cout << name << " = "<<result << endl;
-    }//for itrig
+
+    if (triggerResults.isValid()) {
+        int ntrigs = triggerResults->size();
+        TriggerNames const &triggerNames = iEvent.triggerNames(*triggerResults);
+
+        for (int itrig = 0; itrig < ntrigs; itrig++) {
+            string name = triggerNames.triggerName(itrig);
+            bool result = triggerResults->accept(itrig);
+            //            size_t foundEl = name.find(eleTrigger);
+            //            size_t foundMu = name.find(muTrigger);
+            //            if (filterTriggerResults && (foundEl != string::npos || foundMu != string::npos))
+            //                (m->HLT)[name] = result;
+            //            else if (!filterTriggerResults)
+            //                (m->HLT)[name] = result;
+
+            //
+            //            if (name == "HLT_Ele17_CaloIdL_CaloIsoVL_Ele8_CaloIdL_CaloIsoVL_v2") {
+            //                m->HLT_DiElectron = result;
+            //                // cout << "HLT_Ele17_CaloIdL_CaloIsoVL_Ele8_CaloIdL_CaloIsoVL_v2" << endl;
+            //            }
+            //            if (name == "HLT_DoubleMu7_v1") {
+            //                m->HLT_DiMuon = result;
+            //                // cout << "HLT_DoubleMu7_v1" << endl;
+            //            }
+
+
+            if (name == "HLT_Ele17_CaloIdL_CaloIsoVL_Ele8_CaloIdL_CaloIsoVL_v2")
+                cout << name << " = " << result << endl;
+        }//for itrig
+    }//if triggerResults valid
+
+
+    //
+    //
+    //    int ntrigs = triggerResults->size();
+    //    TriggerNames const &triggerNames = iEvent.triggerNames(*triggerResults);
+    //    for (int itrig = 0; itrig < ntrigs; itrig++) {
+    //        std::string name = triggerNames.triggerName(itrig);
+    //        bool result = triggerResults->accept(itrig);
+    ////        (m->HLT)[name] = result;
+    //
+    //
+    //        if (name == "HLT_Ele17_CaloIdL_CaloIsoVL_Ele8_CaloIdL_CaloIsoVL_v2")
+    //            cout << name << " = "<<result << endl;
+    //    }//for itrig
 
 
 
