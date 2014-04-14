@@ -335,5 +335,3 @@ HLTMu_Rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 //define this as a plug-in
 DEFINE_FWK_MODULE(HLTMu_Rate);
 
-
-
