@@ -353,12 +353,16 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
             //            if (matchToElectron(ucttau->eta(), ucttau->phi(), iEvent)) {
             //           maxValPt_ucttau = ucttau->pt();
             //                maxValPt_ucttau4x4 = ucttau->getFloat("associatedRegionEt", -4);
-            if (ucttau->pt() > maxValPt_ucttau) maxValPt_ucttau = ucttau->pt();
-            if (ucttau->getFloat("associatedRegionEt", -4) > maxValPt_ucttau4x4) maxValPt_ucttau4x4 = ucttau->getFloat("associatedRegionEt", -4);
+            if (l1taucount == 2) {
+                maxValPt_ucttau = ucttau->pt();
+                maxValPt_ucttau4x4 = ucttau->getFloat("associatedRegionEt", -4);
+            }
+            //            if (ucttau->pt() > maxValPt_ucttau) maxValPt_ucttau = ucttau->pt();
+            //            if (ucttau->getFloat("associatedRegionEt", -4) > maxValPt_ucttau4x4) maxValPt_ucttau4x4 = ucttau->getFloat("associatedRegionEt", -4);
             //            }
 
             //                        if (l1taucount > 1 && ucttau->pt()  > 20)cout << "l1taucount.size()= " << ucttau->pt() << endl;
-            cout << "l1taucount.size()= " << ucttau->getFloat("associatedRegionEt", -4) << endl;
+            //            cout << "l1taucount.size()= " << ucttau->getFloat("associatedRegionEt", -4) << endl;
             //            cout << "l1taucount.size()= " << ucttau->pt() << endl;
         }
         rate_UCTCandidate->Fill(maxValPt_ucttau);
@@ -367,10 +371,15 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
         //########################################################
         float maxValPt_uctIsotau = 0;
         float maxValPt_uctIsotau4x4 = 0;
-        for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++) {
+        int l1Isotaucount = 0;
+        for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++, l1Isotaucount++) {
             //            if (matchToElectron(uctIsotau->eta(), uctIsotau->phi(), iEvent)) {
-            if (uctIsotau->pt() > maxValPt_uctIsotau) maxValPt_uctIsotau = uctIsotau->pt();
-            if (uctIsotau->getFloat("associatedRegionEt", -4) > maxValPt_uctIsotau4x4) maxValPt_uctIsotau4x4 = uctIsotau->getFloat("associatedRegionEt", -4);
+            if (l1Isotaucount == 2) {
+                maxValPt_uctIsotau = uctIsotau->pt();
+                maxValPt_uctIsotau4x4 = uctIsotau->getFloat("associatedRegionEt", -4);
+            }
+            //            if (uctIsotau->pt() > maxValPt_uctIsotau) maxValPt_uctIsotau = uctIsotau->pt();
+            //            if (uctIsotau->getFloat("associatedRegionEt", -4) > maxValPt_uctIsotau4x4) maxValPt_uctIsotau4x4 = uctIsotau->getFloat("associatedRegionEt", -4);
             //            }
         }
         rate_UCTCandidateIso->Fill(maxValPt_uctIsotau);
