@@ -215,9 +215,9 @@ HLTMu_Rate::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 
             size_t foundMu = name.find("IsoMu17_eta2p1_LooseIsoPFTau20");
 
-            Histo_RateReduction->Fill(1);
+//            Histo_RateReduction->Fill(1);
             if (foundMu != string::npos) {
-                cout << name << " = " << result << endl;
+//                cout << name << " = " << result << endl;
                 if (result == 1) Histo_RateReduction->Fill(2);
             }
         }//for itrig
