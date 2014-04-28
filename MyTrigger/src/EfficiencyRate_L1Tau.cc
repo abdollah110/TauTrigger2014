@@ -351,12 +351,15 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
         int l1taucount = 0;
         for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++, l1taucount++) {
             //            if (matchToElectron(ucttau->eta(), ucttau->phi(), iEvent)) {
+            //           maxValPt_ucttau = ucttau->pt();
+            //                maxValPt_ucttau4x4 = ucttau->getFloat("associatedRegionEt", -4);
             if (ucttau->pt() > maxValPt_ucttau) maxValPt_ucttau = ucttau->pt();
             if (ucttau->getFloat("associatedRegionEt", -4) > maxValPt_ucttau4x4) maxValPt_ucttau4x4 = ucttau->getFloat("associatedRegionEt", -4);
             //            }
 
-            //            if (l1taucount > 1 && ucttau->pt()  > 20)cout << "l1taucount.size()= " << ucttau->pt() << endl;
-            cout << "l1taucount.size()= " << ucttau->pt() << endl;
+            //                        if (l1taucount > 1 && ucttau->pt()  > 20)cout << "l1taucount.size()= " << ucttau->pt() << endl;
+            cout << "l1taucount.size()= " << ucttau->getFloat("associatedRegionEt", -4) << endl;
+            //            cout << "l1taucount.size()= " << ucttau->pt() << endl;
         }
         rate_UCTCandidate->Fill(maxValPt_ucttau);
         rate_UCTCandidate4x4->Fill(maxValPt_ucttau4x4);
