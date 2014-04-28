@@ -355,7 +355,8 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
             if (ucttau->getFloat("associatedRegionEt", -4) > maxValPt_ucttau4x4) maxValPt_ucttau4x4 = ucttau->getFloat("associatedRegionEt", -4);
             //            }
 
-            if (l1taucount > 1 && ucttau->pt()  > 20)cout << "l1taucount.size()= " << ucttau->pt() << endl;
+            //            if (l1taucount > 1 && ucttau->pt()  > 20)cout << "l1taucount.size()= " << ucttau->pt() << endl;
+            cout << "l1taucount.size()= " << ucttau->pt() << endl;
         }
         rate_UCTCandidate->Fill(maxValPt_ucttau);
         rate_UCTCandidate4x4->Fill(maxValPt_ucttau4x4);
