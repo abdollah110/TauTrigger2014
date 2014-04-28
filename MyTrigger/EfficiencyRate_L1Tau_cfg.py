@@ -24,9 +24,9 @@ process.source = cms.Source("PoolSource",
 
 
 if isData:
-    execfile("Files_EleTau_data.py")
+    execfile("Files_DiTau_data.py")
 else:
-    execfile("Files_EleTau_mc.py")
+    execfile("Files_DiTau_mc.py")
 
 
 #process.isolatedOnlineMuons = cms.EDProducer(
@@ -52,11 +52,11 @@ process.demo = cms.EDAnalyzer('EfficiencyRate_L1Tau',
 
 if isData:
     process.TFileService = cms.Service("TFileService",
-                                       fileName=cms.string('EleTau_L1Tau_rate.root')
+                                       fileName=cms.string('DiTau_L1Tau_rate.root')
                                        )
 else:
     process.TFileService = cms.Service("TFileService",
-                                       fileName=cms.string('EleTau_L1Tau_efficiency.root')
+                                       fileName=cms.string('DiTau_L1Tau_efficiency.root')
                                        )
 
 process.p = cms.Path(process.demo)
