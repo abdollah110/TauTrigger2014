@@ -348,11 +348,12 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
         //########################################################
         float maxValPt_ucttau = 0;
         float maxValPt_ucttau4x4 = 0;
+        cout << "tausUpgradeHandle.size()= " << tausUpgradeHandle.size() << endl;
         for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
-//            if (matchToElectron(ucttau->eta(), ucttau->phi(), iEvent)) {
-                if (ucttau->pt() > maxValPt_ucttau) maxValPt_ucttau = ucttau->pt();
-                if (ucttau->getFloat("associatedRegionEt", -4) > maxValPt_ucttau4x4) maxValPt_ucttau4x4 = ucttau->getFloat("associatedRegionEt", -4);
-//            }
+            //            if (matchToElectron(ucttau->eta(), ucttau->phi(), iEvent)) {
+            if (ucttau->pt() > maxValPt_ucttau) maxValPt_ucttau = ucttau->pt();
+            if (ucttau->getFloat("associatedRegionEt", -4) > maxValPt_ucttau4x4) maxValPt_ucttau4x4 = ucttau->getFloat("associatedRegionEt", -4);
+            //            }
 
         }
         rate_UCTCandidate->Fill(maxValPt_ucttau);
@@ -362,10 +363,10 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
         float maxValPt_uctIsotau = 0;
         float maxValPt_uctIsotau4x4 = 0;
         for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++) {
-//            if (matchToElectron(uctIsotau->eta(), uctIsotau->phi(), iEvent)) {
-                if (uctIsotau->pt() > maxValPt_uctIsotau) maxValPt_uctIsotau = uctIsotau->pt();
-                if (uctIsotau->getFloat("associatedRegionEt", -4) > maxValPt_uctIsotau4x4) maxValPt_uctIsotau4x4 = uctIsotau->getFloat("associatedRegionEt", -4);
-//            }
+            //            if (matchToElectron(uctIsotau->eta(), uctIsotau->phi(), iEvent)) {
+            if (uctIsotau->pt() > maxValPt_uctIsotau) maxValPt_uctIsotau = uctIsotau->pt();
+            if (uctIsotau->getFloat("associatedRegionEt", -4) > maxValPt_uctIsotau4x4) maxValPt_uctIsotau4x4 = uctIsotau->getFloat("associatedRegionEt", -4);
+            //            }
         }
         rate_UCTCandidateIso->Fill(maxValPt_uctIsotau);
         rate_UCTCandidateIso4x4->Fill(maxValPt_uctIsotau4x4);
