@@ -280,56 +280,64 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
     //  For efficiency measurement
     ////////////////////////////////////////////////////////////////////////////////
     if (!srcIsData_) {
+        int numGoodRecoTau = 0;
         for (pat::TauCollection::const_iterator ipftau = pftausHandle->begin(); ipftau != pftausHandle->end(); ipftau++) {
-            if (ipftau->pt() > 20 && fabs(ipftau->eta()) < 2.3 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits") > 0.5 && ipftau->tauID("againstMuonTight") > 0.5 && matchToGenTau(ipftau->eta(), ipftau->phi(), iEvent)) {
-                offLineTauEff->Fill(ipftau->pt());
-                offLineTauROC->Fill(ipftau->pt());
-                // ############################## OLD tau HLT Algorithm
-                float ValuePtTau = 0;
-                float ValuePtJet = 0;
-                for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
-                    if (matchToGenTau(tau->eta(), tau->phi(), iEvent)) {
-                        l1extraParticlesEff->Fill(ipftau->pt());
-                        l1extraParticlesROC->Fill(tau->pt());
-                        ValuePtTau = tau->pt();
-                        break;
+            if (ipftau->pt() > 45 && fabs(ipftau->eta()) < 2.3 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byCombinedMediumIsolationDeltaBetaCorr3Hits") > 0.5 && ipftau->tauID("againstMuonLoose") > 0.5 && matchToGenTau(ipftau->eta(), ipftau->phi(), iEvent)) {
+                numGoodRecoTau++;
+            }
+        }
+        if (numGoodRecoTau > 1) {
+            for (pat::TauCollection::const_iterator ipftau = pftausHandle->begin(); ipftau != pftausHandle->end(); ipftau++) {
+                if (ipftau->pt() > 20 && fabs(ipftau->eta()) < 2.3 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byCombinedMediumIsolationDeltaBetaCorr3Hits") > 0.5 && ipftau->tauID("againstMuonLoose") > 0.5 && matchToGenTau(ipftau->eta(), ipftau->phi(), iEvent)) {
+                    offLineTauEff->Fill(ipftau->pt());
+                    offLineTauROC->Fill(ipftau->pt());
+                    // ############################## OLD tau HLT Algorithm
+                    float ValuePtTau = 0;
+                    float ValuePtJet = 0;
+                    for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
+                        if (matchToGenTau(tau->eta(), tau->phi(), iEvent)) {
+                            l1extraParticlesEff->Fill(ipftau->pt());
+                            l1extraParticlesROC->Fill(tau->pt());
+                            ValuePtTau = tau->pt();
+                            break;
+                        }
                     }
-                }
-                for (vector<l1extra::L1JetParticle>::const_iterator jet = jetsHandle->begin(); jet != jetsHandle->end(); jet++) {
-                    if (matchToGenTau(jet->eta(), jet->phi(), iEvent)) {
-                        l1extraParticlesEff->Fill(ipftau->pt());
-                        l1extraParticlesROC->Fill(jet->pt() - 20);
-                        ValuePtJet = jet->pt() - 20;
-                        break;
+                    for (vector<l1extra::L1JetParticle>::const_iterator jet = jetsHandle->begin(); jet != jetsHandle->end(); jet++) {
+                        if (matchToGenTau(jet->eta(), jet->phi(), iEvent)) {
+                            l1extraParticlesEff->Fill(ipftau->pt());
+                            l1extraParticlesROC->Fill(jet->pt() - 20);
+                            ValuePtJet = jet->pt() - 20;
+                            break;
+                        }
                     }
-                }
-                if (ValuePtTau || ValuePtJet) (ValuePtTau > ValuePtJet ? Eff2D_Num_l1extraParticles->Fill(ipftau->pt(), ValuePtTau) : Eff2D_Num_l1extraParticles->Fill(ipftau->pt(), ValuePtJet));
-                // ############################## NEW tau HLT Algorithm UST2015
-                for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
-                    if (matchToGenTau(ucttau->eta(), ucttau->phi(), iEvent)) {
-                        RelaxedTauUnpackedEff->Fill(ipftau->pt());
-                        RelaxedTauUnpackedROC->Fill(ucttau->pt());
-                        RelaxedTauUnpackedROC4x4->Fill(ucttau->getFloat("associatedRegionEt", -4));
-                        Eff2D_Num_RelaxedTauUnpacked->Fill(ipftau->pt(), ucttau->pt());
-                        Eff2D_Num_RelaxedTauUnpacked4x4->Fill(ipftau->pt(), ucttau->getFloat("associatedRegionEt", -4));
-                        break;
+                    if (ValuePtTau || ValuePtJet) (ValuePtTau > ValuePtJet ? Eff2D_Num_l1extraParticles->Fill(ipftau->pt(), ValuePtTau) : Eff2D_Num_l1extraParticles->Fill(ipftau->pt(), ValuePtJet));
+                    // ############################## NEW tau HLT Algorithm UST2015
+                    for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
+                        if (matchToGenTau(ucttau->eta(), ucttau->phi(), iEvent)) {
+                            RelaxedTauUnpackedEff->Fill(ipftau->pt());
+                            RelaxedTauUnpackedROC->Fill(ucttau->pt());
+                            RelaxedTauUnpackedROC4x4->Fill(ucttau->getFloat("associatedRegionEt", -4));
+                            Eff2D_Num_RelaxedTauUnpacked->Fill(ipftau->pt(), ucttau->pt());
+                            Eff2D_Num_RelaxedTauUnpacked4x4->Fill(ipftau->pt(), ucttau->getFloat("associatedRegionEt", -4));
+                            break;
 
+                        }
                     }
-                }
-                for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++) {
-                    if (matchToGenTau(uctIsotau->eta(), uctIsotau->phi(), iEvent)) {
-                        IsolatedTauUnpackedEff->Fill(ipftau->pt());
-                        IsolatedTauUnpackedROC->Fill(uctIsotau->pt());
-                        IsolatedTauUnpackedROC4x4->Fill(uctIsotau->getFloat("associatedRegionEt", -4));
-                        Eff2D_Num_IsolatedTauUnpacked->Fill(ipftau->pt(), uctIsotau->pt());
-                        Eff2D_Num_IsolatedTauUnpacked4x4->Fill(ipftau->pt(), uctIsotau->getFloat("associatedRegionEt", -4));
-                        break;
+                    for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++) {
+                        if (matchToGenTau(uctIsotau->eta(), uctIsotau->phi(), iEvent)) {
+                            IsolatedTauUnpackedEff->Fill(ipftau->pt());
+                            IsolatedTauUnpackedROC->Fill(uctIsotau->pt());
+                            IsolatedTauUnpackedROC4x4->Fill(uctIsotau->getFloat("associatedRegionEt", -4));
+                            Eff2D_Num_IsolatedTauUnpacked->Fill(ipftau->pt(), uctIsotau->pt());
+                            Eff2D_Num_IsolatedTauUnpacked4x4->Fill(ipftau->pt(), uctIsotau->getFloat("associatedRegionEt", -4));
+                            break;
+                        }
                     }
-                }
 
-            }// if there is denumerator
+                }// if there is denumerator
 
-        }//loop over OfflineTau
+            }//loop over OfflineTau
+        }// IF there exists 2 goodRecoTau
         ////////////////////////////////////////////////////////////////////////////////
         //  For rate measurement
         ////////////////////////////////////////////////////////////////////////////////
