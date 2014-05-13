@@ -1,8 +1,8 @@
 import FWCore.ParameterSet.Config as cms
 
 
-isData = False
-#isData = True
+isDoingRate = False
+#isDoingRate = True
 
 process = cms.Process("Demo")
 
@@ -23,10 +23,10 @@ process.source = cms.Source("PoolSource",
                             )
 
 
-if isData:
-    execfile("Files_DiTau_data.py")
+if isDoingRate:
+    execfile("_Files_DiTau_rate.py")
 else:
-    execfile("Files_DiTau_mc.py")
+    execfile("_Files_DiTau_eff.py")
 
 
 #process.isolatedOnlineMuons = cms.EDProducer(
@@ -38,7 +38,7 @@ else:
 
 process.demo = cms.EDAnalyzer('EfficiencyRate_L1Tau',
                               #rhoCenNeutralTight=cms.InputTag("kt6PFJetsCentralNeutralTight", "rho")
-                              srcIsData=cms.bool(isData),
+                              srcIsData=cms.bool(isDoingRate),
                               srcGenParticle=cms.InputTag("genParticles"),
                               srcL1IsoElectron=cms.InputTag("l1extraParticles","Isolated"),
                               srcL1NonIsoElectron=cms.InputTag("l1extraParticles","NonIsolated"),
@@ -50,7 +50,7 @@ process.demo = cms.EDAnalyzer('EfficiencyRate_L1Tau',
                               srcL1UpgradeIsoTaus=cms.InputTag('UCT2015Producer', 'IsolatedTauUnpacked') #taus below 60 GeV will have isolation applied
                               )
 
-if isData:
+if isDoingRate:
     process.TFileService = cms.Service("TFileService",
                                        fileName=cms.string('DiTau_L1Tau_rate.root')
                                        )
