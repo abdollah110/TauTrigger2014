@@ -1,9 +1,9 @@
 // -*- C++ -*-
 //
-// Package:    Efficiency_L1Mu
-// Class:      Efficiency_L1Mu
+// Package:    EfficiencyRate_L1Mu
+// Class:      EfficiencyRate_L1Mu
 //
-/**\class Efficiency_L1Mu Efficiency_L1Mu.cc TauTrigger2014/Efficiency_L1Mu/src/Efficiency_L1Mu.cc
+/**\class EfficiencyRate_L1Mu EfficiencyRate_L1Mu.cc TauTrigger2014/EfficiencyRate_L1Mu/src/EfficiencyRate_L1Mu.cc
 
  Description: [one line class summary]
 
@@ -49,10 +49,10 @@
 // class declaration
 //
 
-class Efficiency_L1Mu : public edm::EDAnalyzer {
+class EfficiencyRate_L1Mu : public edm::EDAnalyzer {
 public:
-    explicit Efficiency_L1Mu(const edm::ParameterSet&);
-    ~Efficiency_L1Mu();
+    explicit EfficiencyRate_L1Mu(const edm::ParameterSet&);
+    ~EfficiencyRate_L1Mu();
     MyTools tool;
 
     //    static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
@@ -115,7 +115,7 @@ private:
 // constructors and destructor
 //
 
-Efficiency_L1Mu::Efficiency_L1Mu(const edm::ParameterSet& iConfig) {
+EfficiencyRate_L1Mu::EfficiencyRate_L1Mu(const edm::ParameterSet& iConfig) {
     //now do what ever initialization is needed
     using namespace edm;
     edm::Service<TFileService> fs;
@@ -156,7 +156,7 @@ Efficiency_L1Mu::Efficiency_L1Mu(const edm::ParameterSet& iConfig) {
     srcIsData_ = iConfig.getParameter<bool>("srcIsData");
 }
 
-Efficiency_L1Mu::~Efficiency_L1Mu() {
+EfficiencyRate_L1Mu::~EfficiencyRate_L1Mu() {
 
     //    map<string, TH1F*>::const_iterator iMap1 = myMap1__->begin();
     //    map<string, TH1F*>::const_iterator jMap1 = myMap1__->end();
@@ -172,7 +172,7 @@ Efficiency_L1Mu::~Efficiency_L1Mu() {
 // member functions
 //
 
-bool Efficiency_L1Mu::matchToMuon(float ieta, float iphi, const edm::Event& iEvent) {
+bool EfficiencyRate_L1Mu::matchToMuon(float ieta, float iphi, const edm::Event& iEvent) {
     using namespace std;
     using namespace edm;
 
@@ -191,7 +191,7 @@ bool Efficiency_L1Mu::matchToMuon(float ieta, float iphi, const edm::Event& iEve
     return (!(dR03Mu));
 }
 
-bool Efficiency_L1Mu::matchToGenTau(float ieta, float iphi, const edm::Event& iEvent) {
+bool EfficiencyRate_L1Mu::matchToGenTau(float ieta, float iphi, const edm::Event& iEvent) {
     using namespace std;
     using namespace reco;
     using namespace edm;
@@ -213,7 +213,7 @@ bool Efficiency_L1Mu::matchToGenTau(float ieta, float iphi, const edm::Event& iE
     return dR03;
 }
 
-void Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
+void EfficiencyRate_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     using reco::Muon;
     using reco::MuonCollection;
     using reco::RecoChargedCandidate;
@@ -363,4 +363,4 @@ void Efficiency_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetup& i
 }
 
 //define this as a plug-in
-DEFINE_FWK_MODULE(Efficiency_L1Mu);
+DEFINE_FWK_MODULE(EfficiencyRate_L1Mu);

@@ -33,7 +33,7 @@ else:
 #                                             "ChargedCandidateFromTrigRefConverter",
 #                                             triggerFilterMuonsSrc=cms.InputTag("hltL3crIsoL1sMu14erORMu16erL1f0L2f14QL3f17QL3crIsoRhoFiltered0p15")
 #                                             )
-process.demo = cms.EDAnalyzer('Efficiency_L1Mu',
+process.demo = cms.EDAnalyzer('EfficiencyRate_L1Mu',
                               #rhoCenNeutralTight=cms.InputTag("kt6PFJetsCentralNeutralTight", "rho")
                               srcIsData=cms.bool(isData),
                               srcGenParticle=cms.InputTag("genParticles"),
