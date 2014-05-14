@@ -1,6 +1,7 @@
 process.source.fileNames = [
 
-'root://eoscms//eos/cms//store/group/phys_higgs/cmshtt/13TeV/pu40bx25/tt/PAT/700_v2/standard_2012_like/patTuple_15.root'
+'file:VBF_patTuple_731_2_m7Q.root'
+#'root://eoscms//eos/cms//store/group/phys_higgs/cmshtt/13TeV/pu40bx25/tt/PAT/700_v2/standard_2012_like/patTuple_15.root'
 #'file:/afs/cern.ch/work/a/abdollah/scratch1/Trigger2014/patTuple_802_2_gZn.root'
 #
 #'root://eoscms//eos/cms/store/user/abdollah/TauTrigger2014/Commissioning-SkimmedL1Ele12-Run2012D-22Jan2013-v4-RAWAOD-PatTuple/patTuple_L1Ele12_v4_10_1_j1d.root',
