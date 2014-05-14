@@ -7,5 +7,6 @@
 <use name="CommonTools/UtilAlgos"/>
 <use name="L1Trigger/UCT2015"/>
 <use name="DataFormats/HepMCCandidate"/>
+<use name="TauTrigger2014/MyTrigger"/>
 <flags EDM_PLUGIN="1"/>
 
