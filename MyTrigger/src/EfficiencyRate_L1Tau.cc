@@ -86,14 +86,20 @@ private:
     TH1D * ResponseL1ExtraTau_0;
     TH1D * ResponseRelaxedTau_0;
     TH1D * ResponseRelaxedIsoTau_0;
+    TH1D * ResponseRelaxedTau_0_40GeV;
+    TH1D * ResponseRelaxedIsoTau_0_40GeV;
     TH1D * ResponseL1ExtraJet_1;
     TH1D * ResponseL1ExtraTau_1;
     TH1D * ResponseRelaxedTau_1;
     TH1D * ResponseRelaxedIsoTau_1;
+    TH1D * ResponseRelaxedTau_1_40GeV;
+    TH1D * ResponseRelaxedIsoTau_1_40GeV;
     TH1D * ResponseL1ExtraJet_10;
     TH1D * ResponseL1ExtraTau_10;
     TH1D * ResponseRelaxedTau_10;
     TH1D * ResponseRelaxedIsoTau_10;
+    TH1D * ResponseRelaxedTau_10_40GeV;
+    TH1D * ResponseRelaxedIsoTau_10_40GeV;
 
     TH1D * NumEle;
 
@@ -161,14 +167,20 @@ EfficiencyRate_L1Tau::EfficiencyRate_L1Tau(const edm::ParameterSet& iConfig) {
     ResponseL1ExtraTau_0 = fs->make<TH1D > ("ResponseL1ExtraTau_0", "", 200, 0, 4);
     ResponseRelaxedTau_0 = fs->make<TH1D > ("ResponseRelaxedTau_0", "", 200, 0, 4);
     ResponseRelaxedIsoTau_0 = fs->make<TH1D > ("ResponseRelaxedIsoTau_0", "", 200, 0, 4);
+    ResponseRelaxedTau_0_40GeV = fs->make<TH1D > ("ResponseRelaxedTau_0_40GeV", "", 200, 0, 4);
+    ResponseRelaxedIsoTau_0_40GeV = fs->make<TH1D > ("ResponseRelaxedIsoTau_0_40GeV", "", 200, 0, 4);
     ResponseL1ExtraJet_1 = fs->make<TH1D > ("ResponseL1ExtraJet_1", "", 200, 0, 4);
     ResponseL1ExtraTau_1 = fs->make<TH1D > ("ResponseL1ExtraTau_1", "", 200, 0, 4);
     ResponseRelaxedTau_1 = fs->make<TH1D > ("ResponseRelaxedTau_1", "", 200, 0, 4);
     ResponseRelaxedIsoTau_1 = fs->make<TH1D > ("ResponseRelaxedIsoTau_1", "", 200, 0, 4);
+    ResponseRelaxedTau_1_40GeV = fs->make<TH1D > ("ResponseRelaxedTau_1_40GeV", "", 200, 0, 4);
+    ResponseRelaxedIsoTau_1_40GeV = fs->make<TH1D > ("ResponseRelaxedIsoTau_1_40GeV", "", 200, 0, 4);
     ResponseL1ExtraJet_10 = fs->make<TH1D > ("ResponseL1ExtraJet_10", "", 200, 0, 4);
     ResponseL1ExtraTau_10 = fs->make<TH1D > ("ResponseL1ExtraTau_10", "", 200, 0, 4);
     ResponseRelaxedTau_10 = fs->make<TH1D > ("ResponseRelaxedTau_10", "", 200, 0, 4);
     ResponseRelaxedIsoTau_10 = fs->make<TH1D > ("ResponseRelaxedIsoTau_10", "", 200, 0, 4);
+    ResponseRelaxedTau_10_40GeV = fs->make<TH1D > ("ResponseRelaxedTau_10_40GeV", "", 200, 0, 4);
+    ResponseRelaxedIsoTau_10_40GeV = fs->make<TH1D > ("ResponseRelaxedIsoTau_10_40GeV", "", 200, 0, 4);
 
     Eff2D_Num_l1extraParticles = fs->make<TH2D > ("Eff2D_Num_l1extraParticles", "", 200, 0, 200, 200, 0, 200);
     Eff2D_Num_RelaxedTauUnpacked = fs->make<TH2D > ("Eff2D_Num_RelaxedTauUnpacked", "", 200, 0, 200, 200, 0, 200);
@@ -359,6 +371,9 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
                             if (ipftau->decayMode() == 0) ResponseRelaxedTau_0->Fill(ucttau->pt() / ipftau->pt());
                             if (ipftau->decayMode() == 1) ResponseRelaxedTau_1->Fill(ucttau->pt() / ipftau->pt());
                             if (ipftau->decayMode() == 10) ResponseRelaxedTau_10->Fill(ucttau->pt() / ipftau->pt());
+                            if (ipftau->decayMode() == 0 && ipftau->pt() > 40) ResponseRelaxedTau_0_40GeV->Fill(ucttau->pt() / ipftau->pt());
+                            if (ipftau->decayMode() == 1 && ipftau->pt() > 40) ResponseRelaxedTau_1_40GeV->Fill(ucttau->pt() / ipftau->pt());
+                            if (ipftau->decayMode() == 10 && ipftau->pt() > 40) ResponseRelaxedTau_10_40GeV->Fill(ucttau->pt() / ipftau->pt());
                             RelaxedTauUnpackedEff->Fill(ipftau->pt());
                             RelaxedTauUnpackedROC->Fill(ucttau->pt());
                             RelaxedTauUnpackedROC4x4->Fill(ucttau->getFloat("associatedRegionEt", -4));
@@ -373,6 +388,9 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
                             if (ipftau->decayMode() == 0) ResponseRelaxedIsoTau_0->Fill(uctIsotau->pt() / ipftau->pt());
                             if (ipftau->decayMode() == 1) ResponseRelaxedIsoTau_1->Fill(uctIsotau->pt() / ipftau->pt());
                             if (ipftau->decayMode() == 10) ResponseRelaxedIsoTau_10->Fill(uctIsotau->pt() / ipftau->pt());
+                            if (ipftau->decayMode() == 0 && ipftau->pt() > 40) ResponseRelaxedIsoTau_0_40GeV->Fill(uctIsotau->pt() / ipftau->pt());
+                            if (ipftau->decayMode() == 1 && ipftau->pt() > 40) ResponseRelaxedIsoTau_1_40GeV->Fill(uctIsotau->pt() / ipftau->pt());
+                            if (ipftau->decayMode() == 10 && ipftau->pt() > 40) ResponseRelaxedIsoTau_10_40GeV->Fill(uctIsotau->pt() / ipftau->pt());
                             IsolatedTauUnpackedEff->Fill(ipftau->pt());
                             IsolatedTauUnpackedROC->Fill(uctIsotau->pt());
                             IsolatedTauUnpackedROC4x4->Fill(uctIsotau->getFloat("associatedRegionEt", -4));
