@@ -82,14 +82,14 @@ def AddCostumMarker(Hist, Min, Max, size, marStyle, marColor, XTitke, YTitle):
     
     
 def doRatio2D(num, denum, cut, marStyle, marColor):
-    OneDNum = TH1F("NewNum", "", 100, 0, 100)
-    for ii in range(1, 100):
+    OneDNum = TH1F("NewNum", "", 200, 0, 200)
+    for ii in range(1, 200):
         ValDenum = 0
         ValNum = 0
-        for jj in range(cut, 100):
+        for jj in range(cut, 200):
             ValNum = ValNum + num.GetBinContent(ii, jj)
         OneDNum.SetBinContent(ii, ValNum)
-    bins = array('d', [20, 25, 30, 35, 40, 45, 50, 55, 60,65,70, 80,100])
+    bins = array('d', [20, 25, 30, 35, 40, 45, 50, 55, 60,65,70, 80,200])
     num_R = OneDNum.Rebin(len(bins)-1, "Hinm", bins)
     denum_R = denum.Rebin(len(bins)-1, "Hin", bins)
     ratio = ROOT.TGraphAsymmErrors(num_R, denum_R, "")
@@ -99,43 +99,43 @@ def doRatio2D(num, denum, cut, marStyle, marColor):
     return ratio
 
 def doCommulative(num, denum, marStyle, marColor, type):
-    commul = TH1F(str(num), "", 100, 0, 100)
-    for ii in range(1, 100):
-        commul.SetBinContent(ii + 1, (num.Integral(ii, 100) * 1.0) / denum.GetEntries());
+    commul = TH1F(str(num), "", 200, 0, 200)
+    for ii in range(1, 200):
+        commul.SetBinContent(ii + 1, (num.Integral(ii, 200) * 1.0) / denum.GetEntries());
     AddCostumMarker(commul, 0.00001, 1.2, 1.2, marStyle, marColor, "L1 #tau_{pT} [GeV]", type)
     return commul
 
 def doCommulative2D(cut, num, denum, marStyle, marColor, type):
-    commul = TH1F(str(num) + str(cut), "", 100, 0, 100)
-    for ii in range(1, 100):
+    commul = TH1F(str(num) + str(cut), "", 200, 0, 200)
+    for ii in range(1, 200):
         commul.SetBinContent(ii + 1, (num.Integral(cut, 101, ii, 101) * 1.0) / denum.Integral(cut, 101));
     AddCostumMarker(commul, 0.001, 1.2, 1.2, marStyle, marColor, "L1 #tau_{pT} [GeV]", type)
     return commul
 
 def doROCCurve(cut, num1, denum1, num2, denum2, marStyle, marColor):
     rocCurve = TH2F(str(num1) + str(cut), "", 120, 0, 1.2, 120, 0, 1.2)
-    for ii in range(1, 100):
+    for ii in range(1, 200):
         if (ii % 10 == 0): print ii, "\t"
-        for jj in range (1, 100):
-            for kk in range (1, 100):
-                if (math.floor((num1.Integral(ii, 101) * 1.0) * 101 / denum1.Integral(cut, 100)) == jj and math.floor((1 - ((num2.Integral(ii, 100) * 1.0) / denum2.GetEntries())) * 100) == kk):
+        for jj in range (1, 200):
+            for kk in range (1, 200):
+                if (math.floor((num1.Integral(ii, 101) * 1.0) * 101 / denum1.Integral(cut, 200)) == jj and math.floor((1 - ((num2.Integral(ii, 200) * 1.0) / denum2.GetEntries())) * 200) == kk):
                     rocCurve.SetBinContent(jj + 1, kk + 1, 10)
     AddCostumMarker(rocCurve, 0.001, 1.2, 1.2, marStyle, marColor, "Efficiency", "1-Rate")
     return rocCurve
 
 def doProject2DX(cut, num):
-    projectedHist = TH1F(str(num), "", 100, 0, 100)
-    for ii in range(1, 100):
+    projectedHist = TH1F(str(num), "", 200, 0, 200)
+    for ii in range(1, 200):
         Val = 0
-        for jj in range(cut, 100):
+        for jj in range(cut, 200):
             Val = Val + num.GetBinContent(jj, ii)
         projectedHist.SetBinContent(ii, Val)
     return projectedHist
 
 def doScalingTH1(TH1, scale, marStyle, marColor):
-    scaleHist = TH1F("scale"+str(TH1), "", 100, 0, 100)
+    scaleHist = TH1F("scale"+str(TH1), "", 200, 0, 200)
     scaleHist.SetBinContent(1,1)  # first bin should be set to 1 ==> means that if you do not cut on L1 rate is 1
-    for jj in range(2, 100):
+    for jj in range(2, 200):
 #        print jj, TH1.GetBinContent(jj)
         Val =  TH1.GetBinContent(jj+1) * scale
         scaleHist.SetBinContent(jj, Val)
@@ -270,15 +270,15 @@ UCTCandidateIsoCum4x4 = doCommulative(UCTCandidateIso4x4, UCTCandidateIso4x4, 25
 
 UCTCandidateCumSaceling= doScalingTH1(UCTCandidateCum, 0.2, 20, 3)
 UCTCandidateCumSaceling.Draw("P")
-print "rate Tau  20= ", UCTCandidate.Integral(20,100)/5000000 *40000
-print "rate Tau  25= ", UCTCandidate.Integral(25,100)/5000000 *40000
-print "rate Tau  30= ", UCTCandidate.Integral(30,100)/5000000 *40000
+print "rate Tau  20= ", UCTCandidate.Integral(20,200)/5000000 *40000
+print "rate Tau  25= ", UCTCandidate.Integral(25,200)/5000000 *40000
+print "rate Tau  30= ", UCTCandidate.Integral(30,200)/5000000 *40000
 #UCTCandidateIsoCum.Scale(0.2)
 UCTIsoCandidateCumSaceling= doScalingTH1(UCTCandidateIsoCum, 0.2, 23, 4)
 UCTIsoCandidateCumSaceling.Draw("Psame")
-print "rate Tau  20= ", UCTCandidateIso.Integral(20,100)/5000000 *40000
-print "rate Tau  25= ", UCTCandidateIso.Integral(25,100)/5000000 *40000
-print "rate Tau  30= ", UCTCandidateIso.Integral(30,100)/5000000 *40000
+print "rate Tau  20= ", UCTCandidateIso.Integral(20,200)/5000000 *40000
+print "rate Tau  25= ", UCTCandidateIso.Integral(25,200)/5000000 *40000
+print "rate Tau  30= ", UCTCandidateIso.Integral(30,200)/5000000 *40000
 #UCTCandidateCum4x4.Draw("Psame")
 #UCTCandidateIsoCum4x4.Draw("Psame")
 legend_ = TLegend(0.50, 0.78, 0.85, 0.9)

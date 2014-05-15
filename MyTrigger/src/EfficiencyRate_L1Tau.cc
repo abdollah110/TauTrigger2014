@@ -131,34 +131,34 @@ EfficiencyRate_L1Tau::EfficiencyRate_L1Tau(const edm::ParameterSet& iConfig) {
     myMap1__ = new std::map<std::string, TH1F*>();
 
 
-    offLineTauROC = fs->make<TH1D > ("offLineTauROC", "", 100, 0, 100);
-    l1extraParticlesROC = fs->make<TH1D > ("l1extraParticlesROC", "", 100, 0, 100);
-    RelaxedTauUnpackedROC = fs->make<TH1D > ("RelaxedTauUnpackedROC", "", 100, 0, 100);
-    RelaxedTauUnpackedROC4x4 = fs->make<TH1D > ("RelaxedTauUnpackedROC4x4", "", 100, 0, 100);
-    IsolatedTauUnpackedROC = fs->make<TH1D > ("IsolatedTauUnpackedROC", "", 100, 0, 100);
-    IsolatedTauUnpackedROC4x4 = fs->make<TH1D > ("IsolatedTauUnpackedROC4x4", "", 100, 0, 100);
+    offLineTauROC = fs->make<TH1D > ("offLineTauROC", "", 200, 0, 200);
+    l1extraParticlesROC = fs->make<TH1D > ("l1extraParticlesROC", "", 200, 0, 200);
+    RelaxedTauUnpackedROC = fs->make<TH1D > ("RelaxedTauUnpackedROC", "", 200, 0, 200);
+    RelaxedTauUnpackedROC4x4 = fs->make<TH1D > ("RelaxedTauUnpackedROC4x4", "", 200, 0, 200);
+    IsolatedTauUnpackedROC = fs->make<TH1D > ("IsolatedTauUnpackedROC", "", 200, 0, 200);
+    IsolatedTauUnpackedROC4x4 = fs->make<TH1D > ("IsolatedTauUnpackedROC4x4", "", 200, 0, 200);
 
-    offLineTauEff = fs->make<TH1D > ("offLineTauEff", "", 100, 0, 100);
-    l1extraParticlesEff = fs->make<TH1D > ("l1extraParticlesEff", "", 100, 0, 100);
-    RelaxedTauUnpackedEff = fs->make<TH1D > ("RelaxedTauUnpackedEff", "", 100, 0, 100);
-    IsolatedTauUnpackedEff = fs->make<TH1D > ("IsolatedTauUnpackedEff", "", 100, 0, 100);
+    offLineTauEff = fs->make<TH1D > ("offLineTauEff", "", 200, 0, 200);
+    l1extraParticlesEff = fs->make<TH1D > ("l1extraParticlesEff", "", 200, 0, 200);
+    RelaxedTauUnpackedEff = fs->make<TH1D > ("RelaxedTauUnpackedEff", "", 200, 0, 200);
+    IsolatedTauUnpackedEff = fs->make<TH1D > ("IsolatedTauUnpackedEff", "", 200, 0, 200);
 
-    rate_L1JetParticle = fs->make<TH1D > ("rate_L1JetParticle", "", 100, 0, 100);
-    rate_UCTCandidateIso = fs->make<TH1D > ("rate_UCTCandidateIso", "", 100, 0, 100);
-    rate_UCTCandidate = fs->make<TH1D > ("rate_UCTCandidate", "", 100, 0, 100);
-    rate_UCTCandidateIso4x4 = fs->make<TH1D > ("rate_UCTCandidateIso4x4", "", 100, 0, 100);
-    rate_UCTCandidate4x4 = fs->make<TH1D > ("rate_UCTCandidate4x4", "", 100, 0, 100);
+    rate_L1JetParticle = fs->make<TH1D > ("rate_L1JetParticle", "", 200, 0, 200);
+    rate_UCTCandidateIso = fs->make<TH1D > ("rate_UCTCandidateIso", "", 200, 0, 200);
+    rate_UCTCandidate = fs->make<TH1D > ("rate_UCTCandidate", "", 200, 0, 200);
+    rate_UCTCandidateIso4x4 = fs->make<TH1D > ("rate_UCTCandidateIso4x4", "", 200, 0, 200);
+    rate_UCTCandidate4x4 = fs->make<TH1D > ("rate_UCTCandidate4x4", "", 200, 0, 200);
 
     ResponseL1ExtraJet = fs->make<TH1D > ("ResponseL1ExtraJet", "", 200, 0, 4);
     ResponseL1ExtraTau = fs->make<TH1D > ("ResponseL1ExtraTau", "", 200, 0, 4);
     ResponseRelaxedTau = fs->make<TH1D > ("ResponseRelaxedTau", "", 200, 0, 4);
     ResponseRelaxedIsoTau = fs->make<TH1D > ("ResponseRelaxedIsoTau", "", 200, 0, 4);
 
-    Eff2D_Num_l1extraParticles = fs->make<TH2D > ("Eff2D_Num_l1extraParticles", "", 100, 0, 100, 100, 0, 100);
-    Eff2D_Num_RelaxedTauUnpacked = fs->make<TH2D > ("Eff2D_Num_RelaxedTauUnpacked", "", 100, 0, 100, 100, 0, 100);
-    Eff2D_Num_RelaxedTauUnpacked4x4 = fs->make<TH2D > ("Eff2D_Num_RelaxedTauUnpacked4x4", "", 100, 0, 100, 100, 0, 100);
-    Eff2D_Num_IsolatedTauUnpacked = fs->make<TH2D > ("Eff2D_Num_IsolatedTauUnpacked", "", 100, 0, 100, 100, 0, 100);
-    Eff2D_Num_IsolatedTauUnpacked4x4 = fs->make<TH2D > ("Eff2D_Num_IsolatedTauUnpacked4x4", "", 100, 0, 100, 100, 0, 100);
+    Eff2D_Num_l1extraParticles = fs->make<TH2D > ("Eff2D_Num_l1extraParticles", "", 200, 0, 200, 200, 0, 200);
+    Eff2D_Num_RelaxedTauUnpacked = fs->make<TH2D > ("Eff2D_Num_RelaxedTauUnpacked", "", 200, 0, 200, 200, 0, 200);
+    Eff2D_Num_RelaxedTauUnpacked4x4 = fs->make<TH2D > ("Eff2D_Num_RelaxedTauUnpacked4x4", "", 200, 0, 200, 200, 0, 200);
+    Eff2D_Num_IsolatedTauUnpacked = fs->make<TH2D > ("Eff2D_Num_IsolatedTauUnpacked", "", 200, 0, 200, 200, 0, 200);
+    Eff2D_Num_IsolatedTauUnpacked4x4 = fs->make<TH2D > ("Eff2D_Num_IsolatedTauUnpacked4x4", "", 200, 0, 200, 200, 0, 200);
 
     NumEle = fs->make<TH1D > ("NumEle", "", 10, 0, 10);
 
@@ -301,6 +301,7 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
             for (pat::TauCollection::const_iterator ipftau = pftausHandle->begin(); ipftau != pftausHandle->end(); ipftau++) {
                 //                if (ipftau->pt() > 20 && fabs(ipftau->eta()) < 2.3 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byMediumCombinedIsolationDeltaBetaCorr3Hits") > 0.5 && ipftau->tauID("againstMuonLoose") > 0.5 && matchToGenTau(ipftau->eta(), ipftau->phi(), iEvent)) {
                 if (ipftau->pt() > 0 && fabs(ipftau->eta()) < 2.3 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("againstMuonLoose") > 0.5 && matchToGenTau(ipftau->eta(), ipftau->phi(), iEvent)) {
+                    cout<<"decayMode() is " <<ipftau->decayMode()<<endl;
                     offLineTauEff->Fill(ipftau->pt());
                     offLineTauROC->Fill(ipftau->pt());
                     // ############################## OLD tau HLT Algorithm
