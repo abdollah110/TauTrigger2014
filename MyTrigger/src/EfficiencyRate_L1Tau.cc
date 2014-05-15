@@ -61,7 +61,7 @@ public:
 private:
     virtual void analyze(const edm::Event&, const edm::EventSetup&);
     virtual bool matchToGenTau(float ieta, float iphi, const edm::Event&);
-//    virtual bool matchToElectron(float ieta, float iphi, const edm::Event&);
+    //    virtual bool matchToElectron(float ieta, float iphi, const edm::Event&);
     //    virtual std::vector<reco::Candidate::LorentzVector> getUCTCandidateP4s(const vector < UCTCandidate >& , int );
 
     TH1D *offLineTauROC;
@@ -82,10 +82,18 @@ private:
     TH1D * rate_UCTCandidateIso4x4;
     TH1D * rate_UCTCandidate4x4;
 
-    TH1D * ResponseL1ExtraJet;
-    TH1D * ResponseL1ExtraTau;
-    TH1D * ResponseRelaxedTau;
-    TH1D * ResponseRelaxedIsoTau;
+    TH1D * ResponseL1ExtraJet_0;
+    TH1D * ResponseL1ExtraTau_0;
+    TH1D * ResponseRelaxedTau_0;
+    TH1D * ResponseRelaxedIsoTau_0;
+    TH1D * ResponseL1ExtraJet_1;
+    TH1D * ResponseL1ExtraTau_1;
+    TH1D * ResponseRelaxedTau_1;
+    TH1D * ResponseRelaxedIsoTau_1;
+    TH1D * ResponseL1ExtraJet_10;
+    TH1D * ResponseL1ExtraTau_10;
+    TH1D * ResponseRelaxedTau_10;
+    TH1D * ResponseRelaxedIsoTau_10;
 
     TH1D * NumEle;
 
@@ -149,10 +157,18 @@ EfficiencyRate_L1Tau::EfficiencyRate_L1Tau(const edm::ParameterSet& iConfig) {
     rate_UCTCandidateIso4x4 = fs->make<TH1D > ("rate_UCTCandidateIso4x4", "", 200, 0, 200);
     rate_UCTCandidate4x4 = fs->make<TH1D > ("rate_UCTCandidate4x4", "", 200, 0, 200);
 
-    ResponseL1ExtraJet = fs->make<TH1D > ("ResponseL1ExtraJet", "", 200, 0, 4);
-    ResponseL1ExtraTau = fs->make<TH1D > ("ResponseL1ExtraTau", "", 200, 0, 4);
-    ResponseRelaxedTau = fs->make<TH1D > ("ResponseRelaxedTau", "", 200, 0, 4);
-    ResponseRelaxedIsoTau = fs->make<TH1D > ("ResponseRelaxedIsoTau", "", 200, 0, 4);
+    ResponseL1ExtraJet_0 = fs->make<TH1D > ("ResponseL1ExtraJet_0", "", 200, 0, 4);
+    ResponseL1ExtraTau_0 = fs->make<TH1D > ("ResponseL1ExtraTau_0", "", 200, 0, 4);
+    ResponseRelaxedTau_0 = fs->make<TH1D > ("ResponseRelaxedTau_0", "", 200, 0, 4);
+    ResponseRelaxedIsoTau_0 = fs->make<TH1D > ("ResponseRelaxedIsoTau_0", "", 200, 0, 4);
+    ResponseL1ExtraJet_1 = fs->make<TH1D > ("ResponseL1ExtraJet_1", "", 200, 0, 4);
+    ResponseL1ExtraTau_1 = fs->make<TH1D > ("ResponseL1ExtraTau_1", "", 200, 0, 4);
+    ResponseRelaxedTau_1 = fs->make<TH1D > ("ResponseRelaxedTau_1", "", 200, 0, 4);
+    ResponseRelaxedIsoTau_1 = fs->make<TH1D > ("ResponseRelaxedIsoTau_1", "", 200, 0, 4);
+    ResponseL1ExtraJet_10 = fs->make<TH1D > ("ResponseL1ExtraJet_10", "", 200, 0, 4);
+    ResponseL1ExtraTau_10 = fs->make<TH1D > ("ResponseL1ExtraTau_10", "", 200, 0, 4);
+    ResponseRelaxedTau_10 = fs->make<TH1D > ("ResponseRelaxedTau_10", "", 200, 0, 4);
+    ResponseRelaxedIsoTau_10 = fs->make<TH1D > ("ResponseRelaxedIsoTau_10", "", 200, 0, 4);
 
     Eff2D_Num_l1extraParticles = fs->make<TH2D > ("Eff2D_Num_l1extraParticles", "", 200, 0, 200, 200, 0, 200);
     Eff2D_Num_RelaxedTauUnpacked = fs->make<TH2D > ("Eff2D_Num_RelaxedTauUnpacked", "", 200, 0, 200, 200, 0, 200);
@@ -301,7 +317,7 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
             for (pat::TauCollection::const_iterator ipftau = pftausHandle->begin(); ipftau != pftausHandle->end(); ipftau++) {
                 //                if (ipftau->pt() > 20 && fabs(ipftau->eta()) < 2.3 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byMediumCombinedIsolationDeltaBetaCorr3Hits") > 0.5 && ipftau->tauID("againstMuonLoose") > 0.5 && matchToGenTau(ipftau->eta(), ipftau->phi(), iEvent)) {
                 if (ipftau->pt() > 0 && fabs(ipftau->eta()) < 2.3 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("againstMuonLoose") > 0.5 && matchToGenTau(ipftau->eta(), ipftau->phi(), iEvent)) {
-                    cout<<"decayMode() is " <<ipftau->decayMode()<<endl;
+                    cout << "decayMode() is " << ipftau->decayMode() << endl;
                     offLineTauEff->Fill(ipftau->pt());
                     offLineTauROC->Fill(ipftau->pt());
                     // ############################## OLD tau HLT Algorithm
@@ -326,17 +342,24 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
                     if (ValuePtTau || ValuePtJet) {
                         if (ValuePtTau > ValuePtJet) {
                             Eff2D_Num_l1extraParticles->Fill(ipftau->pt(), ValuePtTau);
+                            if (ipftau->decayMode() == 0) ResponseL1ExtraTau_0->Fill(ValuePtTau / ipftau->pt());
+                            if (ipftau->decayMode() == 1) ResponseL1ExtraTau_1->Fill(ValuePtTau / ipftau->pt());
+                            if (ipftau->decayMode() == 10) ResponseL1ExtraTau_10->Fill(ValuePtTau / ipftau->pt());
                             ResponseL1ExtraTau->Fill(ValuePtTau / ipftau->pt());
                         } else {
                             Eff2D_Num_l1extraParticles->Fill(ipftau->pt(), ValuePtJet);
-                            ResponseL1ExtraJet->Fill(ValuePtJet / ipftau->pt());
+                            if (ipftau->decayMode() == 0) ResponseL1ExtraJet_0->Fill(ValuePtJet / ipftau->pt());
+                            if (ipftau->decayMode() == 1) ResponseL1ExtraJet_1->Fill(ValuePtJet / ipftau->pt());
+                            if (ipftau->decayMode() == 10) ResponseL1ExtraJet_10->Fill(ValuePtJet / ipftau->pt());
                         }
 
                     }
                     // ############################## NEW tau HLT Algorithm UST2015
                     for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
                         if (matchToGenTau(ucttau->eta(), ucttau->phi(), iEvent)) {
-                            ResponseRelaxedTau->Fill(ucttau->pt() / ipftau->pt());
+                            if (ipftau->decayMode() == 0) ResponseRelaxedTau_0->Fill(ucttau->pt() / ipftau->pt());
+                            if (ipftau->decayMode() == 1) ResponseRelaxedTau_1->Fill(ucttau->pt() / ipftau->pt());
+                            if (ipftau->decayMode() == 10) ResponseRelaxedTau_10->Fill(ucttau->pt() / ipftau->pt());
                             RelaxedTauUnpackedEff->Fill(ipftau->pt());
                             RelaxedTauUnpackedROC->Fill(ucttau->pt());
                             RelaxedTauUnpackedROC4x4->Fill(ucttau->getFloat("associatedRegionEt", -4));
@@ -348,7 +371,9 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
                     }
                     for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++) {
                         if (matchToGenTau(uctIsotau->eta(), uctIsotau->phi(), iEvent)) {
-                            ResponseRelaxedIsoTau->Fill(uctIsotau->pt() / ipftau->pt());
+                            if (ipftau->decayMode() == 0) ResponseRelaxedIsoTau_0->Fill(uctIsotau->pt() / ipftau->pt());
+                            if (ipftau->decayMode() == 1) ResponseRelaxedIsoTau_1->Fill(uctIsotau->pt() / ipftau->pt());
+                            if (ipftau->decayMode() == 10) ResponseRelaxedIsoTau_10->Fill(uctIsotau->pt() / ipftau->pt());
                             IsolatedTauUnpackedEff->Fill(ipftau->pt());
                             IsolatedTauUnpackedROC->Fill(uctIsotau->pt());
                             IsolatedTauUnpackedROC4x4->Fill(uctIsotau->getFloat("associatedRegionEt", -4));
