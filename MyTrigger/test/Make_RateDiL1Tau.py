@@ -134,7 +134,7 @@ def doProject2DX(cut, num):
 
 def doScalingTH1(TH1, scale, marStyle, marColor):
     scaleHist = TH1F("scale"+str(TH1), "", 100, 0, 100)
-    scaleHist.SetBinContent(1,1)
+    scaleHist.SetBinContent(1,1)  # first bin should be set to 1 ==> means that if you do not cut on L1 rate is 1
     for jj in range(2, 100):
 #        print jj, TH1.GetBinContent(jj)
         Val =  TH1.GetBinContent(jj+1) * scale
