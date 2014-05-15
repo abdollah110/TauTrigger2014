@@ -345,7 +345,6 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
                             if (ipftau->decayMode() == 0) ResponseL1ExtraTau_0->Fill(ValuePtTau / ipftau->pt());
                             if (ipftau->decayMode() == 1) ResponseL1ExtraTau_1->Fill(ValuePtTau / ipftau->pt());
                             if (ipftau->decayMode() == 10) ResponseL1ExtraTau_10->Fill(ValuePtTau / ipftau->pt());
-                            ResponseL1ExtraTau->Fill(ValuePtTau / ipftau->pt());
                         } else {
                             Eff2D_Num_l1extraParticles->Fill(ipftau->pt(), ValuePtJet);
                             if (ipftau->decayMode() == 0) ResponseL1ExtraJet_0->Fill(ValuePtJet / ipftau->pt());
