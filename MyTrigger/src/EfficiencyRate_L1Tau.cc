@@ -428,13 +428,13 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
         for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
             if (tau->pt() > maxValPt_tau && matchToElectron(tau->eta(), tau->phi(), iEvent)) {
                 maxValPt_tau = tau->pt();
-                vectL1Extra.pushback(maxValPt_tau);
+                vectL1Extra.push_back(maxValPt_tau);
             }
         }
         for (vector<l1extra::L1JetParticle>::const_iterator jet = jetsHandle->begin(); jet != jetsHandle->end(); jet++) {
             if (jet->pt() > maxValPt_jet && matchToElectron(jet->eta(), jet->phi(), iEvent)) {
                 maxValPt_jet = jet->pt();
-                vectL1Extra.pushback(maxValPt_jet-20);
+                vectL1Extra.push_back(maxValPt_jet-20);
             }
         }
 
