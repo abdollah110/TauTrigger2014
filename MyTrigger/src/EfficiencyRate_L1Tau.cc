@@ -188,7 +188,7 @@ EfficiencyRate_L1Tau::EfficiencyRate_L1Tau(const edm::ParameterSet& iConfig) {
     Eff2D_Num_IsolatedTauUnpacked = fs->make<TH2D > ("Eff2D_Num_IsolatedTauUnpacked", "", 200, 0, 200, 200, 0, 200);
     Eff2D_Num_IsolatedTauUnpacked4x4 = fs->make<TH2D > ("Eff2D_Num_IsolatedTauUnpacked4x4", "", 200, 0, 200, 200, 0, 200);
 
-//    tauPT = fs->make<TH1D > ("tauPT", "", 200, 0, 200);
+    //    tauPT = fs->make<TH1D > ("tauPT", "", 200, 0, 200);
     tauPT = fs->make<TH1D > ("tauPT", "", 2, 0, 2);
 
     srcGenParticle_ = iConfig.getParameter<edm::InputTag > ("srcGenParticle");
@@ -274,7 +274,18 @@ bool EfficiencyRate_L1Tau::matchToGenTau(float ieta, float iphi, const edm::Even
     return dR03;
 }
 
+struct SortObject_MaxPt {
+
+    bool operator ()(float a, float b) const {
+        return (a > b);
+    }
+};
+
 void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
+
+
+
+
     using reco::Muon;
     using reco::MuonCollection;
     using reco::RecoChargedCandidate;
@@ -322,16 +333,16 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
         int numGoodRecoTau = 0;
         for (pat::TauCollection::const_iterator ipftau = pftausHandle->begin(); ipftau != pftausHandle->end(); ipftau++) {
             //            if (ipftau->pt() > 45 && fabs(ipftau->eta()) < 2.3 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byMediumCombinedIsolationDeltaBetaCorr3Hits") > 0.5 && ipftau->tauID("againstMuonLoose") > 0.5 && matchToGenTau(ipftau->eta(), ipftau->phi(), iEvent)) {
-            tauPT->Fill(ipftau->tauID("byLooseCombinedIsolationDeltaBetaCorr"));
-            if (ipftau->pt() > 0 && fabs(ipftau->eta()) < 2.3 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("againstMuonLoose") > 0.5 && matchToGenTau(ipftau->eta(), ipftau->phi(), iEvent)) {
+            //            tauPT->Fill(ipftau->tauID("byLooseCombinedIsolationDeltaBetaCorr"));
+            if (ipftau->pt() > 20 && fabs(ipftau->eta()) < 2.3 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byMediumCombinedIsolationDeltaBetaCorr3Hits") > 0.5 && matchToGenTau(ipftau->eta(), ipftau->phi(), iEvent)) {
                 numGoodRecoTau++;
             }
         }
         if (numGoodRecoTau > 1) {
             for (pat::TauCollection::const_iterator ipftau = pftausHandle->begin(); ipftau != pftausHandle->end(); ipftau++) {
                 //                if (ipftau->pt() > 20 && fabs(ipftau->eta()) < 2.3 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byMediumCombinedIsolationDeltaBetaCorr3Hits") > 0.5 && ipftau->tauID("againstMuonLoose") > 0.5 && matchToGenTau(ipftau->eta(), ipftau->phi(), iEvent)) {
-                if (ipftau->pt() > 0 && fabs(ipftau->eta()) < 2.3 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("againstMuonLoose") > 0.5 && matchToGenTau(ipftau->eta(), ipftau->phi(), iEvent)) {
-//                    cout << "decayMode() is " << ipftau->decayMode() << endl;
+                if (ipftau->pt() > 20 && fabs(ipftau->eta()) < 2.3 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byMediumCombinedIsolationDeltaBetaCorr3Hits") > 0.5 && matchToGenTau(ipftau->eta(), ipftau->phi(), iEvent)) {
+                    //                    cout << "decayMode() is " << ipftau->decayMode() << endl;
                     offLineTauEff->Fill(ipftau->pt());
                     offLineTauROC->Fill(ipftau->pt());
                     // ############################## OLD tau HLT Algorithm
@@ -410,16 +421,28 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
         //  For rate measurement
         ////////////////////////////////////////////////////////////////////////////////
     } else {
+        Vector<float> vectL1Extra;
+        vectL1Extra.clear();
+        float maxValPt_tau = 0;
+        float maxValPt_jet = 0;
+        for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
+            if (tau->pt() > maxValPt_tau && matchToElectron(tau->eta(), tau->phi(), iEvent)) {
+                maxValPt_tau = tau->pt();
+                vectL1Extra.pushback(maxValPt_tau);
+            }
+        }
+        for (vector<l1extra::L1JetParticle>::const_iterator jet = jetsHandle->begin(); jet != jetsHandle->end(); jet++) {
+            if (jet->pt() > maxValPt_jet && matchToElectron(jet->eta(), jet->phi(), iEvent)) {
+                maxValPt_jet = jet->pt();
+                vectL1Extra.pushback(maxValPt_jet-20);
+            }
+        }
 
-        //        float maxValPt_tau = 0;
-        //        float maxValPt_jet = 0;
-        //        for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
-        //            if (tau->pt() > maxValPt_tau && matchToElectron(tau->eta(), tau->phi(), iEvent)) maxValPt_tau = tau->pt();
-        //        }
-        //        for (vector<l1extra::L1JetParticle>::const_iterator jet = jetsHandle->begin(); jet != jetsHandle->end(); jet++) {
-        //            if (jet->pt() > maxValPt_jet && matchToElectron(jet->eta(), jet->phi(), iEvent)) maxValPt_jet = jet->pt();
-        //        }
-        //        (maxValPt_tau > (maxValPt_jet - 20) ? rate_L1JetParticle->Fill(maxValPt_tau) : rate_L1JetParticle->Fill(maxValPt_jet - 20));
+        sort(vectL1Extra.begin(), vectL1Extra.end(), SortObject_MaxPt());
+        cout<< "First= "<<vectL1Extra[0] <<"   second= "<<vectL1Extra[1] <<endl;
+        rate_L1JetParticle->Fill(vectL1Extra[1]);
+//        (maxValPt_tau > (maxValPt_jet - 20) ? rate_L1JetParticle->Fill(maxValPt_tau) : rate_L1JetParticle->Fill(maxValPt_jet - 20));
+
 
         //########################################################
         float maxValPt_ucttau = 0;
