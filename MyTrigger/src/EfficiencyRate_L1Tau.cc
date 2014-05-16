@@ -438,11 +438,11 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
             }
         }
 
-        if (vectL1Extra[1]) {
-            sort(vectL1Extra.begin(), vectL1Extra.end(), SortObject_MaxPt());
-            cout << "First= " << vectL1Extra[0] << "   second= " << vectL1Extra[1] << endl;
-            rate_L1JetParticle->Fill(vectL1Extra[1]);
-        }
+//        if (vectL1Extra.size() > 1 {
+//            sort(vectL1Extra.begin(), vectL1Extra.end(), SortObject_MaxPt());
+//            cout << "First= " << vectL1Extra[0] << "   second= " << vectL1Extra[1] << endl;
+//            rate_L1JetParticle->Fill(vectL1Extra[1]);
+//        }
         //        (maxValPt_tau > (maxValPt_jet - 20) ? rate_L1JetParticle->Fill(maxValPt_tau) : rate_L1JetParticle->Fill(maxValPt_jet - 20));
 
 
