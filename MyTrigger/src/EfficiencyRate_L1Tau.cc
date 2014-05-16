@@ -101,7 +101,7 @@ private:
     TH1D * ResponseRelaxedTau_10_40GeV;
     TH1D * ResponseRelaxedIsoTau_10_40GeV;
 
-    TH1D * NumEle;
+    TH1D * tauPT;
 
     TH2D * Eff2D_Num_l1extraParticles;
     TH2D * Eff2D_Num_RelaxedTauUnpacked;
@@ -188,7 +188,7 @@ EfficiencyRate_L1Tau::EfficiencyRate_L1Tau(const edm::ParameterSet& iConfig) {
     Eff2D_Num_IsolatedTauUnpacked = fs->make<TH2D > ("Eff2D_Num_IsolatedTauUnpacked", "", 200, 0, 200, 200, 0, 200);
     Eff2D_Num_IsolatedTauUnpacked4x4 = fs->make<TH2D > ("Eff2D_Num_IsolatedTauUnpacked4x4", "", 200, 0, 200, 200, 0, 200);
 
-    NumEle = fs->make<TH1D > ("NumEle", "", 10, 0, 10);
+    tauPT = fs->make<TH1D > ("tauPT", "", 200, 0, 200);
 
     srcGenParticle_ = iConfig.getParameter<edm::InputTag > ("srcGenParticle");
     L1MuSource_ = iConfig.getParameter<edm::InputTag > ("srcL1Mus");
@@ -329,7 +329,8 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
             for (pat::TauCollection::const_iterator ipftau = pftausHandle->begin(); ipftau != pftausHandle->end(); ipftau++) {
                 //                if (ipftau->pt() > 20 && fabs(ipftau->eta()) < 2.3 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byMediumCombinedIsolationDeltaBetaCorr3Hits") > 0.5 && ipftau->tauID("againstMuonLoose") > 0.5 && matchToGenTau(ipftau->eta(), ipftau->phi(), iEvent)) {
                 if (ipftau->pt() > 0 && fabs(ipftau->eta()) < 2.3 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("againstMuonLoose") > 0.5 && matchToGenTau(ipftau->eta(), ipftau->phi(), iEvent)) {
-                    cout << "decayMode() is " << ipftau->decayMode() << endl;
+//                    cout << "decayMode() is " << ipftau->decayMode() << endl;
+                    tauPT->Fill(ipftau->pt());
                     offLineTauEff->Fill(ipftau->pt());
                     offLineTauROC->Fill(ipftau->pt());
                     // ############################## OLD tau HLT Algorithm
