@@ -351,19 +351,19 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
                     float ValuePtTau = 0;
                     float ValuePtJet = 0;
                     for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
-                        if (tool.dR2(ipftau->eta(), ipftau->phi(), tau->eta(), tau->phi()) < 0.3 ){
+                        if (tool.dR2(ipftau->eta(), ipftau->phi(), tau->eta(), tau->phi()) < 0.3) {
                             l1extraParticlesEff->Fill(ipftau->pt());
                             l1extraParticlesROC->Fill(tau->pt());
                             ValuePtTau = tau->pt();
-//                            break;
+                            break;
                         }
                     }
                     for (vector<l1extra::L1JetParticle>::const_iterator jet = jetsHandle->begin(); jet != jetsHandle->end(); jet++) {
-                        if (tool.dR2(ipftau->eta(), ipftau->phi(), jet->eta(), jet->phi()) < 0.3 ){ 
+                        if (tool.dR2(ipftau->eta(), ipftau->phi(), jet->eta(), jet->phi()) < 0.3) {
                             l1extraParticlesEff->Fill(ipftau->pt());
                             l1extraParticlesROC->Fill(jet->pt() - 20);
                             ValuePtJet = jet->pt() - 20;
-//                            break;
+                            break;
                         }
                     }
                     if (ValuePtTau || ValuePtJet) {
@@ -382,7 +382,7 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
                     }
                     // ############################## NEW tau HLT Algorithm UST2015
                     for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
-                        if (tool.dR2(ipftau->eta(), ipftau->phi(), ucttau->eta(), ucttau->phi()) < 0.3 ){  
+                        if (tool.dR2(ipftau->eta(), ipftau->phi(), ucttau->eta(), ucttau->phi()) < 0.3) {
                             if (ipftau->decayMode() == 0) ResponseRelaxedTau_0->Fill(ucttau->pt() / ipftau->pt());
                             if (ipftau->decayMode() == 1) ResponseRelaxedTau_1->Fill(ucttau->pt() / ipftau->pt());
                             if (ipftau->decayMode() == 10) ResponseRelaxedTau_10->Fill(ucttau->pt() / ipftau->pt());
@@ -394,12 +394,12 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
                             RelaxedTauUnpackedROC4x4->Fill(ucttau->getFloat("associatedRegionEt", -4));
                             Eff2D_Num_RelaxedTauUnpacked->Fill(ipftau->pt(), ucttau->pt());
                             Eff2D_Num_RelaxedTauUnpacked4x4->Fill(ipftau->pt(), ucttau->getFloat("associatedRegionEt", -4));
-//                            break;
+                            break;
 
                         }
                     }
                     for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++) {
-                        if (tool.dR2(ipftau->eta(), ipftau->phi(), uctIsotau->eta(), uctIsotau->phi()) < 0.3 ){
+                        if (tool.dR2(ipftau->eta(), ipftau->phi(), uctIsotau->eta(), uctIsotau->phi()) < 0.3) {
                             if (ipftau->decayMode() == 0) ResponseRelaxedIsoTau_0->Fill(uctIsotau->pt() / ipftau->pt());
                             if (ipftau->decayMode() == 1) ResponseRelaxedIsoTau_1->Fill(uctIsotau->pt() / ipftau->pt());
                             if (ipftau->decayMode() == 10) ResponseRelaxedIsoTau_10->Fill(uctIsotau->pt() / ipftau->pt());
@@ -411,7 +411,7 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
                             IsolatedTauUnpackedROC4x4->Fill(uctIsotau->getFloat("associatedRegionEt", -4));
                             Eff2D_Num_IsolatedTauUnpacked->Fill(ipftau->pt(), uctIsotau->pt());
                             Eff2D_Num_IsolatedTauUnpacked4x4->Fill(ipftau->pt(), uctIsotau->getFloat("associatedRegionEt", -4));
-//                            break;
+                            break;
                         }
                     }
 
@@ -424,8 +424,8 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
         ////////////////////////////////////////////////////////////////////////////////
     } else {
 
-//        float maxValPt_tau = 0;
-//        float maxValPt_jet = 0;
+        //        float maxValPt_tau = 0;
+        //        float maxValPt_jet = 0;
         for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
             vectL1Extra.push_back(tau->pt());
         }
@@ -435,7 +435,7 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
 
         if (vectL1Extra.size() > 1) {
             sort(vectL1Extra.begin(), vectL1Extra.end(), SortObject_MaxPt());
-//            cout << "First= " << vectL1Extra[0] << "   second= " << vectL1Extra[1] << endl;
+            //            cout << "First= " << vectL1Extra[0] << "   second= " << vectL1Extra[1] << endl;
             rate_L1JetParticle->Fill(vectL1Extra[1]);
         }
         //        (maxValPt_tau > (maxValPt_jet - 20) ? rate_L1JetParticle->Fill(maxValPt_tau) : rate_L1JetParticle->Fill(maxValPt_jet - 20));
