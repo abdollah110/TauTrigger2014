@@ -351,7 +351,7 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
                     float ValuePtTau = 0;
                     float ValuePtJet = 0;
                     for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
-                        if (matchToGenTau(tau->eta(), tau->phi(), iEvent)) {
+                        if (tool.dR2(ipftau->eta(), ipftau->phi(), tau->eta(), tau->phi()) < 0.3 ){
                             l1extraParticlesEff->Fill(ipftau->pt());
                             l1extraParticlesROC->Fill(tau->pt());
                             ValuePtTau = tau->pt();
@@ -359,7 +359,7 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
                         }
                     }
                     for (vector<l1extra::L1JetParticle>::const_iterator jet = jetsHandle->begin(); jet != jetsHandle->end(); jet++) {
-                        if (matchToGenTau(jet->eta(), jet->phi(), iEvent)) {
+                        if (tool.dR2(ipftau->eta(), ipftau->phi(), jet->eta(), jet->phi()) < 0.3 ){ 
                             l1extraParticlesEff->Fill(ipftau->pt());
                             l1extraParticlesROC->Fill(jet->pt() - 20);
                             ValuePtJet = jet->pt() - 20;
@@ -382,7 +382,7 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
                     }
                     // ############################## NEW tau HLT Algorithm UST2015
                     for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
-                        if (matchToGenTau(ucttau->eta(), ucttau->phi(), iEvent)) {
+                        if (tool.dR2(ipftau->eta(), ipftau->phi(), ucttau->eta(), ucttau->phi()) < 0.3 ){  
                             if (ipftau->decayMode() == 0) ResponseRelaxedTau_0->Fill(ucttau->pt() / ipftau->pt());
                             if (ipftau->decayMode() == 1) ResponseRelaxedTau_1->Fill(ucttau->pt() / ipftau->pt());
                             if (ipftau->decayMode() == 10) ResponseRelaxedTau_10->Fill(ucttau->pt() / ipftau->pt());
@@ -399,7 +399,7 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
                         }
                     }
                     for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++) {
-                        if (matchToGenTau(uctIsotau->eta(), uctIsotau->phi(), iEvent)) {
+                        if (tool.dR2(ipftau->eta(), ipftau->phi(), uctIsotau->eta(), uctIsotau->phi()) < 0.3 ){
                             if (ipftau->decayMode() == 0) ResponseRelaxedIsoTau_0->Fill(uctIsotau->pt() / ipftau->pt());
                             if (ipftau->decayMode() == 1) ResponseRelaxedIsoTau_1->Fill(uctIsotau->pt() / ipftau->pt());
                             if (ipftau->decayMode() == 10) ResponseRelaxedIsoTau_10->Fill(uctIsotau->pt() / ipftau->pt());
