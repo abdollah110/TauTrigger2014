@@ -424,8 +424,8 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
         ////////////////////////////////////////////////////////////////////////////////
     } else {
 
-        float maxValPt_tau = 0;
-        float maxValPt_jet = 0;
+//        float maxValPt_tau = 0;
+//        float maxValPt_jet = 0;
         for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
             vectL1Extra.push_back(tau->pt());
         }
