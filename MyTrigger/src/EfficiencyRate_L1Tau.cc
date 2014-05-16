@@ -188,7 +188,8 @@ EfficiencyRate_L1Tau::EfficiencyRate_L1Tau(const edm::ParameterSet& iConfig) {
     Eff2D_Num_IsolatedTauUnpacked = fs->make<TH2D > ("Eff2D_Num_IsolatedTauUnpacked", "", 200, 0, 200, 200, 0, 200);
     Eff2D_Num_IsolatedTauUnpacked4x4 = fs->make<TH2D > ("Eff2D_Num_IsolatedTauUnpacked4x4", "", 200, 0, 200, 200, 0, 200);
 
-    tauPT = fs->make<TH1D > ("tauPT", "", 200, 0, 200);
+//    tauPT = fs->make<TH1D > ("tauPT", "", 200, 0, 200);
+    tauPT = fs->make<TH1D > ("tauPT", "", 2, 0, 2);
 
     srcGenParticle_ = iConfig.getParameter<edm::InputTag > ("srcGenParticle");
     L1MuSource_ = iConfig.getParameter<edm::InputTag > ("srcL1Mus");
@@ -321,7 +322,7 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
         int numGoodRecoTau = 0;
         for (pat::TauCollection::const_iterator ipftau = pftausHandle->begin(); ipftau != pftausHandle->end(); ipftau++) {
             //            if (ipftau->pt() > 45 && fabs(ipftau->eta()) < 2.3 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byMediumCombinedIsolationDeltaBetaCorr3Hits") > 0.5 && ipftau->tauID("againstMuonLoose") > 0.5 && matchToGenTau(ipftau->eta(), ipftau->phi(), iEvent)) {
-            tauPT->Fill(ipftau->pt());
+            tauPT->Fill(ipftau->tauID("byLooseCombinedIsolationDeltaBetaCorr3Hits"));
             if (ipftau->pt() > 0 && fabs(ipftau->eta()) < 2.3 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("againstMuonLoose") > 0.5 && matchToGenTau(ipftau->eta(), ipftau->phi(), iEvent)) {
                 numGoodRecoTau++;
             }
