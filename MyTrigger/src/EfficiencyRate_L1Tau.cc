@@ -355,7 +355,7 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
                             l1extraParticlesEff->Fill(ipftau->pt());
                             l1extraParticlesROC->Fill(tau->pt());
                             ValuePtTau = tau->pt();
-                            break;
+//                            break;
                         }
                     }
                     for (vector<l1extra::L1JetParticle>::const_iterator jet = jetsHandle->begin(); jet != jetsHandle->end(); jet++) {
@@ -363,7 +363,7 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
                             l1extraParticlesEff->Fill(ipftau->pt());
                             l1extraParticlesROC->Fill(jet->pt() - 20);
                             ValuePtJet = jet->pt() - 20;
-                            break;
+//                            break;
                         }
                     }
                     if (ValuePtTau || ValuePtJet) {
@@ -394,7 +394,7 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
                             RelaxedTauUnpackedROC4x4->Fill(ucttau->getFloat("associatedRegionEt", -4));
                             Eff2D_Num_RelaxedTauUnpacked->Fill(ipftau->pt(), ucttau->pt());
                             Eff2D_Num_RelaxedTauUnpacked4x4->Fill(ipftau->pt(), ucttau->getFloat("associatedRegionEt", -4));
-                            break;
+//                            break;
 
                         }
                     }
@@ -411,7 +411,7 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
                             IsolatedTauUnpackedROC4x4->Fill(uctIsotau->getFloat("associatedRegionEt", -4));
                             Eff2D_Num_IsolatedTauUnpacked->Fill(ipftau->pt(), uctIsotau->pt());
                             Eff2D_Num_IsolatedTauUnpacked4x4->Fill(ipftau->pt(), uctIsotau->getFloat("associatedRegionEt", -4));
-                            break;
+//                            break;
                         }
                     }
 
@@ -435,7 +435,7 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
 
         if (vectL1Extra.size() > 1) {
             sort(vectL1Extra.begin(), vectL1Extra.end(), SortObject_MaxPt());
-            cout << "First= " << vectL1Extra[0] << "   second= " << vectL1Extra[1] << endl;
+//            cout << "First= " << vectL1Extra[0] << "   second= " << vectL1Extra[1] << endl;
             rate_L1JetParticle->Fill(vectL1Extra[1]);
         }
         //        (maxValPt_tau > (maxValPt_jet - 20) ? rate_L1JetParticle->Fill(maxValPt_tau) : rate_L1JetParticle->Fill(maxValPt_jet - 20));
