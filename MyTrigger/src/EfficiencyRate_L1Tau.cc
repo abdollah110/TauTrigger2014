@@ -427,9 +427,9 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
         float maxValPt_tau = 0;
         float maxValPt_jet = 0;
         for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
+            cout << "tau->pt()=" << tau->pt() << endl;
             if (matchToGenTau(tau->eta(), tau->phi(), iEvent)) {
                 maxValPt_tau = tau->pt();
-                cout << "tau->pt()=" << tau->pt() << endl;
                 vectL1Extra.push_back(maxValPt_tau);
             }
         }
