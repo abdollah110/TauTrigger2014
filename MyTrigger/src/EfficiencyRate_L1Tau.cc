@@ -44,7 +44,7 @@
 #include "TH1.h"
 #include "../interface/MyTools.h"
 #include "TLorentzVector.h"
-
+#include <vector>
 //
 // class declaration
 //
@@ -421,7 +421,7 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
         //  For rate measurement
         ////////////////////////////////////////////////////////////////////////////////
     } else {
-        Vector<float> vectL1Extra;
+        vector<float> vectL1Extra;
         vectL1Extra.clear();
         float maxValPt_tau = 0;
         float maxValPt_jet = 0;
