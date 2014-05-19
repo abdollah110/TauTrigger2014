@@ -449,7 +449,7 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
             //            if (matchToElectron(ucttau->eta(), ucttau->phi(), iEvent)) {
             //           maxValPt_ucttau = ucttau->pt();
             //                maxValPt_ucttau4x4 = ucttau->getFloat("associatedRegionEt", -4);
-            if (l1taucount == 2) {
+            if (l1taucount == 1) {
                 maxValPt_ucttau = ucttau->pt();
                 maxValPt_ucttau4x4 = ucttau->getFloat("associatedRegionEt", -4);
             }
@@ -470,7 +470,7 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
         int l1Isotaucount = 0;
         for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++, l1Isotaucount++) {
             //            if (matchToElectron(uctIsotau->eta(), uctIsotau->phi(), iEvent)) {
-            if (l1Isotaucount == 2) {
+            if (l1Isotaucount == 1) {
                 maxValPt_uctIsotau = uctIsotau->pt();
                 maxValPt_uctIsotau4x4 = uctIsotau->getFloat("associatedRegionEt", -4);
             }
