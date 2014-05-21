@@ -1,8 +1,8 @@
 import FWCore.ParameterSet.Config as cms
 
 
-isDoingRate = False
-#isDoingRate = True
+#isDoingRate = False
+isDoingRate = True
 
 process = cms.Process("Demo")
 
