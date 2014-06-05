@@ -77,31 +77,37 @@ private:
     TH1D *IsolatedTauUnpackedEff;
 
     TH1D * rate_L1JetParticle;
-    TH1D * rate_UCTTauNoIsoNoEta;
-    TH1D * rate_UCTTauNoIso;
-    TH1D * rate_UCTTauIsoNoEta;
-    TH1D * rate_UCTTauIso;
-    TH1D * rate_UCTTauIso1p0;
-    TH1D * rate_UCTTauIso0p5;
-    TH1D * rate_UCTTauIso0p3;
-    TH1D * rate_UCTTauIso0p25;
-    TH1D * rate_UCTTauIso0p2;
-    TH1D * rate_UCTTauIso0p1;
+    TH1D * rate_UCTCandidateIso;
+    TH1D * rate_UCTCandidate;
+    TH1D * rate_UCTCandidateIso4x4;
+    TH1D * rate_UCTCandidate4x4;
 
-
+    TH1D * ResponseL1ExtraJet_0;
+    TH1D * ResponseL1ExtraTau_0;
+    TH1D * ResponseRelaxedTau_0;
+    TH1D * ResponseRelaxedIsoTau_0;
+    TH1D * ResponseRelaxedTau_0_40GeV;
+    TH1D * ResponseRelaxedIsoTau_0_40GeV;
+    TH1D * ResponseL1ExtraJet_1;
+    TH1D * ResponseL1ExtraTau_1;
+    TH1D * ResponseRelaxedTau_1;
+    TH1D * ResponseRelaxedIsoTau_1;
+    TH1D * ResponseRelaxedTau_1_40GeV;
+    TH1D * ResponseRelaxedIsoTau_1_40GeV;
+    TH1D * ResponseL1ExtraJet_10;
+    TH1D * ResponseL1ExtraTau_10;
+    TH1D * ResponseRelaxedTau_10;
+    TH1D * ResponseRelaxedIsoTau_10;
+    TH1D * ResponseRelaxedTau_10_40GeV;
+    TH1D * ResponseRelaxedIsoTau_10_40GeV;
 
     TH1D * tauPT;
 
     TH2D * Eff2D_Num_l1extraParticles;
     TH2D * Eff2D_Num_RelaxedTauUnpacked;
-    TH2D * Eff2D_Num_IsolatedTauNoEta;
-    TH2D * Eff2D_Num_IsolatedTau;
-    TH2D * Eff2D_Num_IsolatedTau1p0;
-    TH2D * Eff2D_Num_IsolatedTau0p5;
-    TH2D * Eff2D_Num_IsolatedTau0p3;
-    TH2D * Eff2D_Num_IsolatedTau0p25;
-    TH2D * Eff2D_Num_IsolatedTau0p2;
-    TH2D * Eff2D_Num_IsolatedTau0p1;
+    TH2D * Eff2D_Num_RelaxedTauUnpacked4x4;
+    TH2D * Eff2D_Num_IsolatedTauUnpacked;
+    TH2D * Eff2D_Num_IsolatedTauUnpacked4x4;
 
     edm::InputTag srcGenParticle_;
     edm::InputTag L1TauSource_;
@@ -152,28 +158,37 @@ EfficiencyRate_L1Tau::EfficiencyRate_L1Tau(const edm::ParameterSet& iConfig) {
     IsolatedTauUnpackedEff = fs->make<TH1D > ("IsolatedTauUnpackedEff", "", 200, 0, 200);
 
     rate_L1JetParticle = fs->make<TH1D > ("rate_L1JetParticle", "", 200, 0, 200);
-    rate_UCTTauNoIsoNoEta = fs->make<TH1D > ("rate_UCTTauNoIsoNoEta", "", 200, 0, 200);
-    rate_UCTTauNoIso = fs->make<TH1D > ("rate_UCTTauNoIso", "", 200, 0, 200);
-    rate_UCTTauIsoNoEta = fs->make<TH1D > ("rate_UCTTauIsoNoEta", "", 200, 0, 200);
-    rate_UCTTauIso = fs->make<TH1D > ("rate_UCTTauIso", "", 200, 0, 200);
-    rate_UCTTauIso1p0 = fs->make<TH1D > ("rate_UCTTauIso1p0", "", 200, 0, 200);
-    rate_UCTTauIso0p5 = fs->make<TH1D > ("rate_UCTTauIso0p5", "", 200, 0, 200);
-    rate_UCTTauIso0p3 = fs->make<TH1D > ("rate_UCTTauIso0p3", "", 200, 0, 200);
-    rate_UCTTauIso0p25 = fs->make<TH1D > ("rate_UCTTauIso0p25", "", 200, 0, 200);
-    rate_UCTTauIso0p2 = fs->make<TH1D > ("rate_UCTTauIso0p2", "", 200, 0, 200);
-    rate_UCTTauIso0p1 = fs->make<TH1D > ("rate_UCTTauIso0p1", "", 200, 0, 200);
+    rate_UCTCandidateIso = fs->make<TH1D > ("rate_UCTCandidateIso", "", 200, 0, 200);
+    rate_UCTCandidate = fs->make<TH1D > ("rate_UCTCandidate", "", 200, 0, 200);
+    rate_UCTCandidateIso4x4 = fs->make<TH1D > ("rate_UCTCandidateIso4x4", "", 200, 0, 200);
+    rate_UCTCandidate4x4 = fs->make<TH1D > ("rate_UCTCandidate4x4", "", 200, 0, 200);
+
+    ResponseL1ExtraJet_0 = fs->make<TH1D > ("ResponseL1ExtraJet_0", "", 200, 0, 10);
+    ResponseL1ExtraTau_0 = fs->make<TH1D > ("ResponseL1ExtraTau_0", "", 200, 0, 10);
+    ResponseRelaxedTau_0 = fs->make<TH1D > ("ResponseRelaxedTau_0", "", 200, 0, 10);
+    ResponseRelaxedIsoTau_0 = fs->make<TH1D > ("ResponseRelaxedIsoTau_0", "", 200, 0, 10);
+    ResponseRelaxedTau_0_40GeV = fs->make<TH1D > ("ResponseRelaxedTau_0_40GeV", "", 200, 0, 10);
+    ResponseRelaxedIsoTau_0_40GeV = fs->make<TH1D > ("ResponseRelaxedIsoTau_0_40GeV", "", 200, 0, 10);
+    ResponseL1ExtraJet_1 = fs->make<TH1D > ("ResponseL1ExtraJet_1", "", 200, 0, 10);
+    ResponseL1ExtraTau_1 = fs->make<TH1D > ("ResponseL1ExtraTau_1", "", 200, 0, 10);
+    ResponseRelaxedTau_1 = fs->make<TH1D > ("ResponseRelaxedTau_1", "", 200, 0, 10);
+    ResponseRelaxedIsoTau_1 = fs->make<TH1D > ("ResponseRelaxedIsoTau_1", "", 200, 0, 10);
+    ResponseRelaxedTau_1_40GeV = fs->make<TH1D > ("ResponseRelaxedTau_1_40GeV", "", 200, 0, 10);
+    ResponseRelaxedIsoTau_1_40GeV = fs->make<TH1D > ("ResponseRelaxedIsoTau_1_40GeV", "", 200, 0, 10);
+    ResponseL1ExtraJet_10 = fs->make<TH1D > ("ResponseL1ExtraJet_10", "", 200, 0, 10);
+    ResponseL1ExtraTau_10 = fs->make<TH1D > ("ResponseL1ExtraTau_10", "", 200, 0, 10);
+    ResponseRelaxedTau_10 = fs->make<TH1D > ("ResponseRelaxedTau_10", "", 200, 0, 10);
+    ResponseRelaxedIsoTau_10 = fs->make<TH1D > ("ResponseRelaxedIsoTau_10", "", 200, 0, 10);
+    ResponseRelaxedTau_10_40GeV = fs->make<TH1D > ("ResponseRelaxedTau_10_40GeV", "", 200, 0, 10);
+    ResponseRelaxedIsoTau_10_40GeV = fs->make<TH1D > ("ResponseRelaxedIsoTau_10_40GeV", "", 200, 0, 10);
 
     Eff2D_Num_l1extraParticles = fs->make<TH2D > ("Eff2D_Num_l1extraParticles", "", 200, 0, 200, 200, 0, 200);
     Eff2D_Num_RelaxedTauUnpacked = fs->make<TH2D > ("Eff2D_Num_RelaxedTauUnpacked", "", 200, 0, 200, 200, 0, 200);
-    Eff2D_Num_IsolatedTauNoEta = fs->make<TH2D > ("Eff2D_Num_IsolatedTauNoEta", "", 200, 0, 200, 200, 0, 200);
-    Eff2D_Num_IsolatedTau = fs->make<TH2D > ("Eff2D_Num_IsolatedTau", "", 200, 0, 200, 200, 0, 200);
-    Eff2D_Num_IsolatedTau1p0 = fs->make<TH2D > ("Eff2D_Num_IsolatedTau1p0", "", 200, 0, 200, 200, 0, 200);
-    Eff2D_Num_IsolatedTau0p5 = fs->make<TH2D > ("Eff2D_Num_IsolatedTau0p5", "", 200, 0, 200, 200, 0, 200);
-    Eff2D_Num_IsolatedTau0p3 = fs->make<TH2D > ("Eff2D_Num_IsolatedTau0p3", "", 200, 0, 200, 200, 0, 200);
-    Eff2D_Num_IsolatedTau0p25 = fs->make<TH2D > ("Eff2D_Num_IsolatedTau0p25", "", 200, 0, 200, 200, 0, 200);
-    Eff2D_Num_IsolatedTau0p2 = fs->make<TH2D > ("Eff2D_Num_IsolatedTau0p2", "", 200, 0, 200, 200, 0, 200);
-    Eff2D_Num_IsolatedTau0p1 = fs->make<TH2D > ("Eff2D_Num_IsolatedTau0p1", "", 200, 0, 200, 200, 0, 200);
+    Eff2D_Num_RelaxedTauUnpacked4x4 = fs->make<TH2D > ("Eff2D_Num_RelaxedTauUnpacked4x4", "", 200, 0, 200, 200, 0, 200);
+    Eff2D_Num_IsolatedTauUnpacked = fs->make<TH2D > ("Eff2D_Num_IsolatedTauUnpacked", "", 200, 0, 200, 200, 0, 200);
+    Eff2D_Num_IsolatedTauUnpacked4x4 = fs->make<TH2D > ("Eff2D_Num_IsolatedTauUnpacked4x4", "", 200, 0, 200, 200, 0, 200);
 
+    //    tauPT = fs->make<TH1D > ("tauPT", "", 200, 0, 200);
     tauPT = fs->make<TH1D > ("tauPT", "", 2, 0, 2);
 
     srcGenParticle_ = iConfig.getParameter<edm::InputTag > ("srcGenParticle");
@@ -199,6 +214,43 @@ EfficiencyRate_L1Tau::~EfficiencyRate_L1Tau() {
 
 }
 
+
+//
+// member functions
+//
+
+//bool EfficiencyRate_L1Tau::matchToElectron(float ieta, float iphi, const edm::Event& iEvent) {
+//    using namespace std;
+//    using namespace edm;
+//
+//    Handle < vector < l1extra::L1EmParticle >> IsoElectronHandle;
+//    iEvent.getByLabel(srcL1IsoElectron_, IsoElectronHandle);
+//
+//    Handle < vector < l1extra::L1EmParticle >> NonIsoElectronHandle;
+//    iEvent.getByLabel(srcL1NonIsoElectron_, NonIsoElectronHandle);
+//
+//
+//    bool dR03Iso = false;
+//    bool dR03NonIso = false;
+//    int numEle = 0;
+//    for (vector<l1extra::L1EmParticle>::const_iterator isoele = IsoElectronHandle->begin(); isoele != IsoElectronHandle->end(); isoele++) {
+//        if (isoele->pt() > 12 && tool.dR2(isoele->eta(), isoele->phi(), ieta, iphi) < 0.3) {
+//            dR03Iso = true;
+//            numEle++;
+//            //            break;
+//        }
+//    }
+//    for (vector<l1extra::L1EmParticle>::const_iterator isoNele = NonIsoElectronHandle->begin(); isoNele != NonIsoElectronHandle->end(); isoNele++) {
+//        if (isoNele->pt() > 12 && tool.dR2(isoNele->eta(), isoNele->phi(), ieta, iphi) < 0.3) {
+//            dR03NonIso = true;
+//            numEle++;
+//            //            break;
+//        }
+//    }
+//    NumEle->Fill(numEle);
+//    return (!(dR03Iso || dR03NonIso));
+//
+//}
 
 bool EfficiencyRate_L1Tau::matchToGenTau(float ieta, float iphi, const edm::Event& iEvent) {
     using namespace std;
@@ -272,33 +324,8 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
     Handle < vector < l1extra::L1EmParticle >> NonIsoElectronHandle;
     iEvent.getByLabel(srcL1NonIsoElectron_, NonIsoElectronHandle);
 
-    //For L1 Extra
     vector<float> vectL1Extra;
     vectL1Extra.clear();
-
-    //For UCT No Iso
-    vector<float> UCTTauNOEtaNoIso;
-    UCTTauNOEtaNoIso.clear();
-    vector<float> UCTTauNoIso;
-    UCTTauNoIso.clear();
-
-    //For UCT Iso
-    vector<float> UCTTauNoEtaIso;
-    UCTTauNoEtaIso.clear();
-    vector<float> UCTTauIso;
-    UCTTauIso.clear();
-    vector<float> UCTTauIso1p0;
-    UCTTauIso1p0.clear();
-    vector<float> UCTTauIso0p5;
-    UCTTauIso0p5.clear();
-    vector<float> UCTTauIso0p3;
-    UCTTauIso0p3.clear();
-    vector<float> UCTTauIso0p25;
-    UCTTauIso0p25.clear();
-    vector<float> UCTTauIso0p2;
-    UCTTauIso0p2.clear();
-    vector<float> UCTTauIso0p1;
-    UCTTauIso0p1.clear();
 
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -342,36 +369,48 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
                     if (ValuePtTau || ValuePtJet) {
                         if (ValuePtTau > ValuePtJet) {
                             Eff2D_Num_l1extraParticles->Fill(ipftau->pt(), ValuePtTau);
+                            if (ipftau->decayMode() == 0) ResponseL1ExtraTau_0->Fill(ValuePtTau / ipftau->pt());
+                            if (ipftau->decayMode() == 1) ResponseL1ExtraTau_1->Fill(ValuePtTau / ipftau->pt());
+                            if (ipftau->decayMode() == 10) ResponseL1ExtraTau_10->Fill(ValuePtTau / ipftau->pt());
                         } else {
                             Eff2D_Num_l1extraParticles->Fill(ipftau->pt(), ValuePtJet);
+                            if (ipftau->decayMode() == 0) ResponseL1ExtraJet_0->Fill(ValuePtJet / ipftau->pt());
+                            if (ipftau->decayMode() == 1) ResponseL1ExtraJet_1->Fill(ValuePtJet / ipftau->pt());
+                            if (ipftau->decayMode() == 10) ResponseL1ExtraJet_10->Fill(ValuePtJet / ipftau->pt());
                         }
 
                     }
-                    // ############################## NEW tau HLT Algorithm UCT2015
+                    // ############################## NEW tau HLT Algorithm UST2015
                     for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
                         if (tool.dR2(ipftau->eta(), ipftau->phi(), ucttau->eta(), ucttau->phi()) < 0.3) {
+                            if (ipftau->decayMode() == 0) ResponseRelaxedTau_0->Fill(ucttau->pt() / ipftau->pt());
+                            if (ipftau->decayMode() == 1) ResponseRelaxedTau_1->Fill(ucttau->pt() / ipftau->pt());
+                            if (ipftau->decayMode() == 10) ResponseRelaxedTau_10->Fill(ucttau->pt() / ipftau->pt());
+                            if (ipftau->decayMode() == 0 && ipftau->pt() > 40) ResponseRelaxedTau_0_40GeV->Fill(ucttau->pt() / ipftau->pt());
+                            if (ipftau->decayMode() == 1 && ipftau->pt() > 40) ResponseRelaxedTau_1_40GeV->Fill(ucttau->pt() / ipftau->pt());
+                            if (ipftau->decayMode() == 10 && ipftau->pt() > 40) ResponseRelaxedTau_10_40GeV->Fill(ucttau->pt() / ipftau->pt());
                             RelaxedTauUnpackedEff->Fill(ipftau->pt());
                             RelaxedTauUnpackedROC->Fill(ucttau->pt());
+                            RelaxedTauUnpackedROC4x4->Fill(ucttau->getFloat("associatedRegionEt", -4));
                             Eff2D_Num_RelaxedTauUnpacked->Fill(ipftau->pt(), ucttau->pt());
+                            Eff2D_Num_RelaxedTauUnpacked4x4->Fill(ipftau->pt(), ucttau->getFloat("associatedRegionEt", -4));
                             break;
 
                         }
                     }
                     for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++) {
                         if (tool.dR2(ipftau->eta(), ipftau->phi(), uctIsotau->eta(), uctIsotau->phi()) < 0.3) {
-                            float jetEt = uctIsotau->getFloat("associatedJetPt", -4);
-                            float tauEt = uctIsotau->getFloat("associatedRegionEt", -4);
-                            float tauIso = (jetEt - tauEt) / tauEt;
-                            IsolatedTauEff->Fill(ipftau->pt());
-                            IsolatedTauROC->Fill(uctIsotau->pt());
-                            Eff2D_Num_IsolatedTauNoEta->Fill(ipftau->pt(), uctIsotau->pt());
-                            if (fabs(uctIsotau) < 2.17) Eff2D_Num_IsolatedTau->Fill(ipftau->pt(), uctIsotau->pt());
-                            if (fabs(uctIsotau) < 2.17 && tauIso < 1.0) Eff2D_Num_IsolatedTau1p0->Fill(ipftau->pt(), uctIsotau->pt());
-                            if (fabs(uctIsotau) < 2.17 && tauIso < 0.5) Eff2D_Num_IsolatedTau0p5->Fill(ipftau->pt(), uctIsotau->pt());
-                            if (fabs(uctIsotau) < 2.17 && tauIso < 0.3) Eff2D_Num_IsolatedTau0p3->Fill(ipftau->pt(), uctIsotau->pt());
-                            if (fabs(uctIsotau) < 2.17 && tauIso < 0.25) Eff2D_Num_IsolatedTau0p25->Fill(ipftau->pt(), uctIsotau->pt());
-                            if (fabs(uctIsotau) < 2.17 && tauIso < 0.2) Eff2D_Num_IsolatedTau0p2->Fill(ipftau->pt(), uctIsotau->pt());
-                            if (fabs(uctIsotau) < 2.17 && tauIso < 0.1) Eff2D_Num_IsolatedTau0p1->Fill(ipftau->pt(), uctIsotau->pt());
+                            if (ipftau->decayMode() == 0) ResponseRelaxedIsoTau_0->Fill(uctIsotau->pt() / ipftau->pt());
+                            if (ipftau->decayMode() == 1) ResponseRelaxedIsoTau_1->Fill(uctIsotau->pt() / ipftau->pt());
+                            if (ipftau->decayMode() == 10) ResponseRelaxedIsoTau_10->Fill(uctIsotau->pt() / ipftau->pt());
+                            if (ipftau->decayMode() == 0 && ipftau->pt() > 40) ResponseRelaxedIsoTau_0_40GeV->Fill(uctIsotau->pt() / ipftau->pt());
+                            if (ipftau->decayMode() == 1 && ipftau->pt() > 40) ResponseRelaxedIsoTau_1_40GeV->Fill(uctIsotau->pt() / ipftau->pt());
+                            if (ipftau->decayMode() == 10 && ipftau->pt() > 40) ResponseRelaxedIsoTau_10_40GeV->Fill(uctIsotau->pt() / ipftau->pt());
+                            IsolatedTauUnpackedEff->Fill(ipftau->pt());
+                            IsolatedTauUnpackedROC->Fill(uctIsotau->pt());
+                            IsolatedTauUnpackedROC4x4->Fill(uctIsotau->getFloat("associatedRegionEt", -4));
+                            Eff2D_Num_IsolatedTauUnpacked->Fill(ipftau->pt(), uctIsotau->pt());
+                            Eff2D_Num_IsolatedTauUnpacked4x4->Fill(ipftau->pt(), uctIsotau->getFloat("associatedRegionEt", -4));
                             break;
                         }
                     }
@@ -385,6 +424,8 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
         ////////////////////////////////////////////////////////////////////////////////
     } else {
 
+        //        float maxValPt_tau = 0;
+        //        float maxValPt_jet = 0;
         for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
             vectL1Extra.push_back(tau->pt());
         }
@@ -394,76 +435,51 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
 
         if (vectL1Extra.size() > 1) {
             sort(vectL1Extra.begin(), vectL1Extra.end(), SortObject_MaxPt());
+            //            cout << "First= " << vectL1Extra[0] << "   second= " << vectL1Extra[1] << endl;
             rate_L1JetParticle->Fill(vectL1Extra[1]);
         }
+        //        (maxValPt_tau > (maxValPt_jet - 20) ? rate_L1JetParticle->Fill(maxValPt_tau) : rate_L1JetParticle->Fill(maxValPt_jet - 20));
+
 
         //########################################################
-        for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
+        float maxValPt_ucttau = 0;
+        float maxValPt_ucttau4x4 = 0;
+        int l1taucount = 0;
+        for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++, l1taucount++) {
+            //            if (matchToElectron(ucttau->eta(), ucttau->phi(), iEvent)) {
+            //           maxValPt_ucttau = ucttau->pt();
+            //                maxValPt_ucttau4x4 = ucttau->getFloat("associatedRegionEt", -4);
+            if (l1taucount == 1) {
+                maxValPt_ucttau = ucttau->pt();
+                maxValPt_ucttau4x4 = ucttau->getFloat("associatedRegionEt", -4);
+            }
+            //            if (ucttau->pt() > maxValPt_ucttau) maxValPt_ucttau = ucttau->pt();
+            //            if (ucttau->getFloat("associatedRegionEt", -4) > maxValPt_ucttau4x4) maxValPt_ucttau4x4 = ucttau->getFloat("associatedRegionEt", -4);
+            //            }
 
-            UCTTauNOEtaNoIso.push_back(ucttau->pt());
-            if (fabs(ucttau->eta()) < 2.17) UCTTauNoIso.push_back(ucttau->pt());
+            //                        if (l1taucount > 1 && ucttau->pt()  > 20)cout << "l1taucount.size()= " << ucttau->pt() << endl;
+            //            cout << "l1taucount.size()= " << ucttau->getFloat("associatedRegionEt", -4) << endl;
+            //            cout << "l1taucount.size()= " << ucttau->pt() << endl;
         }
+        rate_UCTCandidate->Fill(maxValPt_ucttau);
+        rate_UCTCandidate4x4->Fill(maxValPt_ucttau4x4);
 
-        if (UCTTauNOEtaNoIso.size() > 1) {
-            sort(UCTTauNOEtaNoIso.begin(), UCTTauNOEtaNoIso.end(), SortObject_MaxPt());
-            rate_UCTTauNoIsoNoEta->Fill(UCTTauNOEtaNoIso[1]);
-        }
-
-        if (UCTTauNoIso.size() > 1) {
-            sort(UCTTauNoIso.begin(), UCTTauNoIso.end(), SortObject_MaxPt());
-            rate_UCTTauNoIso->Fill(UCTTauNoIso[1]);
-        }
         //########################################################
-        for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++) {
-
-            float jetEt = uctIsotau->getFloat("associatedJetPt", -4);
-            float tauEt = uctIsotau->getFloat("associatedRegionEt", -4);
-            float tauIso = (jetEt - tauEt) / tauEt;
-
-            UCTTauNoEtaIso.push_back(uctIsotau->pt());
-            if (fabs(uctIsotau->eta()) < 2.17) UCTTauIso.push_back(uctIsotau->pt());
-            if (fabs(uctIsotau->eta()) < 2.17 && tauIso < 1.0) UCTTauIso1p0.push_back(uctIsotau->pt());
-            if (fabs(uctIsotau->eta()) < 2.17 && tauIso < 0.5) UCTTauIso0p5.push_back(uctIsotau->pt());
-            if (fabs(uctIsotau->eta()) < 2.17 && tauIso < 0.3) UCTTauIso0p3.push_back(uctIsotau->pt());
-            if (fabs(uctIsotau->eta()) < 2.17 && tauIso < 0.25) UCTTauIso0p25.push_back(uctIsotau->pt());
-            if (fabs(uctIsotau->eta()) < 2.17 && tauIso < 0.2) UCTTauIso0p2.push_back(uctIsotau->pt());
-            if (fabs(uctIsotau->eta()) < 2.17 && tauIso < 0.1) UCTTauIso0p1.push_back(uctIsotau->pt());
-
+        float maxValPt_uctIsotau = 0;
+        float maxValPt_uctIsotau4x4 = 0;
+        int l1Isotaucount = 0;
+        for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++, l1Isotaucount++) {
+            //            if (matchToElectron(uctIsotau->eta(), uctIsotau->phi(), iEvent)) {
+            if (l1Isotaucount == 1) {
+                maxValPt_uctIsotau = uctIsotau->pt();
+                maxValPt_uctIsotau4x4 = uctIsotau->getFloat("associatedRegionEt", -4);
+            }
+            //            if (uctIsotau->pt() > maxValPt_uctIsotau) maxValPt_uctIsotau = uctIsotau->pt();
+            //            if (uctIsotau->getFloat("associatedRegionEt", -4) > maxValPt_uctIsotau4x4) maxValPt_uctIsotau4x4 = uctIsotau->getFloat("associatedRegionEt", -4);
+            //            }
         }
-
-        if (UCTTauNoEtaIso.size() > 1) {
-            sort(UCTTauNoEtaIso.begin(), UCTTauNoEtaIso.end(), SortObject_MaxPt());
-            rate_UCTTauIsoNoEta->Fill(UCTTauNoEtaIso[1]);
-        }
-        if (UCTTauIso.size() > 1) {
-            sort(UCTTauIso.begin(), UCTTauIso.end(), SortObject_MaxPt());
-            rate_UCTTauIso->Fill(UCTTauIso[1]);
-        }
-        if (UCTTauIso1p0.size() > 1) {
-            sort(UCTTauIso1p0.begin(), UCTTauIso1p0.end(), SortObject_MaxPt());
-            rate_UCTTauIso1p0->Fill(UCTTauIso1p0[1]);
-        }
-        if (UCTTauIso0p5.size() > 1) {
-            sort(UCTTauIso0p5.begin(), UCTTauIso0p5.end(), SortObject_MaxPt());
-            rate_UCTTauIso0p5->Fill(UCTTauIso0p5[1]);
-        }
-        if (UCTTauIso0p3.size() > 1) {
-            sort(UCTTauIso0p3.begin(), UCTTauIso0p3.end(), SortObject_MaxPt());
-            rate_UCTTauIso0p3->Fill(UCTTauIso0p3[1]);
-        }
-        if (UCTTauIso0p25.size() > 1) {
-            sort(UCTTauIso0p25.begin(), UCTTauIso0p25.end(), SortObject_MaxPt());
-            rate_UCTTauIso0p25->Fill(UCTTauIso0p25[1]);
-        }
-        if (UCTTauIso0p2.size() > 1) {
-            sort(UCTTauIso0p2.begin(), UCTTauIso0p2.end(), SortObject_MaxPt());
-            rate_UCTTauIso0p2->Fill(UCTTauIso0p2[1]);
-        }
-
-        if (UCTTauIso0p1.size() > 1) {
-            sort(UCTTauIso0p1.begin(), UCTTauIso0p1.end(), SortObject_MaxPt());
-            rate_UCTTauIso0p1->Fill(UCTTauIso0p1[1]);
-        }
+        rate_UCTCandidateIso->Fill(maxValPt_uctIsotau);
+        rate_UCTCandidateIso4x4->Fill(maxValPt_uctIsotau4x4);
     } // end loop over rate
 
 }
