@@ -66,15 +66,15 @@ private:
 
     TH1D *offLineTauROC;
     TH1D *l1extraParticlesROC;
-    TH1D *RelaxedTauUnpackedROC;
-    TH1D *RelaxedTauUnpackedROC4x4;
-    TH1D *IsolatedTauUnpackedROC;
-    TH1D *IsolatedTauUnpackedROC4x4;
+    TH1D *RelaxedTauROC;
+    TH1D *RelaxedTauROC4x4;
+    TH1D *IsolatedTauROC;
+    TH1D *IsolatedTauROC4x4;
 
     TH1D *offLineTauEff;
     TH1D *l1extraParticlesEff;
-    TH1D *RelaxedTauUnpackedEff;
-    TH1D *IsolatedTauUnpackedEff;
+    TH1D *RelaxedTauEff;
+    TH1D *IsolatedTauEff;
 
     TH1D * rate_L1JetParticle;
     TH1D * rate_UCTTauNoIsoNoEta;
@@ -93,7 +93,7 @@ private:
     TH1D * tauPT;
 
     TH2D * Eff2D_Num_l1extraParticles;
-    TH2D * Eff2D_Num_RelaxedTauUnpacked;
+    TH2D * Eff2D_Num_RelaxedTau;
     TH2D * Eff2D_Num_IsolatedTauNoEta;
     TH2D * Eff2D_Num_IsolatedTau;
     TH2D * Eff2D_Num_IsolatedTau1p0;
@@ -141,15 +141,15 @@ EfficiencyRate_L1Tau::EfficiencyRate_L1Tau(const edm::ParameterSet& iConfig) {
 
     offLineTauROC = fs->make<TH1D > ("offLineTauROC", "", 200, 0, 200);
     l1extraParticlesROC = fs->make<TH1D > ("l1extraParticlesROC", "", 200, 0, 200);
-    RelaxedTauUnpackedROC = fs->make<TH1D > ("RelaxedTauUnpackedROC", "", 200, 0, 200);
-    RelaxedTauUnpackedROC4x4 = fs->make<TH1D > ("RelaxedTauUnpackedROC4x4", "", 200, 0, 200);
-    IsolatedTauUnpackedROC = fs->make<TH1D > ("IsolatedTauUnpackedROC", "", 200, 0, 200);
-    IsolatedTauUnpackedROC4x4 = fs->make<TH1D > ("IsolatedTauUnpackedROC4x4", "", 200, 0, 200);
+    RelaxedTauROC = fs->make<TH1D > ("RelaxedTauROC", "", 200, 0, 200);
+    RelaxedTauROC4x4 = fs->make<TH1D > ("RelaxedTauROC4x4", "", 200, 0, 200);
+    IsolatedTauROC = fs->make<TH1D > ("IsolatedTauROC", "", 200, 0, 200);
+    IsolatedTauROC4x4 = fs->make<TH1D > ("IsolatedTauROC4x4", "", 200, 0, 200);
 
     offLineTauEff = fs->make<TH1D > ("offLineTauEff", "", 200, 0, 200);
     l1extraParticlesEff = fs->make<TH1D > ("l1extraParticlesEff", "", 200, 0, 200);
-    RelaxedTauUnpackedEff = fs->make<TH1D > ("RelaxedTauUnpackedEff", "", 200, 0, 200);
-    IsolatedTauUnpackedEff = fs->make<TH1D > ("IsolatedTauUnpackedEff", "", 200, 0, 200);
+    RelaxedTauEff = fs->make<TH1D > ("RelaxedTauEff", "", 200, 0, 200);
+    IsolatedTauEff = fs->make<TH1D > ("IsolatedTauEff", "", 200, 0, 200);
 
     rate_L1JetParticle = fs->make<TH1D > ("rate_L1JetParticle", "", 200, 0, 200);
     rate_UCTTauNoIsoNoEta = fs->make<TH1D > ("rate_UCTTauNoIsoNoEta", "", 200, 0, 200);
@@ -164,7 +164,7 @@ EfficiencyRate_L1Tau::EfficiencyRate_L1Tau(const edm::ParameterSet& iConfig) {
     rate_UCTTauIso0p1 = fs->make<TH1D > ("rate_UCTTauIso0p1", "", 200, 0, 200);
 
     Eff2D_Num_l1extraParticles = fs->make<TH2D > ("Eff2D_Num_l1extraParticles", "", 200, 0, 200, 200, 0, 200);
-    Eff2D_Num_RelaxedTauUnpacked = fs->make<TH2D > ("Eff2D_Num_RelaxedTauUnpacked", "", 200, 0, 200, 200, 0, 200);
+    Eff2D_Num_RelaxedTau = fs->make<TH2D > ("Eff2D_Num_RelaxedTau", "", 200, 0, 200, 200, 0, 200);
     Eff2D_Num_IsolatedTauNoEta = fs->make<TH2D > ("Eff2D_Num_IsolatedTauNoEta", "", 200, 0, 200, 200, 0, 200);
     Eff2D_Num_IsolatedTau = fs->make<TH2D > ("Eff2D_Num_IsolatedTau", "", 200, 0, 200, 200, 0, 200);
     Eff2D_Num_IsolatedTau1p0 = fs->make<TH2D > ("Eff2D_Num_IsolatedTau1p0", "", 200, 0, 200, 200, 0, 200);
@@ -350,9 +350,9 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
                     // ############################## NEW tau HLT Algorithm UCT2015
                     for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
                         if (tool.dR2(ipftau->eta(), ipftau->phi(), ucttau->eta(), ucttau->phi()) < 0.3) {
-                            RelaxedTauUnpackedEff->Fill(ipftau->pt());
-                            RelaxedTauUnpackedROC->Fill(ucttau->pt());
-                            Eff2D_Num_RelaxedTauUnpacked->Fill(ipftau->pt(), ucttau->pt());
+                            RelaxedTauEff->Fill(ipftau->pt());
+                            RelaxedTauROC->Fill(ucttau->pt());
+                            Eff2D_Num_RelaxedTau->Fill(ipftau->pt(), ucttau->pt());
                             break;
 
                         }
