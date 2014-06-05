@@ -365,13 +365,13 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
                             IsolatedTauEff->Fill(ipftau->pt());
                             IsolatedTauROC->Fill(uctIsotau->pt());
                             Eff2D_Num_IsolatedTauNoEta->Fill(ipftau->pt(), uctIsotau->pt());
-                            if (fabs(uctIsotau) < 2.17) Eff2D_Num_IsolatedTau->Fill(ipftau->pt(), uctIsotau->pt());
-                            if (fabs(uctIsotau) < 2.17 && tauIso < 1.0) Eff2D_Num_IsolatedTau1p0->Fill(ipftau->pt(), uctIsotau->pt());
-                            if (fabs(uctIsotau) < 2.17 && tauIso < 0.5) Eff2D_Num_IsolatedTau0p5->Fill(ipftau->pt(), uctIsotau->pt());
-                            if (fabs(uctIsotau) < 2.17 && tauIso < 0.3) Eff2D_Num_IsolatedTau0p3->Fill(ipftau->pt(), uctIsotau->pt());
-                            if (fabs(uctIsotau) < 2.17 && tauIso < 0.25) Eff2D_Num_IsolatedTau0p25->Fill(ipftau->pt(), uctIsotau->pt());
-                            if (fabs(uctIsotau) < 2.17 && tauIso < 0.2) Eff2D_Num_IsolatedTau0p2->Fill(ipftau->pt(), uctIsotau->pt());
-                            if (fabs(uctIsotau) < 2.17 && tauIso < 0.1) Eff2D_Num_IsolatedTau0p1->Fill(ipftau->pt(), uctIsotau->pt());
+                            if (fabs(uctIsotau->eta()) < 2.17) Eff2D_Num_IsolatedTau->Fill(ipftau->pt(), uctIsotau->pt());
+                            if (fabs(uctIsotau->eta()) < 2.17 && tauIso < 1.0) Eff2D_Num_IsolatedTau1p0->Fill(ipftau->pt(), uctIsotau->pt());
+                            if (fabs(uctIsotau->eta()) < 2.17 && tauIso < 0.5) Eff2D_Num_IsolatedTau0p5->Fill(ipftau->pt(), uctIsotau->pt());
+                            if (fabs(uctIsotau->eta()) < 2.17 && tauIso < 0.3) Eff2D_Num_IsolatedTau0p3->Fill(ipftau->pt(), uctIsotau->pt());
+                            if (fabs(uctIsotau->eta()) < 2.17 && tauIso < 0.25) Eff2D_Num_IsolatedTau0p25->Fill(ipftau->pt(), uctIsotau->pt());
+                            if (fabs(uctIsotau->eta()) < 2.17 && tauIso < 0.2) Eff2D_Num_IsolatedTau0p2->Fill(ipftau->pt(), uctIsotau->pt());
+                            if (fabs(uctIsotau->eta()) < 2.17 && tauIso < 0.1) Eff2D_Num_IsolatedTau0p1->Fill(ipftau->pt(), uctIsotau->pt());
                             break;
                         }
                     }
