@@ -106,8 +106,8 @@ def doRatio2D(num, denum, cut, marStyle, marColor):
             ValNum = ValNum + num.GetBinContent(ii, jj)
 #            print ii, jj, ValNum
         OneDNum.SetBinContent(ii, ValNum)
-#    bins = array('d', [20, 25, 30, 35, 40, 45, 50, 55, 60,65,70, 80,200])
-    bins = array('d', [20, 23,26, 29, 32,35, 39, 43, 47, 51, 55,60,65,70,78, 80,90,100,120,140,170,200])
+    bins = array('d', [20, 25, 30, 35, 40, 45, 50, 55, 60,65,70, 80,200])
+#    bins = array('d', [20, 23,26, 29, 32,35, 39, 43, 47, 51, 55,60,65,70,78, 80,90,100,120,140,170,200])
     num_R = OneDNum.Rebin(len(bins)-1, "Hinm", bins)
     denum_R = denum.Rebin(len(bins)-1, "Hin", bins)
     ratio = ROOT.TGraphAsymmErrors(num_R, denum_R, "")
@@ -236,26 +236,26 @@ Eff2D_Num_IsolatedTau0p1 = FileRootEff.Get("demo/Eff2D_Num_IsolatedTau0p1");
 
 
 
-#
-#IsolatedTauEff10_4x4 = doRatio2D(Num_IsolatedTauEff_4x4, DenumEff, 20, 21, 2)
-#IsolatedTauEff15_4x4 = doRatio2D(Num_IsolatedTauEff_4x4, DenumEff, 25, 22, 3)
-#IsolatedTauEff20_4x4 = doRatio2D(Num_IsolatedTauEff_4x4, DenumEff, 30, 23, 4)
-#IsolatedTauEff25_4x4 = doRatio2D(Num_IsolatedTauEff_4x4, DenumEff, 35, 24, 6)
-#IsolatedTauEff10_4x4.Draw("PAE")
-#IsolatedTauEff15_4x4.Draw("Psame")
-#IsolatedTauEff20_4x4.Draw("Psame")
-#IsolatedTauEff25_4x4.Draw("Psame")
-#legend_ = TLegend(0.50, 0.78, 0.85, 0.9)
-#legend_.SetFillColor(0)
-#legend_.SetBorderSize(0)
-#legend_.SetTextSize(.03)
-#legend_.AddEntry(IsolatedTauEff10_4x4, "UCTIsoTau 20GeV", "lp")
-#legend_.AddEntry(IsolatedTauEff15_4x4, "UCTIsoTau 25GeV", "lp")
-#legend_.AddEntry(IsolatedTauEff20_4x4, "UCTIsoTau 30GeV", "lp")
-#legend_.AddEntry(IsolatedTauEff25_4x4, "UCTIsoTau 35GeV", "lp")
-#legend_.Draw()
-#AddCostumText(candidate)
-#canvas.SaveAs("PlotTau/out_" + candidate + "TauEfficiencyUCTTau4x4DifferentL1Pt.pdf")
+
+IsolatedTauEff10_4x4 = doRatio2D(Num_IsolatedTauEff_4x4, DenumEff, 20, 21, 2)
+IsolatedTauEff15_4x4 = doRatio2D(Num_IsolatedTauEff_4x4, DenumEff, 25, 22, 3)
+IsolatedTauEff20_4x4 = doRatio2D(Num_IsolatedTauEff_4x4, DenumEff, 30, 23, 4)
+IsolatedTauEff25_4x4 = doRatio2D(Num_IsolatedTauEff_4x4, DenumEff, 35, 24, 6)
+IsolatedTauEff10_4x4.Draw("PAE")
+IsolatedTauEff15_4x4.Draw("Psame")
+IsolatedTauEff20_4x4.Draw("Psame")
+IsolatedTauEff25_4x4.Draw("Psame")
+legend_ = TLegend(0.50, 0.78, 0.85, 0.9)
+legend_.SetFillColor(0)
+legend_.SetBorderSize(0)
+legend_.SetTextSize(.03)
+legend_.AddEntry(IsolatedTauEff10_4x4, "UCTIsoTau 20GeV", "lp")
+legend_.AddEntry(IsolatedTauEff15_4x4, "UCTIsoTau 25GeV", "lp")
+legend_.AddEntry(IsolatedTauEff20_4x4, "UCTIsoTau 30GeV", "lp")
+legend_.AddEntry(IsolatedTauEff25_4x4, "UCTIsoTau 35GeV", "lp")
+legend_.Draw()
+AddCostumText(candidate)
+canvas.SaveAs("PlotTau/out_" + candidate + "TauEfficiencyUCTTau4x4DifferentL1Pt.pdf")
 
 
 
