@@ -328,7 +328,7 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
                             l1extraParticlesEff->Fill(ipftau->pt());
                             l1extraParticlesROC->Fill(tau->pt());
                             ValuePtTau = tau->pt();
-                            break;
+//                            break;
                         }
                     }
                     for (vector<l1extra::L1JetParticle>::const_iterator jet = jetsHandle->begin(); jet != jetsHandle->end(); jet++) {
@@ -336,7 +336,7 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
                             l1extraParticlesEff->Fill(ipftau->pt());
                             l1extraParticlesROC->Fill(jet->pt() - 20);
                             ValuePtJet = jet->pt() - 20;
-                            break;
+//                            break;
                         }
                     }
                     if (ValuePtTau || ValuePtJet) {
@@ -353,7 +353,7 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
                             RelaxedTauEff->Fill(ipftau->pt());
                             RelaxedTauROC->Fill(ucttau->pt());
                             Eff2D_Num_RelaxedTau->Fill(ipftau->pt(), ucttau->pt());
-                            break;
+//                            break;
 
                         }
                     }
@@ -372,7 +372,7 @@ void EfficiencyRate_L1Tau::analyze(const edm::Event& iEvent, const edm::EventSet
                             if (fabs(uctIsotau->eta()) < 2.17 && tauIso < 0.25) Eff2D_Num_IsolatedTau0p25->Fill(ipftau->pt(), uctIsotau->pt());
                             if (fabs(uctIsotau->eta()) < 2.17 && tauIso < 0.2) Eff2D_Num_IsolatedTau0p2->Fill(ipftau->pt(), uctIsotau->pt());
                             if (fabs(uctIsotau->eta()) < 2.17 && tauIso < 0.1) Eff2D_Num_IsolatedTau0p1->Fill(ipftau->pt(), uctIsotau->pt());
-                            break;
+//                            break;
                         }
                     }
 
