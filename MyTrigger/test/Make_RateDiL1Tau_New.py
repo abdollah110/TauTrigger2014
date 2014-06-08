@@ -177,7 +177,8 @@ def doScalingTH1(TH1, scale, marStyle, marColor):
 ##########################################################################################################
 ##########################################################################################################
 
-FileRootEff = TFile("efficiency_diTau_v5.root", "OPEN")
+#FileRootEff = TFile("efficiency_diTau_v5.root", "OPEN")
+FileRootEff = TFile("DiTau_L1Tau_efficiency.root", "OPEN")
 FileRootRate = TFile("rate_diTau_v5.root", "OPEN")
 #FileRootRate = TFile("TOTAL.root", "OPEN")
 
