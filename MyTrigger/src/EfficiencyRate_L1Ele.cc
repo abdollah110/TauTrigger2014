@@ -64,6 +64,7 @@ private:
     virtual bool matchToElectron(float ieta, float iphi, const edm::Event&);
     //    virtual std::vector<reco::Candidate::LorentzVector> getUCTCandidateP4s(const vector < UCTCandidate >& , int );
 
+    TH1D *EventsPassL1IsoEle20ER;
     TH1D *offLineTauROC;
     TH1D *l1extraParticlesROC;
     TH1D *RelaxedTauUnpackedROC;
@@ -126,6 +127,7 @@ EfficiencyRate_L1Ele::EfficiencyRate_L1Ele(const edm::ParameterSet& iConfig) {
     myMap1__ = new std::map<std::string, TH1F*>();
 
 
+    EventsPassL1IsoEle20ER = fs->make<TH1D > ("EventsPassL1IsoEle20ER", "", 100, 0, 100);
     offLineTauROC = fs->make<TH1D > ("offLineTauROC", "", 100, 0, 100);
     l1extraParticlesROC = fs->make<TH1D > ("l1extraParticlesROC", "", 100, 0, 100);
     RelaxedTauUnpackedROC = fs->make<TH1D > ("RelaxedTauUnpackedROC", "", 100, 0, 100);
@@ -279,9 +281,17 @@ void EfficiencyRate_L1Ele::analyze(const edm::Event& iEvent, const edm::EventSet
     ////////////////////////////////////////////////////////////////////////////////
     //  For efficiency measurement
     ////////////////////////////////////////////////////////////////////////////////
-    if (!srcIsData_) {
+    ////////////////////////////////////////////////////////////////////////////////
+    bool PassL1Ele20ER = false;
+    for (vector<l1extra::L1EmParticle>::const_iterator isoele = IsoElectronHandle->begin(); isoele != IsoElectronHandle->end(); isoele++) {
+        if (isoele->pt() > 20 && fabs(isoele->eta()) < 2.2) {
+            PassL1Ele20ER = true;
+        }
+    }
+    ////////////////////////////////////////////////////////////////////////////////
+    if (!srcIsData_ && PassL1Ele20ER) {
         for (pat::TauCollection::const_iterator ipftau = pftausHandle->begin(); ipftau != pftausHandle->end(); ipftau++) {
-            if (ipftau->pt() > 20 && fabs(ipftau->eta()) < 2.3 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits") > 0.5 && ipftau->tauID("againstMuonTight") > 0.5 && matchToGenTau(ipftau->eta(), ipftau->phi(), iEvent)) {
+            if (ipftau->pt() > 20 && fabs(ipftau->eta()) < 2.3 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byLooseCombinedIsolationDeltaBetaCorr3Hits") > 0.5 && matchToGenTau(ipftau->eta(), ipftau->phi(), iEvent)) {
                 offLineTauEff->Fill(ipftau->pt());
                 offLineTauROC->Fill(ipftau->pt());
                 // ############################## OLD tau HLT Algorithm
@@ -295,14 +305,14 @@ void EfficiencyRate_L1Ele::analyze(const edm::Event& iEvent, const edm::EventSet
                         break;
                     }
                 }
-                    for (vector<l1extra::L1JetParticle>::const_iterator jet = jetsHandle->begin(); jet != jetsHandle->end(); jet++) {
-                        if (matchToGenTau(jet->eta(), jet->phi(), iEvent)) {
-                            l1extraParticlesEff->Fill(ipftau->pt());
-                            l1extraParticlesROC->Fill(jet->pt() - 20);
-                            ValuePtJet = jet->pt() - 20;
-                            break;
-                        }
+                for (vector<l1extra::L1JetParticle>::const_iterator jet = jetsHandle->begin(); jet != jetsHandle->end(); jet++) {
+                    if (matchToGenTau(jet->eta(), jet->phi(), iEvent)) {
+                        l1extraParticlesEff->Fill(ipftau->pt());
+                        l1extraParticlesROC->Fill(jet->pt() - 20);
+                        ValuePtJet = jet->pt() - 20;
+                        break;
                     }
+                }
                 if (ValuePtTau || ValuePtJet) (ValuePtTau > ValuePtJet ? Eff2D_Num_l1extraParticles->Fill(ipftau->pt(), ValuePtTau) : Eff2D_Num_l1extraParticles->Fill(ipftau->pt(), ValuePtJet));
                 // ############################## NEW tau HLT Algorithm UST2015
                 for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
@@ -335,43 +345,53 @@ void EfficiencyRate_L1Ele::analyze(const edm::Event& iEvent, const edm::EventSet
         ////////////////////////////////////////////////////////////////////////////////
     } else {
 
-        float maxValPt_tau = 0;
-        float maxValPt_jet = 0;
-        for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
-            if (tau->pt() > maxValPt_tau && matchToElectron(tau->eta(), tau->phi(), iEvent)) maxValPt_tau = tau->pt();
-        }
-        for (vector<l1extra::L1JetParticle>::const_iterator jet = jetsHandle->begin(); jet != jetsHandle->end(); jet++) {
-            if (jet->pt() > maxValPt_jet && matchToElectron(jet->eta(), jet->phi(), iEvent)) maxValPt_jet = jet->pt();
-        }
-        (maxValPt_tau > (maxValPt_jet - 20) ? rate_L1JetParticle->Fill(maxValPt_tau) : rate_L1JetParticle->Fill(maxValPt_jet - 20));
+        for (vector<l1extra::L1EmParticle>::const_iterator isoele = IsoElectronHandle->begin(); isoele != IsoElectronHandle->end(); isoele++) {
+            if (isoele->pt() > 20 && fabs(isoele->eta()) < 2.2) {
 
-        //########################################################
-        float maxValPt_ucttau = 0;
-        float maxValPt_ucttau4x4 = 0;
-        for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
-            if (matchToElectron(ucttau->eta(), ucttau->phi(), iEvent)) {
-                if (ucttau->pt() > maxValPt_ucttau) maxValPt_ucttau = ucttau->pt();
-                if (ucttau->getFloat("associatedRegionEt", -4) > maxValPt_ucttau4x4) maxValPt_ucttau4x4 = ucttau->getFloat("associatedRegionEt", -4);
+                EventsPassL1IsoEle20ER->Fill(isoele->pt());
+
+                float maxValPt_tau = 0;
+                float maxValPt_jet = 0;
+                for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
+                    if (tau->pt() > maxValPt_tau && matchToElectron(tau->eta(), tau->phi(), iEvent)) maxValPt_tau = tau->pt();
+                }
+                for (vector<l1extra::L1JetParticle>::const_iterator jet = jetsHandle->begin(); jet != jetsHandle->end(); jet++) {
+                    if (jet->pt() > maxValPt_jet && matchToElectron(jet->eta(), jet->phi(), iEvent)) maxValPt_jet = jet->pt();
+                }
+                (maxValPt_tau > (maxValPt_jet - 20) ? rate_L1JetParticle->Fill(maxValPt_tau) : rate_L1JetParticle->Fill(maxValPt_jet - 20));
+
+                //########################################################
+                float maxValPt_ucttau = 0;
+                float maxValPt_ucttau4x4 = 0;
+                for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
+                    if (matchToElectron(ucttau->eta(), ucttau->phi(), iEvent)) {
+                        if (ucttau->pt() > maxValPt_ucttau) maxValPt_ucttau = ucttau->pt();
+                        if (ucttau->getFloat("associatedRegionEt", -4) > maxValPt_ucttau4x4) maxValPt_ucttau4x4 = ucttau->getFloat("associatedRegionEt", -4);
+                    }
+
+                }
+                rate_UCTCandidate->Fill(maxValPt_ucttau);
+                rate_UCTCandidate4x4->Fill(maxValPt_ucttau4x4);
+
+                //########################################################
+                float maxValPt_uctIsotau = 0;
+                float maxValPt_uctIsotau4x4 = 0;
+                for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++) {
+                    if (matchToElectron(uctIsotau->eta(), uctIsotau->phi(), iEvent)) {
+                        if (uctIsotau->pt() > maxValPt_uctIsotau) maxValPt_uctIsotau = uctIsotau->pt();
+                        if (uctIsotau->getFloat("associatedRegionEt", -4) > maxValPt_uctIsotau4x4) maxValPt_uctIsotau4x4 = uctIsotau->getFloat("associatedRegionEt", -4);
+                    }
+                }
+                rate_UCTCandidateIso->Fill(maxValPt_uctIsotau);
+                rate_UCTCandidateIso4x4->Fill(maxValPt_uctIsotau4x4);
+
+                break; // Just once for an event with L1Ele16ER
             }
-
         }
-        rate_UCTCandidate->Fill(maxValPt_ucttau);
-        rate_UCTCandidate4x4->Fill(maxValPt_ucttau4x4);
-
-        //########################################################
-        float maxValPt_uctIsotau = 0;
-        float maxValPt_uctIsotau4x4 = 0;
-        for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++) {
-            if (matchToElectron(uctIsotau->eta(), uctIsotau->phi(), iEvent)) {
-                if (uctIsotau->pt() > maxValPt_uctIsotau) maxValPt_uctIsotau = uctIsotau->pt();
-                if (uctIsotau->getFloat("associatedRegionEt", -4) > maxValPt_uctIsotau4x4) maxValPt_uctIsotau4x4 = uctIsotau->getFloat("associatedRegionEt", -4);
-            }
-        }
-        rate_UCTCandidateIso->Fill(maxValPt_uctIsotau);
-        rate_UCTCandidateIso4x4->Fill(maxValPt_uctIsotau4x4);
     } // end loop over rate
 
 }
 
 //define this as a plug-in
 DEFINE_FWK_MODULE(EfficiencyRate_L1Ele);
+

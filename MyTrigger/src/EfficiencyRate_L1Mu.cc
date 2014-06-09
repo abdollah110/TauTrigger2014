@@ -64,6 +64,7 @@ private:
     virtual bool matchToMuon(float ieta, float iphi, const edm::Event&);
     //    virtual std::vector<reco::Candidate::LorentzVector> getUCTCandidateP4s(const vector < UCTCandidate >& , int );
 
+    TH1D *EventsPassL1Mu16ER;
     TH1D *offLineTauROC;
     TH1D *l1extraParticlesROC;
     TH1D *RelaxedTauUnpackedROC;
@@ -122,6 +123,7 @@ EfficiencyRate_L1Mu::EfficiencyRate_L1Mu(const edm::ParameterSet& iConfig) {
     myMap1__ = new std::map<std::string, TH1F*>();
 
 
+    EventsPassL1Mu16ER = fs->make<TH1D > ("EventsPassL1Mu16ER", "", 100, 0, 100);
     offLineTauROC = fs->make<TH1D > ("offLineTauROC", "", 100, 0, 100);
     l1extraParticlesROC = fs->make<TH1D > ("l1extraParticlesROC", "", 100, 0, 100);
     RelaxedTauUnpackedROC = fs->make<TH1D > ("RelaxedTauUnpackedROC", "", 100, 0, 100);
@@ -182,7 +184,7 @@ bool EfficiencyRate_L1Mu::matchToMuon(float ieta, float iphi, const edm::Event& 
 
     bool dR03Mu = false;
     for (vector<l1extra::L1MuonParticle>::const_iterator mu = muonsHandle->begin(); mu != muonsHandle->end(); mu++) {
-        if (mu->pt() > 12 && tool.dR2(mu->eta(), mu->phi(), ieta, iphi) < 0.3) {
+        if (mu->pt() > 16 && tool.dR2(mu->eta(), mu->phi(), ieta, iphi) < 0.3) {
             dR03Mu = true;
             break;
         }
@@ -264,9 +266,16 @@ void EfficiencyRate_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetu
     ////////////////////////////////////////////////////////////////////////////////
     //  For efficiency measurement
     ////////////////////////////////////////////////////////////////////////////////
-    if (!srcIsData_) {
+    bool PassL1Mu16ER = false;
+    for (vector<l1extra::L1MuonParticle>::const_iterator mu = muonsHandle->begin(); mu != muonsHandle->end(); mu++) {
+        if (mu->pt() > 16 && fabs(mu->eta()) < 2.2) {
+            PassL1Mu16ER = true;
+        }
+    }
+    ////////////////////////////////////////////////////////////////////////////////
+    if (!srcIsData_ && PassL1Mu16ER) {
         for (pat::TauCollection::const_iterator ipftau = pftausHandle->begin(); ipftau != pftausHandle->end(); ipftau++) {
-            if (ipftau->pt() > 20 && fabs(ipftau->eta()) < 2.3 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits") > 0.5 && ipftau->tauID("againstMuonTight") > 0.5 && matchToGenTau(ipftau->eta(), ipftau->phi(), iEvent)) {
+            if (ipftau->pt() > 20 && fabs(ipftau->eta()) < 2.3 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byLooseCombinedIsolationDeltaBetaCorr3Hits") > 0.5 && matchToGenTau(ipftau->eta(), ipftau->phi(), iEvent)) {
                 offLineTauEff->Fill(ipftau->pt());
                 offLineTauROC->Fill(ipftau->pt());
 
@@ -325,41 +334,54 @@ void EfficiencyRate_L1Mu::analyze(const edm::Event& iEvent, const edm::EventSetu
         ////////////////////////////////////////////////////////////////////////////////
     } else {
 
-        float maxValPt_tau = 0;
-        float maxValPt_jet = 0;
-        for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
-            if (tau->pt() > maxValPt_tau && matchToMuon(tau->eta(), tau->phi(), iEvent)) maxValPt_tau = tau->pt();
-        }
-        for (vector<l1extra::L1JetParticle>::const_iterator jet = jetsHandle->begin(); jet != jetsHandle->end(); jet++) {
-            if (jet->pt() > maxValPt_jet && matchToMuon(jet->eta(), jet->phi(), iEvent)) maxValPt_jet = jet->pt();
-        }
-        (maxValPt_tau > (maxValPt_jet - 20) ? rate_L1JetParticle->Fill(maxValPt_tau) : rate_L1JetParticle->Fill(maxValPt_jet - 20));
+        for (vector<l1extra::L1MuonParticle>::const_iterator mu = muonsHandle->begin(); mu != muonsHandle->end(); mu++) {
+            if (mu->pt() > 16 && fabs(mu->eta()) < 2.2) {
 
-        //########################################################
-        float maxValPt_ucttau = 0;
-        float maxValPt_ucttau4x4 = 0;
-        for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
-            if (matchToMuon(ucttau->eta(), ucttau->phi(), iEvent)) {
-                if (ucttau->pt() > maxValPt_ucttau) maxValPt_ucttau = ucttau->pt();
-                if (ucttau->getFloat("associatedRegionEt", -4) > maxValPt_ucttau4x4) maxValPt_ucttau4x4 = ucttau->getFloat("associatedRegionEt", -4);
+                EventsPassL1Mu16ER->Fill(mu->pt());
+
+
+
+
+                float maxValPt_tau = 0;
+                float maxValPt_jet = 0;
+                // Requirement on L1Mu Candidate
+
+                for (vector<l1extra::L1JetParticle>::const_iterator tau = tausHandle->begin(); tau != tausHandle->end(); tau++) {
+                    if (tau->pt() > maxValPt_tau && matchToMuon(tau->eta(), tau->phi(), iEvent)) maxValPt_tau = tau->pt();
+                }
+                for (vector<l1extra::L1JetParticle>::const_iterator jet = jetsHandle->begin(); jet != jetsHandle->end(); jet++) {
+                    if (jet->pt() > maxValPt_jet && matchToMuon(jet->eta(), jet->phi(), iEvent)) maxValPt_jet = jet->pt();
+                }
+                (maxValPt_tau > (maxValPt_jet - 20) ? rate_L1JetParticle->Fill(maxValPt_tau) : rate_L1JetParticle->Fill(maxValPt_jet - 20));
+
+                //########################################################
+                float maxValPt_ucttau = 0;
+                float maxValPt_ucttau4x4 = 0;
+                for (vector<UCTCandidate>::const_iterator ucttau = tausUpgradeHandle->begin(); ucttau != tausUpgradeHandle->end(); ucttau++) {
+                    if (matchToMuon(ucttau->eta(), ucttau->phi(), iEvent)) {
+                        if (ucttau->pt() > maxValPt_ucttau) maxValPt_ucttau = ucttau->pt();
+                        if (ucttau->getFloat("associatedRegionEt", -4) > maxValPt_ucttau4x4) maxValPt_ucttau4x4 = ucttau->getFloat("associatedRegionEt", -4);
+                    }
+                }
+                rate_UCTCandidate->Fill(maxValPt_ucttau);
+                rate_UCTCandidate4x4->Fill(maxValPt_ucttau4x4);
+
+                //########################################################
+                float maxValPt_uctIsotau = 0;
+                float maxValPt_uctIsotau4x4 = 0;
+                for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++) {
+                    if (matchToMuon(uctIsotau->eta(), uctIsotau->phi(), iEvent)) {
+                        if (uctIsotau->pt() > maxValPt_uctIsotau) maxValPt_uctIsotau = uctIsotau->pt();
+                        if (uctIsotau->getFloat("associatedRegionEt", -4) > maxValPt_uctIsotau4x4) maxValPt_uctIsotau4x4 = uctIsotau->getFloat("associatedRegionEt", -4);
+                    }
+                }
+                rate_UCTCandidateIso->Fill(maxValPt_uctIsotau);
+                rate_UCTCandidateIso4x4->Fill(maxValPt_uctIsotau4x4);
+
+                break; // Just once for an event with L1Mu16ER
             }
         }
-        rate_UCTCandidate->Fill(maxValPt_ucttau);
-        rate_UCTCandidate4x4->Fill(maxValPt_ucttau4x4);
-
-        //########################################################
-        float maxValPt_uctIsotau = 0;
-        float maxValPt_uctIsotau4x4 = 0;
-        for (vector<UCTCandidate>::const_iterator uctIsotau = tausUpgradeIsoHandle->begin(); uctIsotau != tausUpgradeIsoHandle->end(); uctIsotau++) {
-            if (matchToMuon(uctIsotau->eta(), uctIsotau->phi(), iEvent)) {
-                if (uctIsotau->pt() > maxValPt_uctIsotau) maxValPt_uctIsotau = uctIsotau->pt();
-                if (uctIsotau->getFloat("associatedRegionEt", -4) > maxValPt_uctIsotau4x4) maxValPt_uctIsotau4x4 = uctIsotau->getFloat("associatedRegionEt", -4);
-            }
-        }
-        rate_UCTCandidateIso->Fill(maxValPt_uctIsotau);
-        rate_UCTCandidateIso4x4->Fill(maxValPt_uctIsotau4x4);
     } // end loop over rate
-
 }
 
 //define this as a plug-in

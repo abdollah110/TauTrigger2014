@@ -34,6 +34,7 @@ from ROOT import gROOT
 from ROOT import gRandom
 from ROOT import gStyle
 from ROOT import gSystem
+#from numpy import array
 
 canvas = TCanvas("canvas", "", 600, 600)
 gStyle.SetOptStat(0);
@@ -66,7 +67,7 @@ def AddCostumText(candidate):
     t.DrawLatex(0.1, .92, "CMS Preliminary")
     t.DrawLatex(0.7, .92, "di-tau Channel")
     t.SetTextSize(0.060)
-    t.DrawLatex(0.6, .52, "PU40bx25")
+#    t.DrawLatex(0.6, .52, "PU40bx25")
     t.SetTextColor(2)
     return 0
 def AddCostumText2(candidate,CutOffLine):
@@ -94,6 +95,16 @@ def AddCostumMarker(Hist, Min, Max, size, marStyle, marColor, XTitke, YTitle):
     Hist.GetXaxis().SetRangeUser(0,100)
     Hist.GetYaxis().SetTitle(YTitle)
     return 0
+def AddCostumMarkerROC(Hist, Min, Max, size, marStyle, marColor, XTitke, YTitle):
+#    Hist.SetMinimum(Min)
+#    Hist.SetMaximum(Max)
+    Hist.SetMarkerSize(size);
+    Hist.SetMarkerStyle(marStyle);
+    Hist.SetMarkerColor(marColor);
+    Hist.GetXaxis().SetTitle(XTitke)
+    Hist.GetXaxis().SetRangeUser(0,1.0)
+    Hist.GetYaxis().SetTitle(YTitle)
+    return 0
 
     
     
@@ -106,12 +117,12 @@ def doRatio2D(num, denum, cut, marStyle, marColor):
             ValNum = ValNum + num.GetBinContent(ii, jj)
 #            print ii, jj, ValNum
         OneDNum.SetBinContent(ii, ValNum)
-    bins = array('d', [20, 25, 30, 35, 40, 45, 50, 55, 60,65,70, 80,200])
+    bins = array('d', [20, 25, 30, 35, 40, 45, 50, 55, 60,65,70, 80,100])
 #    bins = array('d', [20, 23,26, 29, 32,35, 39, 43, 47, 51, 55,60,65,70,78, 80,90,100,120,140,170,200])
     num_R = OneDNum.Rebin(len(bins)-1, "Hinm", bins)
     denum_R = denum.Rebin(len(bins)-1, "Hin", bins)
     ratio = ROOT.TGraphAsymmErrors(num_R, denum_R, "")
-    AddCostumMarker(ratio, 0.0, 1.2, 1.2, marStyle, marColor, "offLine #tau_{pT} [GeV]", "Efficiency")
+    AddCostumMarker(ratio, 0.0, 1.4, 1.2, marStyle, marColor, "offLine #tau_{pT} [GeV]", "Efficiency")
     ratio.SetLineColor(marColor)
     ratio.SetLineWidth(2)
     return ratio
@@ -138,17 +149,39 @@ def doCommulative2D(cut, num, denum, marStyle, marColor, type):
     AddCostumMarker(commul, 0.001, 1.2, 1.1, marStyle, marColor, "L1 #tau_{pT} [GeV]", type)
     return commul
 
-def doROCCurve(cut, num1, denum1, num2, denum2, marStyle, marColor):
+def doROCCurve(cut, num1, denum1, num2,  marStyle, marColor):
     rocCurve = TH2F(str(num1) + str(cut), "", 120, 0, 1.2, 120, 0, 1.2)
     for ii in range(1, 100):
         if (ii % 10 == 0): print ii, "\t"
         for jj in range (1, 100):
             for kk in range (1, 100):
-                if (math.floor((num1.Integral(ii, 101) * 1.0) * 101 / denum1.Integral(cut, 101)) == jj and math.floor((((num2.Integral(ii, 101) * 1.0) / 40000.)) * 101) == kk):
-#                if (math.floor((num1.Integral(ii, 101) * 1.0) * 101 / denum1.Integral(cut, 101)) == jj and math.floor((1 - ((num2.Integral(ii, 101) * 1.0) / 40000.)) * 101) == kk):
+#                if (math.floor((num1.Integral(ii, 101) * 1.0) * 101 / denum1.Integral(cut, 101)) == jj and math.floor((((num2.Integral(ii, 101) * 1.0) / 40000.)) * 101) == kk):
+                if (math.floor((num1.Integral(ii, 101) * 1.0) * 101 / denum1.Integral(cut, 101)) == jj and math.floor((1 - ((num2.Integral(ii, 101) * 1.0) / 40000000.)) * 101) == kk):
                     rocCurve.SetBinContent(jj + 1, kk + 1, 10)
-    AddCostumMarker(rocCurve, 0.00000001, 1.2, 1.2, marStyle, marColor, "Efficiency", "RateReduction/1000")
+#    AddCostumMarker(rocCurve, 0.00000001, 1.2, 1.2, marStyle, marColor, "Efficiency", "RateReduction/1000")
+    AddCostumMarker(rocCurve, 0.1, 1.2, 1.2, marStyle, marColor, "Efficiency", "1-Rate")
     return rocCurve
+
+def doROCCurve_GR(cut, num1, denum1, num2,  marStyle, marColor):
+    from numpy import array
+    n = 100
+    x=[]
+    y=[]
+    x=[0]*100
+    y=[0]*100
+#    for i in range(1,200):
+#       x.append(0)
+#       y.append(0)
+    for ii in range(1, n):
+        if (ii % 10 == 0): print ii, "\t"
+        x[ii]= (num1.Integral(ii, 101) * 1.0)/ denum1.Integral(cut, 101)
+        y[ii]= 1 - ((num2.Integral(ii, 101) * 1.0) / 40000000.)
+        print ii, x[ii], y[ii]
+#    graph = TGraph(len(x),array(x,'f'),array(y,'f'))
+    graph = TGraph(len(x),array(x,'f'),array(y,'f'))
+#    graph = TGraph(n,x,y)
+#    AddCostumMarkerROC(graph, 0.1, 1.2, 1.2, marStyle, marColor, "Efficiency", "1-Rate")
+    return graph
 
 def doProject2DX(cut, num):
     projectedHist = TH1F(str(num), "", 200, 0, 200)
@@ -233,59 +266,69 @@ Eff2D_Num_IsolatedTau0p1 = FileRootEff.Get("demo/Eff2D_Num_IsolatedTau0p1");
 
 
 
+##########################################################################################################
+##########################################################################################################
+IsolatedTauEff20_4x4 = doRatio2D(Num_IsolatedTauEff_4x4, DenumEff, 20, 21, 2)
+IsolatedTauEff25_4x4 = doRatio2D(Num_IsolatedTauEff_4x4, DenumEff, 25, 22, 3)
+IsolatedTauEff30_4x4 = doRatio2D(Num_IsolatedTauEff_4x4, DenumEff, 30, 23, 4)
+IsolatedTauEff35_4x4 = doRatio2D(Num_IsolatedTauEff_4x4, DenumEff, 35, 24, 6)
+IsolatedTauEff40_4x4 = doRatio2D(Num_IsolatedTauEff_4x4, DenumEff, 40, 26, 7)
+IsolatedTauEff45_4x4 = doRatio2D(Num_IsolatedTauEff_4x4, DenumEff, 45, 27, 8)
 
-
-
-
-
-IsolatedTauEff10_4x4 = doRatio2D(Num_IsolatedTauEff_4x4, DenumEff, 20, 21, 2)
-IsolatedTauEff15_4x4 = doRatio2D(Num_IsolatedTauEff_4x4, DenumEff, 25, 22, 3)
-IsolatedTauEff20_4x4 = doRatio2D(Num_IsolatedTauEff_4x4, DenumEff, 30, 23, 4)
-IsolatedTauEff25_4x4 = doRatio2D(Num_IsolatedTauEff_4x4, DenumEff, 35, 24, 6)
-IsolatedTauEff10_4x4.Draw("PAE")
-IsolatedTauEff15_4x4.Draw("Psame")
-IsolatedTauEff20_4x4.Draw("Psame")
+IsolatedTauEff20_4x4.Draw("PAE")
 IsolatedTauEff25_4x4.Draw("Psame")
-legend_ = TLegend(0.50, 0.78, 0.85, 0.9)
+IsolatedTauEff30_4x4.Draw("Psame")
+IsolatedTauEff35_4x4.Draw("Psame")
+IsolatedTauEff40_4x4.Draw("Psame")
+IsolatedTauEff45_4x4.Draw("Psame")
+legend_ = TLegend(0.50, 0.70, 0.85, 0.9)
 legend_.SetFillColor(0)
 legend_.SetBorderSize(0)
 legend_.SetTextSize(.03)
-legend_.AddEntry(IsolatedTauEff10_4x4, "UCTIsoTau 20GeV", "lp")
-legend_.AddEntry(IsolatedTauEff15_4x4, "UCTIsoTau 25GeV", "lp")
-legend_.AddEntry(IsolatedTauEff20_4x4, "UCTIsoTau 30GeV", "lp")
-legend_.AddEntry(IsolatedTauEff25_4x4, "UCTIsoTau 35GeV", "lp")
+legend_.AddEntry(IsolatedTauEff20_4x4, "UCTIsoTau 20GeV", "lp")
+legend_.AddEntry(IsolatedTauEff25_4x4, "UCTIsoTau 25GeV", "lp")
+legend_.AddEntry(IsolatedTauEff30_4x4, "UCTIsoTau 30GeV", "lp")
+legend_.AddEntry(IsolatedTauEff35_4x4, "UCTIsoTau 35GeV", "lp")
+legend_.AddEntry(IsolatedTauEff40_4x4, "UCTIsoTau 40GeV", "lp")
+legend_.AddEntry(IsolatedTauEff45_4x4, "UCTIsoTau 45GeV", "lp")
 legend_.Draw()
 AddCostumText(candidate)
 canvas.SaveAs("PlotTau/out_" + candidate + "TauEfficiencyUCTTau4x4DifferentL1Pt.pdf")
 
+##########################################################################################################
+##########################################################################################################
+IsolatedTauEff20_0p2 = doRatio2D(Eff2D_Num_IsolatedTau0p2, DenumEff, 20, 21, 2)
+IsolatedTauEff25_0p2 = doRatio2D(Eff2D_Num_IsolatedTau0p2, DenumEff, 25, 22, 3)
+IsolatedTauEff30_0p2 = doRatio2D(Eff2D_Num_IsolatedTau0p2, DenumEff, 30, 23, 4)
+IsolatedTauEff35_0p2 = doRatio2D(Eff2D_Num_IsolatedTau0p2, DenumEff, 35, 24, 6)
+IsolatedTauEff40_0p2 = doRatio2D(Eff2D_Num_IsolatedTau0p2, DenumEff, 40, 26, 7)
+IsolatedTauEff45_0p2 = doRatio2D(Eff2D_Num_IsolatedTau0p2, DenumEff, 45, 27, 8)
 
+IsolatedTauEff20_0p2.Draw("PAE")
+IsolatedTauEff25_0p2.Draw("Psame")
+IsolatedTauEff30_0p2.Draw("Psame")
+IsolatedTauEff35_0p2.Draw("Psame")
+IsolatedTauEff40_0p2.Draw("Psame")
+IsolatedTauEff45_0p2.Draw("Psame")
+legend_ = TLegend(0.50, 0.70, 0.85, 0.9)
+legend_.SetFillColor(0)
+legend_.SetBorderSize(0)
+legend_.SetTextSize(.03)
+legend_.AddEntry(IsolatedTauEff20_0p2, "UCTIsoTau0.2 20GeV", "lp")
+legend_.AddEntry(IsolatedTauEff25_0p2, "UCTIsoTau0.2 25GeV", "lp")
+legend_.AddEntry(IsolatedTauEff30_0p2, "UCTIsoTau0.2 30GeV", "lp")
+legend_.AddEntry(IsolatedTauEff35_0p2, "UCTIsoTau0.2 35GeV", "lp")
+legend_.AddEntry(IsolatedTauEff40_0p2, "UCTIsoTau0.2 40GeV", "lp")
+legend_.AddEntry(IsolatedTauEff45_0p2, "UCTIsoTau0.2 45GeV", "lp")
+legend_.Draw()
+AddCostumText(candidate)
+canvas.SaveAs("PlotTau/out_" + candidate + "TauEfficiencyUCTTau0p2DifferentL1Pt.pdf")
 
-#
-#l1extraEff = doRatio2D(Num_l1extraEff, DenumEff, 25, 21, 2)
-#RelaxedTauEff = doRatio2D(Num_RelaxedTauEff_4x4, DenumEff, 25, 22, 3)
-#IsolatedTauEff = doRatio2D(Num_IsolatedTauEff_4x4, DenumEff, 25, 23, 4)
-#l1extraEff.Draw("PAE")
-#RelaxedTauEff.Draw("Psame")
-#IsolatedTauEff.Draw("Psame")
-#legend_ = TLegend(0.50, 0.78, 0.85, 0.9)
-#legend_.SetFillColor(0)
-#legend_.SetBorderSize(0)
-#legend_.SetTextSize(.03)
-#legend_.AddEntry(l1extraEff, "L1tau or jet", "lp")
-#legend_.AddEntry(RelaxedTauEff, "UCTTau", "lp")
-#legend_.AddEntry(IsolatedTauEff, "UCTIsoTau", "lp")
-#legend_.Draw()
-#AddCostumText(candidate)
-#canvas.SaveAs("PlotTau/out_" + candidate + "TauEfficiencyDifferentL1Algo.pdf")
-
-#
-ptL1 = [1,40,70]
+##########################################################################################################
+##########################################################################################################
+ptL1 = [40]
 for iipt in ptL1:
     l1extraROC = doCommulative2D(iipt, Num_l1extraEff, DenumROC, 19, 1, "Efficiency")
-#    RelaxedTau4x4ROC = doCommulative2D(iipt, Num_RelaxedTauEff_4x4, DenumROC, 24, 6, "Efficiency")
-#    IsolatedTau4x4ROC = doCommulative2D(iipt, Num_IsolatedTauEff_4x4, DenumROC, 25, 2, "Efficiency")
-#    Eff2D_Num_IsolatedTauNoEta_ = doCommulative2D(iipt,Eff2D_Num_IsolatedTauNoEta, DenumROC, 20, 3, "Efficiency")
-#    Eff2D_Num_IsolatedTau_ = doCommulative2D(iipt,Eff2D_Num_IsolatedTau, DenumROC, 21, 4, "Efficiency")
     Eff2D_Num_IsolatedTau1p0_ = doCommulative2D(iipt,Eff2D_Num_IsolatedTau1p0, DenumROC, 22, 5, "Efficiency")
     Eff2D_Num_IsolatedTau0p5_ = doCommulative2D(iipt,Eff2D_Num_IsolatedTau0p5, DenumROC, 23, 6, "Efficiency")
     Eff2D_Num_IsolatedTau0p3_ = doCommulative2D(iipt,Eff2D_Num_IsolatedTau0p3, DenumROC, 24, 7, "Efficiency")
@@ -293,12 +336,7 @@ for iipt in ptL1:
     Eff2D_Num_IsolatedTau0p2_ = doCommulative2D(iipt,Eff2D_Num_IsolatedTau0p2, DenumROC, 17, 9, "Efficiency")
     Eff2D_Num_IsolatedTau0p1_ = doCommulative2D(iipt,Eff2D_Num_IsolatedTau0p1, DenumROC, 18, 11, "Efficiency")
 
-
     l1extraROC.Draw("P")
-#    RelaxedTau4x4ROC.Draw("Psame")
-#    IsolatedTau4x4ROC.Draw("Psame")
-#    Eff2D_Num_IsolatedTauNoEta_.Draw("Psame")
-#    Eff2D_Num_IsolatedTau_.Draw("Psame")
     Eff2D_Num_IsolatedTau1p0_.Draw("Psame")
     Eff2D_Num_IsolatedTau0p5_.Draw("Psame")
     Eff2D_Num_IsolatedTau0p3_.Draw("Psame")
@@ -306,32 +344,24 @@ for iipt in ptL1:
     Eff2D_Num_IsolatedTau0p2_.Draw("Psame")
     Eff2D_Num_IsolatedTau0p1_.Draw("Psame")
 
-    legend_ = TLegend(0.70, 0.58, 0.85, 0.9)
+    legend_ = TLegend(0.70, 0.48, 0.85, 0.9)
     legend_.SetFillColor(0)
     legend_.SetBorderSize(0)
     legend_.SetTextSize(.03)
     legend_.AddEntry(l1extraROC, "L1tau or jet", "lp")
-#    legend_.AddEntry(RelaxedTau4x4ROC, "UCTTau4x4", "lp")
-#    legend_.AddEntry(IsolatedTau4x4ROC, "UCTIsoTau4x4", "lp")
-#    Eff2D_Num_IsolatedTauNoEta_ = doCommulative2D(iipt,Eff2D_Num_IsolatedTauNoEta, DenumROC, 20, 3, "Efficiency")
-#    Eff2D_Num_IsolatedTau_ = doCommulative2D(iipt,Eff2D_Num_IsolatedTau, DenumROC, 21, 4, "Efficiency")
     legend_.AddEntry(Eff2D_Num_IsolatedTau1p0_, "1p0", "lp")
     legend_.AddEntry(Eff2D_Num_IsolatedTau0p5_, "0p5", "lp")
     legend_.AddEntry(Eff2D_Num_IsolatedTau0p3_, "0p3", "lp")
     legend_.AddEntry(Eff2D_Num_IsolatedTau0p25_, "0p25", "lp")
     legend_.AddEntry(Eff2D_Num_IsolatedTau0p2_, "0p2", "lp")
     legend_.AddEntry(Eff2D_Num_IsolatedTau0p1_, "0p1", "lp")
-
-    
     legend_.Draw()
     AddCostumText2(candidate,iipt)
     canvas.SaveAs("PlotTau/out_" + candidate + "TauEfficiencyCumulative2D" + str(iipt) + ".pdf")
 
 
-
-
-
-#L1JetParticleCum = doCommulativeRate(L1JetParticle, L1JetParticle, 21, 2, "L1 Rate")
+##########################################################################################################
+##########################################################################################################
 rate_L1JetParticle_ = doCommulativeRate(rate_L1JetParticle, 24, 6, "L1 Rate Reduction")
 rate_UCTTauNoIsoNoEta_ = doCommulativeRate(rate_UCTTauNoIsoNoEta, 25, 7, "L1 Rate Reduction")
 rate_UCTTauNoIso_ = doCommulativeRate(rate_UCTTauNoIso, 20, 1, "L1 Rate Reduction")
@@ -344,12 +374,7 @@ rate_UCTTauIso0p25_ = doCommulativeRate(rate_UCTTauIso0p25, 27, 8, "L1 Rate Redu
 rate_UCTTauIso0p2_ = doCommulativeRate(rate_UCTTauIso0p2, 29, 13, "L1 Rate Reduction")
 rate_UCTTauIso0p1_ = doCommulativeRate(rate_UCTTauIso0p1, 30, 11, "L1 Rate Reduction")
 
-#L1JetParticleCum.Draw("P")
 rate_L1JetParticle_.Draw("P")
-#rate_UCTTauNoIsoNoEta_.Draw("Psame")
-#rate_UCTTauNoIso_.Draw("Psame")
-#rate_UCTTauIsoNoEta_.Draw("Psame")
-#rate_UCTTauIso_.Draw("Psame")
 rate_UCTTauIso1p0_.Draw("Psame")
 rate_UCTTauIso0p5_.Draw("Psame")
 rate_UCTTauIso0p3_.Draw("Psame")
@@ -360,12 +385,7 @@ legend_ = TLegend(0.50, 0.58, 0.85, 0.9)
 legend_.SetFillColor(0)
 legend_.SetBorderSize(0)
 legend_.SetTextSize(.03)
-#legend_.AddEntry(L1JetParticleCum, "L1Tau or Jet", "lp")
 legend_.AddEntry(rate_L1JetParticle_, "L1tau || Jet", "lp")
-#legend_.AddEntry(rate_UCTTauNoIsoNoEta_, "NoIsoNoEta", "lp")
-#legend_.AddEntry(rate_UCTTauNoIso_, "NoIso", "lp")
-#legend_.AddEntry(rate_UCTTauIsoNoEta_," IsoNoEta", "lp")
-#legend_.AddEntry(rate_UCTTauIso_," Iso default ", "lp")
 legend_.AddEntry(rate_UCTTauIso1p0_," Iso1p0", "lp")
 legend_.AddEntry(rate_UCTTauIso0p5_," Iso0p5", "lp")
 legend_.AddEntry(rate_UCTTauIso0p3_," Iso0p3", "lp")
@@ -377,6 +397,8 @@ legend_.Draw()
 AddCostumText(candidate)
 canvas.SaveAs("PlotTau/out_" + candidate + "TauRateCumulative.pdf")
 
+##########################################################################################################
+##########################################################################################################
 
 
 
@@ -388,22 +410,32 @@ canvas.SaveAs("PlotTau/out_" + candidate + "TauRateCumulative.pdf")
 #print "rate Tau  25= ", UCTCandidateIso.Integral(25,200)/1000
 #print "rate Tau  30= ", UCTCandidateIso.Integral(30,200)/1000
 ##
-#ptL1 = [20,30,40]
+#ptL1 = [40]
 #for iipt in ptL1:
 ##    L1JetParticleROC = doROCCurve(iipt, doProject2DX(iipt, Num_l1extraEff), DenumROC, L1JetParticle, L1JetParticle, 21, 2)
-#    UCTCandidateROC4x4 = doROCCurve(iipt, doProject2DX(iipt, Num_RelaxedTauEff_4x4), DenumROC, UCTCandidate4x4, UCTCandidate4x4, 24, 6)
-#    UCTCandidateIsoROC4x4 = doROCCurve(iipt, doProject2DX(iipt, Num_IsolatedTauEff_4x4), DenumROC, UCTCandidateIso4x4, UCTCandidateIso4x4, 25, 7)
+##    UCTCandidateROC4x4 = doROCCurve(iipt, doProject2DX(iipt, Num_RelaxedTauEff_4x4), DenumROC, UCTCandidate4x4,  24, 6)
+#    UCTCandidateIsoROC4x4 = doROCCurve_GR(iipt, doProject2DX(iipt, Eff2D_Num_IsolatedTau1p0), DenumROC, rate_UCTTauIso1p0,  25, 7)
 ##    L1JetParticleROC.Draw("P")
-#    UCTCandidateROC4x4.Draw("P")
-#    UCTCandidateIsoROC4x4.Draw("Psame")
+##    UCTCandidateROC4x4.Draw("P")
+##    UCTCandidateIsoROC4x4 =  TGraph(n,x,y);
+#    UCTCandidateIsoROC4x4.SetLineColor(2);
+#    UCTCandidateIsoROC4x4.SetLineWidth(4);
+#    UCTCandidateIsoROC4x4.SetMarkerColor(4);
+#    UCTCandidateIsoROC4x4.SetMarkerStyle(21);
+#    UCTCandidateIsoROC4x4.SetTitle("a simple graph");
+#    UCTCandidateIsoROC4x4.GetXaxis().SetTitle("X title");
+#    UCTCandidateIsoROC4x4.GetYaxis().SetTitle("Y title");
+#    UCTCandidateIsoROC4x4.Draw("ACP");
+##    UCTCandidateIsoROC4x4.Draw("ACP")
 #    legend_ = TLegend(0.50, 0.78, 0.85, 0.9)
 #    legend_.SetFillColor(0)
 #    legend_.SetBorderSize(0)
 #    legend_.SetTextSize(.03)
 ##    legend_.AddEntry(L1JetParticleROC, "L1Tau or Jet", "lp")
-#    legend_.AddEntry(UCTCandidateROC4x4, "UCTTau4x4", "lp")
+##    legend_.AddEntry(UCTCandidateROC4x4, "UCTTau4x4", "lp")
 #    legend_.AddEntry(UCTCandidateIsoROC4x4, "UCTIsoTau4x4", "lp")
-#    canvas.SetLogy()
+#    canvas.SetLogy(0)
+##    canvas.SetNormal()
 #    legend_.Draw()
 #    AddCostumText(candidate)
 #    canvas.SaveAs("PlotTau/out_" + candidate + "TauROC" + str(iipt) + ".pdf")
