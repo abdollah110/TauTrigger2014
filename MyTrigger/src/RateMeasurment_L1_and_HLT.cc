@@ -42,6 +42,13 @@
 #include "FWCore/Common/interface/TriggerNames.h"
 //HLT
 #include "DataFormats/HLTReco/interface/TriggerEvent.h"
+
+
+#include "DataFormats/CaloTowers/interface/CaloTower.h"
+#include "L1Trigger/UCT2015/interface/UCTCandidate.h"
+#include "DataFormats/HepMCCandidate/interface/GenParticle.h"
+#include "DataFormats/HepMCCandidate/interface/GenParticleFwd.h"
+
 #include "TH1.h"
 
 //
@@ -269,7 +276,6 @@ RateMeasurment_L1_and_HLT::analyze(const edm::Event& iEvent, const edm::EventSet
     int step2 = 0;
     int step3 = 0;
     int step4 = 0;
-    int step5 = 0;
     //####################################################################################################
     //    Measuring the L1 Rate
     //####################################################################################################
