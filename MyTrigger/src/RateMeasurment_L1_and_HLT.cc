@@ -63,6 +63,8 @@ public:
     MyTools tool;
 private:
     virtual void analyze(const edm::Event&, const edm::EventSetup&);
+    virtual bool hasOverLap_(float, float, const edm::Event&);
+    virtual bool matchToMuon(float, float, const edm::Event&);
     TH1D * Histo_RateReduction;
     TH1D * Mass_BeforAntiEle;
     TH1D * Mass_AfterAntiEle;
@@ -107,9 +109,7 @@ RateMeasurment_L1_and_HLT::~RateMeasurment_L1_and_HLT() {
 // member functions
 //
 
-
-
-bool hasOverLap_(float eta_, float phi_, const edm::Event& iEvent) {
+bool RateMeasurment_L1_and_HLT::hasOverLap_(float eta_, float phi_, const edm::Event& iEvent) {
     using reco::Muon;
     using reco::MuonCollection;
     using reco::RecoChargedCandidate;
@@ -135,7 +135,7 @@ bool hasOverLap_(float eta_, float phi_, const edm::Event& iEvent) {
     return dR05;
 }
 
-bool matchToMuon(float ieta, float iphi, const edm::Event& iEvent) {
+bool RateMeasurment_L1_and_HLT::matchToMuon(float ieta, float iphi, const edm::Event& iEvent) {
     using namespace std;
     using namespace edm;
 
