@@ -212,8 +212,8 @@ RateMeasurment_L1_and_HLT::analyze(const edm::Event& iEvent, const edm::EventSet
     edm::Handle < edm::SortedCollection<CaloTower, edm::StrictWeakOrdering<CaloTower> >> CaloTowerHandle;
     iEvent.getByLabel(srcHLTCaloTowers_, CaloTowerHandle);
 
-    Handle < vector < l1extra::L1JetParticle >> tausHandle;
-    iEvent.getByLabel(L1TauSource_, tausHandle);
+//    Handle < vector < l1extra::L1JetParticle >> tausHandle;
+//    iEvent.getByLabel(L1TauSource_, tausHandle);
 
     Handle < vector < l1extra::L1JetParticle >> jetsHandle;
     iEvent.getByLabel(L1JetSource_, jetsHandle);
