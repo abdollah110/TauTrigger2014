@@ -73,6 +73,8 @@ private:
     TH1D * Mass_AfterAntiEle;
     edm::InputTag srcTriggerResults_;
     edm::InputTag srcGenParticle_;
+    edm::InputTag srcL1IsoElectron_;
+    edm::InputTag srcL1NonIsoElectron_;
     edm::InputTag L1TauSource_;
     edm::InputTag L1JetSource_;
     edm::InputTag L1MuSource_;
@@ -92,6 +94,8 @@ RateMeasurment_L1_and_HLT_Ele::RateMeasurment_L1_and_HLT_Ele(const edm::Paramete
 
     srcTriggerResults_ = iConfig.getParameter<edm::InputTag > ("srcTriggerResults");
     srcGenParticle_ = iConfig.getParameter<edm::InputTag > ("srcGenParticle");
+    srcL1IsoElectron_ = iConfig.getParameter<edm::InputTag > ("srcL1IsoElectron");
+    srcL1NonIsoElectron_ = iConfig.getParameter<edm::InputTag > ("srcL1NonIsoElectron");
     L1MuSource_ = iConfig.getParameter<edm::InputTag > ("srcL1Mus");
     L1TauSource_ = iConfig.getParameter<edm::InputTag > ("srcL1Taus");
     L1JetSource_ = iConfig.getParameter<edm::InputTag > ("srcL1Jets");
@@ -136,7 +140,7 @@ bool RateMeasurment_L1_and_HLT_Ele::hasNoOverLapETau(float eta_, float phi_, con
 }
 
 
-bool EfficiencyRate_L1Ele::matchToElectron(float ieta, float iphi, const edm::Event& iEvent) {
+bool RateMeasurment_L1_and_HLT_Ele::matchToElectron(float ieta, float iphi, const edm::Event& iEvent) {
     using namespace std;
     using namespace edm;
 

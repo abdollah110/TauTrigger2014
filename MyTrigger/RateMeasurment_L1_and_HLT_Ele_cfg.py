@@ -28,6 +28,8 @@ process.demo = cms.EDAnalyzer(
                                 "RateMeasurment_L1_and_HLT_Ele",
                               srcTriggerResults=cms.InputTag("TriggerResults", "", "HLT"),
                               srcGenParticle=cms.InputTag("genParticles"),
+                              srcL1IsoElectron=cms.InputTag("l1extraParticles","Isolated"),
+                              srcL1NonIsoElectron=cms.InputTag("l1extraParticles","NonIsolated"),
                               srcL1Mus=cms.InputTag("l1extraParticles"),
                               srcL1Taus=cms.InputTag("l1extraParticles", "Tau"),
                               srcL1Jets=cms.InputTag("l1extraParticles", "Central"),
