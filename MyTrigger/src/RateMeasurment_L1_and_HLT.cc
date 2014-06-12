@@ -206,8 +206,8 @@ RateMeasurment_L1_and_HLT::analyze(const edm::Event& iEvent, const edm::EventSet
     edm::Handle<TriggerResults> triggerResults;
     iEvent.getByLabel(srcTriggerResults_, triggerResults);
 
-//    Handle < vector < l1extra::L1MuonParticle >> HLTMuonHandle;
-//    iEvent.getByLabel(L1MuSource_, HLTMuonHandle);
+    Handle < vector < l1extra::L1MuonParticle >> L1MuonHandle;
+    iEvent.getByLabel(L1MuSource_, L1MuonHandle);
 
     edm::Handle < edm::SortedCollection<CaloTower, edm::StrictWeakOrdering<CaloTower> >> CaloTowerHandle;
     iEvent.getByLabel(srcHLTCaloTowers_, CaloTowerHandle);
@@ -279,7 +279,7 @@ RateMeasurment_L1_and_HLT::analyze(const edm::Event& iEvent, const edm::EventSet
     //####################################################################################################
     //    Measuring the L1 Rate
     //####################################################################################################
-    for (vector<l1extra::L1MuonParticle>::const_iterator mu = HLTMuonHandle->begin(); mu != HLTMuonHandle->end(); mu++) {
+    for (vector<l1extra::L1MuonParticle>::const_iterator mu = L1MuonHandle->begin(); mu != L1MuonHandle->end(); mu++) {
         if (mu->pt() > 16 && fabs(mu->eta()) < 2.2) {
             step1++;
 
