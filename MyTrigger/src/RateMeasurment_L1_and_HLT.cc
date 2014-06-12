@@ -277,6 +277,7 @@ RateMeasurment_L1_and_HLT::analyze(const edm::Event& iEvent, const edm::EventSet
     for (vector<l1extra::L1MuonParticle>::const_iterator mu = L1MuonHandle->begin(); mu != L1MuonHandle->end(); mu++) {
         if (mu->pt() > 16 && fabs(mu->eta()) < 2.2) {
             step1++;
+            cout<< "1  ___  This event passed L1Mu"<<endl;
 
             //******************************************************
             float maxValPt_ucttau = 0;
@@ -289,6 +290,7 @@ RateMeasurment_L1_and_HLT::analyze(const edm::Event& iEvent, const edm::EventSet
             if (maxValPt_ucttau > 20) {
                 step2++;
                 PassedL1Mu16Tau20 = true;
+            cout<< "2  ___  This event passed L1Tau"<<endl;
             }
 
             //******************************************************
@@ -312,6 +314,7 @@ RateMeasurment_L1_and_HLT::analyze(const edm::Event& iEvent, const edm::EventSet
             if (imu->pt() > 16 && fabs(imu->eta()) < 2.1) {
                 step3++;
                 break; // Just once for an event with L1Mu16ER
+                cout<< "3  ___  This event passed HLT MU"<<endl;
 
                 //******************************************************
                 //  Making Loop over Taus
@@ -325,6 +328,7 @@ RateMeasurment_L1_and_HLT::analyze(const edm::Event& iEvent, const edm::EventSet
                     bool discByMuLoose = (itau->tauID("againstMuonLoose") > 0.5 ? true : false);
 
                     if (ptCut && hasOverLap_Mu && discByDecayModeFinding && discByIsolation5hits && discByMuLoose) {
+                    cout<< "4  ___  This event passed HLT Tau"<<endl;
                         step4++;
                     }
                 }
