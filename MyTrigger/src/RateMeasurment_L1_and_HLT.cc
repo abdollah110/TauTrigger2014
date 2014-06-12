@@ -48,6 +48,7 @@
 #include "L1Trigger/UCT2015/interface/UCTCandidate.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticleFwd.h"
+#include "../interface/MyTools.h"
 
 #include "TH1.h"
 
@@ -59,6 +60,7 @@ class RateMeasurment_L1_and_HLT : public edm::EDAnalyzer {
 public:
     explicit RateMeasurment_L1_and_HLT(const edm::ParameterSet&);
     ~RateMeasurment_L1_and_HLT();
+    MyTools tool;
 private:
     virtual void analyze(const edm::Event&, const edm::EventSetup&);
     TH1D * Histo_RateReduction;
@@ -105,36 +107,9 @@ RateMeasurment_L1_and_HLT::~RateMeasurment_L1_and_HLT() {
 // member functions
 //
 
-float deltaPhi_(float a, float b) {
-    float result = a - b;
-    while (result > M_PI) result -= 2 * M_PI;
-    while (result <= -M_PI) result += 2 * M_PI;
-    return fabs(result);
-}
 
-float dR(float l1eta, float l1phi, float l2eta, float l2phi) {
-    float deta = l1eta - l2eta;
-    float dphi = deltaPhi_(l1phi, l2phi);
-    return sqrt(deta * deta + dphi * dphi);
-}
 
-float doInVarMass(float eta_, float phi_, float itauE, float itaupx, float itaupy, float itaupz, const edm::Event& iEvent) {
-    using reco::RecoChargedCandidate;
-    using namespace std;
-    using namespace reco;
-    using namespace edm;
-    Handle < std::vector < reco::RecoChargedCandidate >> HLTMuonHandle;
-    iEvent.getByLabel("isolatedOnlineMuons", HLTMuonHandle);
-    float mass_ = 0;
-    for (vector<reco::RecoChargedCandidate>::const_iterator imu = HLTMuonHandle->begin(); imu != HLTMuonHandle->end(); imu++) {
-        if (imu->pt() > 17 && fabs(imu->eta()) < 2.4 && dR(imu->eta(), imu->phi(), eta_, phi_) > 0.4) {
-            mass_ = sqrt(TMath::Power(imu->energy() + itauE, 2) - TMath::Power(imu->px() + itaupx, 2) - TMath::Power(imu->py() + itaupy, 2) - TMath::Power(imu->pz() + itaupz, 2));
-        }
-    }
-    return mass_;
-}
-
-bool hasOverLap(float eta_, float phi_, const edm::Event& iEvent) {
+bool hasOverLap_(float eta_, float phi_, const edm::Event& iEvent) {
     using reco::Muon;
     using reco::MuonCollection;
     using reco::RecoChargedCandidate;
@@ -154,11 +129,12 @@ bool hasOverLap(float eta_, float phi_, const edm::Event& iEvent) {
     //&&&&&&&&&&&&&&&&&
     bool dR05 = 0;
     for (; imu != jmu; ++imu) {
-        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1) dR05 = (dR(imu->eta(), imu->phi(), eta_, phi_) > 0.4 ? 1 : 0);
+        if (imu->pt() > 17 && fabs(imu->eta()) < 2.1) dR05 = (tool.dR2(imu->eta(), imu->phi(), eta_, phi_) > 0.4 ? 1 : 0);
     }
 
     return dR05;
 }
+
 bool matchToMuon(float ieta, float iphi, const edm::Event& iEvent) {
     using namespace std;
     using namespace edm;
@@ -170,7 +146,7 @@ bool matchToMuon(float ieta, float iphi, const edm::Event& iEvent) {
 
     bool dR03Mu = false;
     for (vector<l1extra::L1MuonParticle>::const_iterator mu = muonsHandle->begin(); mu != muonsHandle->end(); mu++) {
-        if (mu->pt() > 16 && dR(mu->eta(), mu->phi(), ieta, iphi) < 0.3) {
+        if (mu->pt() > 16 && tool.dR2(mu->eta(), mu->phi(), ieta, iphi) < 0.3) {
             dR03Mu = true;
             break;
         }
@@ -195,7 +171,7 @@ bool matchToMuon(float ieta, float iphi, const edm::Event& iEvent) {
 //    bool dR05 = 0;
 //    for (; ipftau != jpftau; ++ipftau) {
 //        if (isoOption == 3 && ipftau->pt() > 20 && ipftau->tauID("decayModeFinding") > 0.5 && ipftau->tauID("byLooseCombinedIsolationDeltaBetaCorr3Hits") > 0.5 && ipftau->tauID("againstMuonLoose3") > 0.5) {
-//            if (dR(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5) {
+//            if (tool.dR2(ipftau->eta(), ipftau->phi(), eta_, phi_) < 0.5) {
 //                return 1;
 //                dR05 = 1;
 //                break;
@@ -231,8 +207,8 @@ RateMeasurment_L1_and_HLT::analyze(const edm::Event& iEvent, const edm::EventSet
     edm::Handle < edm::SortedCollection<CaloTower, edm::StrictWeakOrdering<CaloTower> >> CaloTowerHandle;
     iEvent.getByLabel(srcHLTCaloTowers_, CaloTowerHandle);
 
-//    Handle < vector < l1extra::L1JetParticle >> tausHandle;
-//    iEvent.getByLabel(L1TauSource_, tausHandle);
+    //    Handle < vector < l1extra::L1JetParticle >> tausHandle;
+    //    iEvent.getByLabel(L1TauSource_, tausHandle);
 
     Handle < vector < l1extra::L1JetParticle >> jetsHandle;
     iEvent.getByLabel(L1JetSource_, jetsHandle);
@@ -256,39 +232,39 @@ RateMeasurment_L1_and_HLT::analyze(const edm::Event& iEvent, const edm::EventSet
     iEvent.getByLabel("isolatedOnlineMuons", HLTMuonHandle);
 
 
-//    if (triggerResults.isValid()) {
-//        int ntrigs = triggerResults->size();
-//        TriggerNames const &triggerNames = iEvent.triggerNames(*triggerResults);
-//        cout << "ntrigs size = " << ntrigs << "\n";
-//        for (int itrig = 0; itrig < ntrigs; itrig++) {
-//            string name = triggerNames.triggerName(itrig);
-//            bool result = triggerResults->accept(itrig);
-//            //            size_t foundEl = name.find(eleTrigger);
-//            //            size_t foundMu = name.find(muTrigger);
-//            //            if (filterTriggerResults && (foundEl != string::npos || foundMu != string::npos))
-//            //                (m->HLT)[name] = result;
-//            //            else if (!filterTriggerResults)
-//            //                (m->HLT)[name] = result;
-//
-//            //
-//            //            if (name == "HLT_Ele17_CaloIdL_CaloIsoVL_Ele8_CaloIdL_CaloIsoVL_v2") {
-//            //                m->HLT_DiElectron = result;
-//            //                // cout << "HLT_Ele17_CaloIdL_CaloIsoVL_Ele8_CaloIdL_CaloIsoVL_v2" << endl;
-//            //            }
-//            //            if (name == "HLT_DoubleMu7_v1") {
-//            //                m->HLT_DiMuon = result;
-//            //                // cout << "HLT_DoubleMu7_v1" << endl;
-//            //            }
-//
-//            size_t foundMu = name.find("IsoMu17_eta2p1_LooseIsoPFTau20");
-//
-//            //            Histo_RateReduction->Fill(1);
-//            if (foundMu != string::npos) {
-//                //                cout << name << " = " << result << endl;
-//                if (result == 1) Histo_RateReduction->Fill(2);
-//            }
-//        }//for itrig
-//    }//if triggerResults valid
+    //    if (triggerResults.isValid()) {
+    //        int ntrigs = triggerResults->size();
+    //        TriggerNames const &triggerNames = iEvent.triggerNames(*triggerResults);
+    //        cout << "ntrigs size = " << ntrigs << "\n";
+    //        for (int itrig = 0; itrig < ntrigs; itrig++) {
+    //            string name = triggerNames.triggerName(itrig);
+    //            bool result = triggerResults->accept(itrig);
+    //            //            size_t foundEl = name.find(eleTrigger);
+    //            //            size_t foundMu = name.find(muTrigger);
+    //            //            if (filterTriggerResults && (foundEl != string::npos || foundMu != string::npos))
+    //            //                (m->HLT)[name] = result;
+    //            //            else if (!filterTriggerResults)
+    //            //                (m->HLT)[name] = result;
+    //
+    //            //
+    //            //            if (name == "HLT_Ele17_CaloIdL_CaloIsoVL_Ele8_CaloIdL_CaloIsoVL_v2") {
+    //            //                m->HLT_DiElectron = result;
+    //            //                // cout << "HLT_Ele17_CaloIdL_CaloIsoVL_Ele8_CaloIdL_CaloIsoVL_v2" << endl;
+    //            //            }
+    //            //            if (name == "HLT_DoubleMu7_v1") {
+    //            //                m->HLT_DiMuon = result;
+    //            //                // cout << "HLT_DoubleMu7_v1" << endl;
+    //            //            }
+    //
+    //            size_t foundMu = name.find("IsoMu17_eta2p1_LooseIsoPFTau20");
+    //
+    //            //            Histo_RateReduction->Fill(1);
+    //            if (foundMu != string::npos) {
+    //                //                cout << name << " = " << result << endl;
+    //                if (result == 1) Histo_RateReduction->Fill(2);
+    //            }
+    //        }//for itrig
+    //    }//if triggerResults valid
 
     bool PassedL1Mu16Tau20 = false;
     int step1 = 0;
@@ -309,7 +285,7 @@ RateMeasurment_L1_and_HLT::analyze(const edm::Event& iEvent, const edm::EventSet
                     if (ucttau->pt() > maxValPt_ucttau) maxValPt_ucttau = ucttau->pt();
                 }
             }
-//            rate_UCTCandidate->Fill(maxValPt_ucttau);
+            //            rate_UCTCandidate->Fill(maxValPt_ucttau);
             if (maxValPt_ucttau > 20) {
                 step2++;
                 PassedL1Mu16Tau20 = true;
@@ -343,12 +319,12 @@ RateMeasurment_L1_and_HLT::analyze(const edm::Event& iEvent, const edm::EventSet
                 for (pat::TauCollection::const_iterator itau = tausHandleNew->begin(); itau != tausHandleNew->end(); itau++) {
 
                     bool ptCut = itau->pt() > 20 && fabs(itau->eta()) < 2.3;
-                    bool hasOverlapMu = hasOverLap(itau->eta(), itau->phi(), iEvent);
+                    bool hasOverLap_Mu = hasOverLap_(itau->eta(), itau->phi(), iEvent);
                     bool discByDecayModeFinding = (itau->tauID("decayModeFinding") > 0.5 ? true : false);
                     bool discByIsolation5hits = (itau->tauID("byTrkIsolation5hits") < 3.0 ? true : false);
                     bool discByMuLoose = (itau->tauID("againstMuonLoose") > 0.5 ? true : false);
 
-                    if (ptCut && hasOverlapMu && discByDecayModeFinding && discByIsolation5hits && discByMuLoose) {
+                    if (ptCut && hasOverLap_Mu && discByDecayModeFinding && discByIsolation5hits && discByMuLoose) {
                         step4++;
                     }
                 }
