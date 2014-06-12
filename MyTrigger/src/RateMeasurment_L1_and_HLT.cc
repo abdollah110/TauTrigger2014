@@ -206,8 +206,8 @@ RateMeasurment_L1_and_HLT::analyze(const edm::Event& iEvent, const edm::EventSet
     edm::Handle<TriggerResults> triggerResults;
     iEvent.getByLabel(srcTriggerResults_, triggerResults);
 
-    Handle < vector < l1extra::L1MuonParticle >> HLTMuonHandle;
-    iEvent.getByLabel(L1MuSource_, HLTMuonHandle);
+//    Handle < vector < l1extra::L1MuonParticle >> HLTMuonHandle;
+//    iEvent.getByLabel(L1MuSource_, HLTMuonHandle);
 
     edm::Handle < edm::SortedCollection<CaloTower, edm::StrictWeakOrdering<CaloTower> >> CaloTowerHandle;
     iEvent.getByLabel(srcHLTCaloTowers_, CaloTowerHandle);
