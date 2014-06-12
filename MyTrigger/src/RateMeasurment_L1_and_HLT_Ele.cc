@@ -139,7 +139,6 @@ bool RateMeasurment_L1_and_HLT_Ele::hasNoOverLapETau(float eta_, float phi_, con
     return OneNonOverLappedElectronExist;
 }
 
-
 bool RateMeasurment_L1_and_HLT_Ele::matchToElectron(float ieta, float iphi, const edm::Event& iEvent) {
     using namespace std;
     using namespace edm;
@@ -273,6 +272,7 @@ void RateMeasurment_L1_and_HLT_Ele::analyze(const edm::Event& iEvent, const edm:
 
             break; // Just once for an event with L1Mu16ER
             cout << "3  ___  This event passed HLT MU" << endl;
+            step3++;
 
             //******************************************************
             //  Making Loop over Taus
@@ -307,8 +307,18 @@ void RateMeasurment_L1_and_HLT_Ele::analyze(const edm::Event& iEvent, const edm:
     if (step4 > 0) {
         Histo_RateReduction->Fill(4);
     }
+    for (pat::TauCollection::const_iterator itau = tausHandleNew->begin(); itau != tausHandleNew->end(); itau++) {
 
+        bool ptCut = itau->pt() > 20 && fabs(itau->eta()) < 2.3;
+        bool hasNoOverLapETau_ = hasNoOverLapETau(itau->eta(), itau->phi(), iEvent);
+        bool discByDecayModeFinding = (itau->tauID("decayModeFinding") > 0.5 ? true : false);
+        bool discByIsolation5hits = (itau->tauID("byTrkIsolation5hits") < 3.0 ? true : false);
+
+        cout << "Tau is existing " << ptCut << hasNoOverLapETau_ << discByDecayModeFinding << discByIsolation5hits << endl;
+    }
 }
+
+
 
 
 //define this as a plug-in
