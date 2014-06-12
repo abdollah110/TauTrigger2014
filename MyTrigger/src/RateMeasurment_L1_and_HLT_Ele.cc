@@ -270,7 +270,7 @@ void RateMeasurment_L1_and_HLT_Ele::analyze(const edm::Event& iEvent, const edm:
         for (vector<reco::Electron>::const_iterator iele = HLTelectronHandle->begin(); iele != HLTelectronHandle->end(); iele++) {
             if (iele->pt() > 22 && fabs(iele->eta()) < 2.5) step1++;
 
-            break; // Just once for an event with L1Mu16ER
+//            break; // Just once for an event with L1Mu16ER
             cout << "3  ___  This event passed HLT MU" << endl;
             step3++;
 
@@ -314,7 +314,7 @@ void RateMeasurment_L1_and_HLT_Ele::analyze(const edm::Event& iEvent, const edm:
         bool discByDecayModeFinding = (itau->tauID("decayModeFinding") > 0.5 ? true : false);
         bool discByIsolation5hits = (itau->tauID("byTrkIsolation5hits") < 3.0 ? true : false);
 
-        cout << "Tau is existing " << ptCut << hasNoOverLapETau_ << discByDecayModeFinding << discByIsolation5hits << endl;
+//        cout << "Tau is existing " << ptCut << hasNoOverLapETau_ << discByDecayModeFinding << discByIsolation5hits << endl;
     }
 }
 
