@@ -21,7 +21,7 @@ process.isolatedOnlineMuons = cms.EDProducer(
 )
 process.demo = cms.EDAnalyzer(
                                 "RateMeasurment_L1_and_HLT",
-                              srcTriggerResults=cms.InputTag("TriggerResults", "", "HLT")
+                              srcTriggerResults=cms.InputTag("TriggerResults", "", "HLT"),
                               srcGenParticle=cms.InputTag("genParticles"),
                               srcL1Mus=cms.InputTag("l1extraParticles"),
                               srcL1Taus=cms.InputTag("l1extraParticles", "Tau"),
