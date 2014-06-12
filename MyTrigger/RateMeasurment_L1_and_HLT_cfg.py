@@ -10,7 +10,8 @@ process.source = cms.Source("PoolSource",
                             # replace 'myfile.root' with the source file you want to use
                             fileNames=cms.untracked.vstring(
                             #$        'file:/user_mnt/user/abdollah/SingleMu/SingleMu-SkimmedHLTMu17-Run2012D-22Jan2013-v1-RAWAOD-PatTuple/6d4df2e925a381a14364673d1f4bb5f0/patTuple_10_1_EwT.root'
-
+'file:minbias_trigPATtuple_1.root',
+'file:minbias_trigPATtuple_2.root'
 
                             )
                             )
