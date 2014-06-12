@@ -169,7 +169,7 @@ bool matchToMuon(float ieta, float iphi, const edm::Event& iEvent) {
 
     bool dR03Mu = false;
     for (vector<l1extra::L1MuonParticle>::const_iterator mu = muonsHandle->begin(); mu != muonsHandle->end(); mu++) {
-        if (mu->pt() > 16 && tool.dR2(mu->eta(), mu->phi(), ieta, iphi) < 0.3) {
+        if (mu->pt() > 16 && dR(mu->eta(), mu->phi(), ieta, iphi) < 0.3) {
             dR03Mu = true;
             break;
         }
@@ -308,7 +308,7 @@ RateMeasurment_L1_and_HLT::analyze(const edm::Event& iEvent, const edm::EventSet
                     if (ucttau->pt() > maxValPt_ucttau) maxValPt_ucttau = ucttau->pt();
                 }
             }
-            rate_UCTCandidate->Fill(maxValPt_ucttau);
+//            rate_UCTCandidate->Fill(maxValPt_ucttau);
             if (maxValPt_ucttau > 20) {
                 step2++;
                 PassedL1Mu16Tau20 = true;
