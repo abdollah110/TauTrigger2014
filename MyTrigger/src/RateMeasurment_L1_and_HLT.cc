@@ -163,8 +163,9 @@ bool matchToMuon(float ieta, float iphi, const edm::Event& iEvent) {
     using namespace std;
     using namespace edm;
 
+
     Handle < vector < l1extra::L1MuonParticle >> muonsHandle;
-    iEvent.getByLabel(L1MuSource_, muonsHandle);
+    iEvent.getByLabel("l1extraParticles", muonsHandle);
 
 
     bool dR03Mu = false;
