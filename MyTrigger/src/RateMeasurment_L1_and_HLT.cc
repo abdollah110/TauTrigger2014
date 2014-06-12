@@ -159,6 +159,24 @@ bool hasOverLap(float eta_, float phi_, const edm::Event& iEvent) {
 
     return dR05;
 }
+bool matchToMuon(float ieta, float iphi, const edm::Event& iEvent) {
+    using namespace std;
+    using namespace edm;
+
+    Handle < vector < l1extra::L1MuonParticle >> muonsHandle;
+    iEvent.getByLabel(L1MuSource_, muonsHandle);
+
+
+    bool dR03Mu = false;
+    for (vector<l1extra::L1MuonParticle>::const_iterator mu = muonsHandle->begin(); mu != muonsHandle->end(); mu++) {
+        if (mu->pt() > 16 && tool.dR2(mu->eta(), mu->phi(), ieta, iphi) < 0.3) {
+            dR03Mu = true;
+            break;
+        }
+    }
+
+    return (!(dR03Mu));
+}
 
 //bool matchToOfflinMuTaus(int isoOption, float eta_, float phi_, const edm::Event& iEvent) {
 //    using namespace std;
