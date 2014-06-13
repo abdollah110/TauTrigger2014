@@ -318,7 +318,7 @@ void RateMeasurment_L1_and_HLT_Ele::analyze(const edm::Event& iEvent, const edm:
 //    }
 //}
 
-
+}
 
 
 //define this as a plug-in
