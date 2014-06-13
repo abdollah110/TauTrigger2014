@@ -131,7 +131,7 @@ bool RateMeasurment_L1_and_HLT_Ele::hasNoOverLapETau(float eta_, float phi_, con
 
     bool OneNonOverLappedElectronExist = false;
     for (; iele != jele; ++iele) {
-        if (iele->pt() > 22 && fabs(iele->eta()) < 2.5 && tool.dR2(iele->eta(), iele->phi(), eta_, phi_) > 0.4) {
+        if (iele->pt() > 22 && fabs(iele->eta()) < 2.1 && tool.dR2(iele->eta(), iele->phi(), eta_, phi_) > 0.4) {
             OneNonOverLappedElectronExist = true;
             break;
         }
@@ -153,13 +153,13 @@ bool RateMeasurment_L1_and_HLT_Ele::matchToElectron(float ieta, float iphi, cons
     bool dR03Iso = false;
     bool dR03NonIso = false;
     for (vector<l1extra::L1EmParticle>::const_iterator isoele = IsoElectronHandle->begin(); isoele != IsoElectronHandle->end(); isoele++) {
-        if (isoele->pt() > 12 && tool.dR2(isoele->eta(), isoele->phi(), ieta, iphi) < 0.3) {
+        if (isoele->pt() > 18 && tool.dR2(isoele->eta(), isoele->phi(), ieta, iphi) < 0.3) {
             dR03Iso = true;
             //            break;
         }
     }
     for (vector<l1extra::L1EmParticle>::const_iterator isoNele = NonIsoElectronHandle->begin(); isoNele != NonIsoElectronHandle->end(); isoNele++) {
-        if (isoNele->pt() > 12 && tool.dR2(isoNele->eta(), isoNele->phi(), ieta, iphi) < 0.3) {
+        if (isoNele->pt() > 18 && tool.dR2(isoNele->eta(), isoNele->phi(), ieta, iphi) < 0.3) {
             dR03NonIso = true;
             //            break;
         }
@@ -232,9 +232,9 @@ void RateMeasurment_L1_and_HLT_Ele::analyze(const edm::Event& iEvent, const edm:
     //####################################################################################################
 
     for (vector<l1extra::L1EmParticle>::const_iterator isoele = IsoElectronHandle->begin(); isoele != IsoElectronHandle->end(); isoele++) {
-        if (isoele->pt() > 18 && fabs(isoele->eta()) < 2.2) {
+        if (isoele->pt() > 18 && fabs(isoele->eta()) < 2.1) {
             step1++;
-            cout << "1  ___  This event passed L1Mu" << endl;
+            //            cout << "1  ___  This event passed L1Mu" << endl;
 
             //******************************************************
             float maxValPt_ucttau = 0;
@@ -247,7 +247,7 @@ void RateMeasurment_L1_and_HLT_Ele::analyze(const edm::Event& iEvent, const edm:
             if (maxValPt_ucttau > 20) {
                 step2++;
                 PassedL1Ele18Tau20 = true;
-                cout << "2  ___  This event passed L1Tau" << endl;
+                //                cout << "2  ___  This event passed L1Tau" << endl;
             }
 
             //******************************************************
@@ -268,26 +268,27 @@ void RateMeasurment_L1_and_HLT_Ele::analyze(const edm::Event& iEvent, const edm:
     if (PassedL1Ele18Tau20) {
 
         for (vector<reco::Electron>::const_iterator iele = HLTelectronHandle->begin(); iele != HLTelectronHandle->end(); iele++) {
-            if (iele->pt() > 22 && fabs(iele->eta()) < 2.5) step1++;
+            if (iele->pt() > 22 && fabs(iele->eta()) < 2.1) {
+                step3++;
 
-//            break; // Just once for an event with L1Mu16ER
-            cout << "3  ___  This event passed HLT MU" << endl;
-            step3++;
+                //            cout << "3  ___  This event passed HLT MU" << endl;
 
-            //******************************************************
-            //  Making Loop over Taus
-            //******************************************************
-            for (pat::TauCollection::const_iterator itau = tausHandleNew->begin(); itau != tausHandleNew->end(); itau++) {
+                //******************************************************
+                //  Making Loop over Taus
+                //******************************************************
+                for (pat::TauCollection::const_iterator itau = tausHandleNew->begin(); itau != tausHandleNew->end(); itau++) {
 
-                bool ptCut = itau->pt() > 20 && fabs(itau->eta()) < 2.3;
-                bool hasNoOverLapETau_ = hasNoOverLapETau(itau->eta(), itau->phi(), iEvent);
-                bool discByDecayModeFinding = (itau->tauID("decayModeFinding") > 0.5 ? true : false);
-                bool discByIsolation5hits = (itau->tauID("byTrkIsolation5hits") < 3.0 ? true : false);
-                //                bool discByMuLoose = (itau->tauID("againstMuonLoose") > 0.5 ? true : false);
+                    bool ptCut = itau->pt() > 20 && fabs(itau->eta()) < 2.4;
+                    bool hasNoOverLapETau_ = hasNoOverLapETau(itau->eta(), itau->phi(), iEvent);
+                    bool discByDecayModeFinding = (itau->tauID("decayModeFinding") > 0.5 ? true : false);
+                    bool discByIsolation5hits = (itau->tauID("byTrkIsolation5hits") < 3.0 ? true : false);
+                    //                bool discByMuLoose = (itau->tauID("againstMuonLoose") > 0.5 ? true : false);
 
-                if (ptCut && hasNoOverLapETau_ && discByDecayModeFinding && discByIsolation5hits) {
-                    cout << "4  ___  This event passed HLT Tau" << endl;
-                    step4++;
+                    if (ptCut && hasNoOverLapETau_ && discByDecayModeFinding && discByIsolation5hits) {
+                        //                    cout << "4  ___  This event passed HLT Tau" << endl;
+                        step4++;
+                        cout << iEvent.id().run() << ":" << iEvent.id().luminosityBlock() << ":" << iEvent.id().event() << "\n";
+                    }
                 }
             }
         }
@@ -307,16 +308,16 @@ void RateMeasurment_L1_and_HLT_Ele::analyze(const edm::Event& iEvent, const edm:
     if (step4 > 0) {
         Histo_RateReduction->Fill(4);
     }
-//    for (pat::TauCollection::const_iterator itau = tausHandleNew->begin(); itau != tausHandleNew->end(); itau++) {
-//
-//        bool ptCut = itau->pt() > 20 && fabs(itau->eta()) < 2.3;
-//        bool hasNoOverLapETau_ = hasNoOverLapETau(itau->eta(), itau->phi(), iEvent);
-//        bool discByDecayModeFinding = (itau->tauID("decayModeFinding") > 0.5 ? true : false);
-//        bool discByIsolation5hits = (itau->tauID("byTrkIsolation5hits") < 3.0 ? true : false);
-//
-//        cout << "Tau is existing " << ptCut << hasNoOverLapETau_ << discByDecayModeFinding << discByIsolation5hits << endl;
-//    }
-//}
+    //    for (pat::TauCollection::const_iterator itau = tausHandleNew->begin(); itau != tausHandleNew->end(); itau++) {
+    //
+    //        bool ptCut = itau->pt() > 20 && fabs(itau->eta()) < 2.3;
+    //        bool hasNoOverLapETau_ = hasNoOverLapETau(itau->eta(), itau->phi(), iEvent);
+    //        bool discByDecayModeFinding = (itau->tauID("decayModeFinding") > 0.5 ? true : false);
+    //        bool discByIsolation5hits = (itau->tauID("byTrkIsolation5hits") < 3.0 ? true : false);
+    //
+    //        cout << "Tau is existing " << ptCut << hasNoOverLapETau_ << discByDecayModeFinding << discByIsolation5hits << endl;
+    //    }
+    //}
 
 }
 

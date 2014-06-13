@@ -311,7 +311,7 @@ RateMeasurment_L1_and_HLT::analyze(const edm::Event& iEvent, const edm::EventSet
     if (PassedL1Mu16Tau20) {
         for (vector<reco::RecoChargedCandidate>::const_iterator imu = HLTMuonHandle->begin(); imu != HLTMuonHandle->end(); imu++) {
 
-            if (imu->pt() > 16 && fabs(imu->eta()) < 2.1) {
+            if (imu->pt() > 18 && fabs(imu->eta()) < 2.1) {
                 step3++;
 //                break; // Just once for an event with L1Mu16ER
                 cout<< "3  ___  This event passed HLT MU"<<endl;
