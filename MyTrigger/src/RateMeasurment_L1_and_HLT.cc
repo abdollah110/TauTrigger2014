@@ -313,7 +313,7 @@ RateMeasurment_L1_and_HLT::analyze(const edm::Event& iEvent, const edm::EventSet
 
             if (imu->pt() > 16 && fabs(imu->eta()) < 2.1) {
                 step3++;
-                break; // Just once for an event with L1Mu16ER
+//                break; // Just once for an event with L1Mu16ER
                 cout<< "3  ___  This event passed HLT MU"<<endl;
 
                 //******************************************************
