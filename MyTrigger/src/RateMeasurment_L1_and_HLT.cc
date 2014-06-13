@@ -275,7 +275,7 @@ RateMeasurment_L1_and_HLT::analyze(const edm::Event& iEvent, const edm::EventSet
     //    Measuring the L1 Rate
     //####################################################################################################
     for (vector<l1extra::L1MuonParticle>::const_iterator mu = L1MuonHandle->begin(); mu != L1MuonHandle->end(); mu++) {
-        if (mu->pt() > 16 && fabs(mu->eta()) < 2.2) {
+        if (mu->pt() > 16 && fabs(mu->eta()) < 2.1) {
             step1++;
             cout<< "1  ___  This event passed L1Mu"<<endl;
 
@@ -321,7 +321,7 @@ RateMeasurment_L1_and_HLT::analyze(const edm::Event& iEvent, const edm::EventSet
                 //******************************************************
                 for (pat::TauCollection::const_iterator itau = tausHandleNew->begin(); itau != tausHandleNew->end(); itau++) {
 
-                    bool ptCut = itau->pt() > 20 && fabs(itau->eta()) < 2.3;
+                    bool ptCut = itau->pt() > 20 && fabs(itau->eta()) < 2.4;
                     bool hasOverLap_Mu = hasOverLap_(itau->eta(), itau->phi(), iEvent);
                     bool discByDecayModeFinding = (itau->tauID("decayModeFinding") > 0.5 ? true : false);
                     bool discByIsolation5hits = (itau->tauID("byTrkIsolation5hits") < 3.0 ? true : false);
