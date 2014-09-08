@@ -87,6 +87,14 @@ private:
     TH1D * rate_UCTTauIso0p25;
     TH1D * rate_UCTTauIso0p2;
     TH1D * rate_UCTTauIso0p1;
+    TH1D * rate_UCTTauIso_tauveto_NoEta;
+    TH1D * rate_UCTTauIso_tauveto_;
+    TH1D * rate_UCTTauIso_tauveto_1p0;
+    TH1D * rate_UCTTauIso_tauveto_0p5;
+    TH1D * rate_UCTTauIso_tauveto_0p3;
+    TH1D * rate_UCTTauIso_tauveto_0p25;
+    TH1D * rate_UCTTauIso_tauveto_0p2;
+    TH1D * rate_UCTTauIso_tauveto_0p1;
 
 
 
@@ -102,6 +110,14 @@ private:
     TH2D * Eff2D_Num_IsolatedTau0p25;
     TH2D * Eff2D_Num_IsolatedTau0p2;
     TH2D * Eff2D_Num_IsolatedTau0p1;
+    TH2D * Eff2D_Num_IsolatedTau_tauveto_NoEta;
+    TH2D * Eff2D_Num_IsolatedTau_tauveto_;
+    TH2D * Eff2D_Num_IsolatedTau_tauveto_1p0;
+    TH2D * Eff2D_Num_IsolatedTau_tauveto_0p5;
+    TH2D * Eff2D_Num_IsolatedTau_tauveto_0p3;
+    TH2D * Eff2D_Num_IsolatedTau_tauveto_0p25;
+    TH2D * Eff2D_Num_IsolatedTau_tauveto_0p2;
+    TH2D * Eff2D_Num_IsolatedTau_tauveto_0p1;
 
     edm::InputTag srcGenParticle_;
     edm::InputTag L1TauSource_;
