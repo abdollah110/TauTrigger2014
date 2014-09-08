@@ -164,6 +164,14 @@ EfficiencyRate_L1Tau4x8::EfficiencyRate_L1Tau4x8(const edm::ParameterSet& iConfi
     rate_UCTTauIso0p25 = fs->make<TH1D > ("rate_UCTTauIso0p25", "", 200, 0, 200);
     rate_UCTTauIso0p2 = fs->make<TH1D > ("rate_UCTTauIso0p2", "", 200, 0, 200);
     rate_UCTTauIso0p1 = fs->make<TH1D > ("rate_UCTTauIso0p1", "", 200, 0, 200);
+    rate_UCTTauIso_tauveto_NoEta = fs->make<TH1D > ("rate_UCTTauIso_tauveto_NoEta", "", 200, 0, 200);
+    rate_UCTTauIso_tauveto_ = fs->make<TH1D > ("rate_UCTTauIso_tauveto_", "", 200, 0, 200);
+    rate_UCTTauIso_tauveto_1p0 = fs->make<TH1D > ("rate_UCTTauIso_tauveto_1p0", "", 200, 0, 200);
+    rate_UCTTauIso_tauveto_0p5 = fs->make<TH1D > ("rate_UCTTauIso_tauveto_0p5", "", 200, 0, 200);
+    rate_UCTTauIso_tauveto_0p3 = fs->make<TH1D > ("rate_UCTTauIso_tauveto_0p3", "", 200, 0, 200);
+    rate_UCTTauIso_tauveto_0p25 = fs->make<TH1D > ("rate_UCTTauIso_tauveto_0p25", "", 200, 0, 200);
+    rate_UCTTauIso_tauveto_0p2 = fs->make<TH1D > ("rate_UCTTauIso_tauveto_0p2", "", 200, 0, 200);
+    rate_UCTTauIso_tauveto_0p1 = fs->make<TH1D > ("rate_UCTTauIso_tauveto_0p1", "", 200, 0, 200);
 
     Eff2D_Num_l1extraParticles = fs->make<TH2D > ("Eff2D_Num_l1extraParticles", "", 200, 0, 200, 200, 0, 200);
     Eff2D_Num_RelaxedTau = fs->make<TH2D > ("Eff2D_Num_RelaxedTau", "", 200, 0, 200, 200, 0, 200);
@@ -175,6 +183,14 @@ EfficiencyRate_L1Tau4x8::EfficiencyRate_L1Tau4x8(const edm::ParameterSet& iConfi
     Eff2D_Num_IsolatedTau0p25 = fs->make<TH2D > ("Eff2D_Num_IsolatedTau0p25", "", 200, 0, 200, 200, 0, 200);
     Eff2D_Num_IsolatedTau0p2 = fs->make<TH2D > ("Eff2D_Num_IsolatedTau0p2", "", 200, 0, 200, 200, 0, 200);
     Eff2D_Num_IsolatedTau0p1 = fs->make<TH2D > ("Eff2D_Num_IsolatedTau0p1", "", 200, 0, 200, 200, 0, 200);
+    Eff2D_Num_IsolatedTau_tauveto_NoEta = fs->make<TH2D > ("Eff2D_Num_IsolatedTau_tauveto_NoEta", "", 200, 0, 200, 200, 0, 200);
+    Eff2D_Num_IsolatedTau_tauveto_ = fs->make<TH2D > ("Eff2D_Num_IsolatedTau_tauveto_", "", 200, 0, 200, 200, 0, 200);
+    Eff2D_Num_IsolatedTau_tauveto_1p0 = fs->make<TH2D > ("Eff2D_Num_IsolatedTau_tauveto_1p0", "", 200, 0, 200, 200, 0, 200);
+    Eff2D_Num_IsolatedTau_tauveto_0p5 = fs->make<TH2D > ("Eff2D_Num_IsolatedTau_tauveto_0p5", "", 200, 0, 200, 200, 0, 200);
+    Eff2D_Num_IsolatedTau_tauveto_0p3 = fs->make<TH2D > ("Eff2D_Num_IsolatedTau_tauveto_0p3", "", 200, 0, 200, 200, 0, 200);
+    Eff2D_Num_IsolatedTau_tauveto_0p25 = fs->make<TH2D > ("Eff2D_Num_IsolatedTau_tauveto_0p25", "", 200, 0, 200, 200, 0, 200);
+    Eff2D_Num_IsolatedTau_tauveto_0p2 = fs->make<TH2D > ("Eff2D_Num_IsolatedTau_tauveto_0p2", "", 200, 0, 200, 200, 0, 200);
+    Eff2D_Num_IsolatedTau_tauveto_0p1 = fs->make<TH2D > ("Eff2D_Num_IsolatedTau_tauveto_0p1", "", 200, 0, 200, 200, 0, 200);
 
     tauPT = fs->make<TH1D > ("tauPT", "", 2, 0, 2);
 
@@ -302,6 +318,20 @@ void EfficiencyRate_L1Tau4x8::analyze(const edm::Event& iEvent, const edm::Event
     UCTTauIso0p2.clear();
     vector<float> UCTTauIso0p1;
     UCTTauIso0p1.clear();
+    vector<float> UCTTauIso_tauveto_;
+    UCTTauIso_tauveto_.clear();
+    vector<float> UCTTauIso_tauveto_1p0;
+    UCTTauIso_tauveto_1p0.clear();
+    vector<float> UCTTauIso_tauveto_0p5;
+    UCTTauIso_tauveto_0p5.clear();
+    vector<float> UCTTauIso_tauveto_0p3;
+    UCTTauIso_tauveto_0p3.clear();
+    vector<float> UCTTauIso_tauveto_0p25;
+    UCTTauIso_tauveto_0p25.clear();
+    vector<float> UCTTauIso_tauveto_0p2;
+    UCTTauIso_tauveto_0p2.clear();
+    vector<float> UCTTauIso_tauveto_0p1;
+    UCTTauIso_tauveto_0p1.clear();
 
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -356,7 +386,6 @@ void EfficiencyRate_L1Tau4x8::analyze(const edm::Event& iEvent, const edm::Event
                         if (tool.dR2(ipftau->eta(), ipftau->phi(), ucttau->eta(), ucttau->phi()) < 0.3) {
                             RelaxedTauEff->Fill(ipftau->pt());
                             RelaxedTauROC->Fill(ucttau->pt());
-                            cout << "tau Veto bit for ucttau is = " << ucttau->getInt("associated4x4Tau", -4) << endl;
                             Eff2D_Num_RelaxedTau->Fill(ipftau->pt(), ucttau->pt());
                             //                            break;
 
@@ -366,7 +395,8 @@ void EfficiencyRate_L1Tau4x8::analyze(const edm::Event& iEvent, const edm::Event
                         if (tool.dR2(ipftau->eta(), ipftau->phi(), uctIsotau->eta(), uctIsotau->phi()) < 0.3) {
                             float jetEt = uctIsotau->getFloat("associatedJetPt", -4);
                             float tauEt = uctIsotau->getFloat("associatedRegionEt", -4);
-                            cout << "tau Veto bit for uctIsotau is = " << uctIsotau->getInt("associated4x4Tau", -4) << endl;
+                            //                            cout << "tau Veto bit for uctIsotau is = " << uctIsotau->getInt("associated4x4Tau", -4) << endl;
+                            int tauIsoVetoBit = uctIsotau->getInt("associated4x4Tau", -4);
                             float tauIso = (jetEt - tauEt) / tauEt;
                             IsolatedTauEff->Fill(ipftau->pt());
                             IsolatedTauROC->Fill(uctIsotau->pt());
@@ -378,6 +408,14 @@ void EfficiencyRate_L1Tau4x8::analyze(const edm::Event& iEvent, const edm::Event
                             if (fabs(uctIsotau->eta()) < 2.17 && tauIso < 0.25) Eff2D_Num_IsolatedTau0p25->Fill(ipftau->pt(), uctIsotau->pt());
                             if (fabs(uctIsotau->eta()) < 2.17 && tauIso < 0.2) Eff2D_Num_IsolatedTau0p2->Fill(ipftau->pt(), uctIsotau->pt());
                             if (fabs(uctIsotau->eta()) < 2.17 && tauIso < 0.1) Eff2D_Num_IsolatedTau0p1->Fill(ipftau->pt(), uctIsotau->pt());
+                            // Including TauVetoBit
+                            if (fabs(uctIsotau->eta()) < 2.17 && tauIsoVetoBit) Eff2D_Num_IsolatedTau_tauveto_->Fill(ipftau->pt(), uctIsotau->pt());
+                            if (fabs(uctIsotau->eta()) < 2.17 && tauIsoVetoBit && tauIso < 1.0) Eff2D_Num_IsolatedTau_tauveto_1p0->Fill(ipftau->pt(), uctIsotau->pt());
+                            if (fabs(uctIsotau->eta()) < 2.17 && tauIsoVetoBit && tauIso < 0.5) Eff2D_Num_IsolatedTau_tauveto_0p5->Fill(ipftau->pt(), uctIsotau->pt());
+                            if (fabs(uctIsotau->eta()) < 2.17 && tauIsoVetoBit && tauIso < 0.3) Eff2D_Num_IsolatedTau_tauveto_0p3->Fill(ipftau->pt(), uctIsotau->pt());
+                            if (fabs(uctIsotau->eta()) < 2.17 && tauIsoVetoBit && tauIso < 0.25) Eff2D_Num_IsolatedTau_tauveto_0p25->Fill(ipftau->pt(), uctIsotau->pt());
+                            if (fabs(uctIsotau->eta()) < 2.17 && tauIsoVetoBit && tauIso < 0.2) Eff2D_Num_IsolatedTau_tauveto_0p2->Fill(ipftau->pt(), uctIsotau->pt());
+                            if (fabs(uctIsotau->eta()) < 2.17 && tauIsoVetoBit && tauIso < 0.1) Eff2D_Num_IsolatedTau_tauveto_0p1->Fill(ipftau->pt(), uctIsotau->pt());
                             //                            break;
                         }
                     }
@@ -426,6 +464,7 @@ void EfficiencyRate_L1Tau4x8::analyze(const edm::Event& iEvent, const edm::Event
             float tauEt = uctIsotau->getFloat("associatedRegionEt", -4);
             cout << "tau Veto bit for ucttau is = " << uctIsotau->getInt("associated4x4Tau", -4) << endl;
             float tauIso = (jetEt - tauEt) / tauEt;
+            int tauIsoVetoBit = uctIsotau->getInt("associated4x4Tau", -4);
 
             UCTTauNoEtaIso.push_back(uctIsotau->pt());
             if (fabs(uctIsotau->eta()) < 2.17) UCTTauIso.push_back(uctIsotau->pt());
@@ -435,6 +474,13 @@ void EfficiencyRate_L1Tau4x8::analyze(const edm::Event& iEvent, const edm::Event
             if (fabs(uctIsotau->eta()) < 2.17 && tauIso < 0.25) UCTTauIso0p25.push_back(uctIsotau->pt());
             if (fabs(uctIsotau->eta()) < 2.17 && tauIso < 0.2) UCTTauIso0p2.push_back(uctIsotau->pt());
             if (fabs(uctIsotau->eta()) < 2.17 && tauIso < 0.1) UCTTauIso0p1.push_back(uctIsotau->pt());
+            if (fabs(uctIsotau->eta()) < 2.17 && tauIsoVetoBit) UCTTauIso_tauveto_.push_back(uctIsotau->pt());
+            if (fabs(uctIsotau->eta()) < 2.17 && tauIsoVetoBit && tauIso < 1.0) UCTTauIso_tauveto_1p0.push_back(uctIsotau->pt());
+            if (fabs(uctIsotau->eta()) < 2.17 && tauIsoVetoBit && tauIso < 0.5) UCTTauIso_tauveto_0p5.push_back(uctIsotau->pt());
+            if (fabs(uctIsotau->eta()) < 2.17 && tauIsoVetoBit && tauIso < 0.3) UCTTauIso_tauveto_0p3.push_back(uctIsotau->pt());
+            if (fabs(uctIsotau->eta()) < 2.17 && tauIsoVetoBit && tauIso < 0.25) UCTTauIso_tauveto_0p25.push_back(uctIsotau->pt());
+            if (fabs(uctIsotau->eta()) < 2.17 && tauIsoVetoBit && tauIso < 0.2) UCTTauIso_tauveto_0p2.push_back(uctIsotau->pt());
+            if (fabs(uctIsotau->eta()) < 2.17 && tauIsoVetoBit && tauIso < 0.1) UCTTauIso_tauveto_0p1.push_back(uctIsotau->pt());
 
         }
 
@@ -471,6 +517,44 @@ void EfficiencyRate_L1Tau4x8::analyze(const edm::Event& iEvent, const edm::Event
             sort(UCTTauIso0p1.begin(), UCTTauIso0p1.end(), SortObject_MaxPt());
             rate_UCTTauIso0p1->Fill(UCTTauIso0p1[1]);
         }
+
+
+        if (UCTTauNoEtaIso.size() > 1) {
+            sort(UCTTauNoEtaIso.begin(), UCTTauNoEtaIso.end(), SortObject_MaxPt());
+            rate_UCTTauIso_tauveto_NoEta->Fill(UCTTauNoEtaIso[1]);
+        }
+        if (UCTTauIso_tauveto_.size() > 1) {
+            sort(UCTTauIso_tauveto_.begin(), UCTTauIso_tauveto_.end(), SortObject_MaxPt());
+            rate_UCTTauIso_tauveto_->Fill(UCTTauIso_tauveto_[1]);
+        }
+        if (UCTTauIso_tauveto_1p0.size() > 1) {
+            sort(UCTTauIso_tauveto_1p0.begin(), UCTTauIso_tauveto_1p0.end(), SortObject_MaxPt());
+            rate_UCTTauIso_tauveto_1p0->Fill(UCTTauIso_tauveto_1p0[1]);
+        }
+        if (UCTTauIso_tauveto_0p5.size() > 1) {
+            sort(UCTTauIso_tauveto_0p5.begin(), UCTTauIso_tauveto_0p5.end(), SortObject_MaxPt());
+            rate_UCTTauIso_tauveto_0p5->Fill(UCTTauIso_tauveto_0p5[1]);
+        }
+        if (UCTTauIso_tauveto_0p3.size() > 1) {
+            sort(UCTTauIso_tauveto_0p3.begin(), UCTTauIso_tauveto_0p3.end(), SortObject_MaxPt());
+            rate_UCTTauIso_tauveto_0p3->Fill(UCTTauIso_tauveto_0p3[1]);
+        }
+        if (UCTTauIso_tauveto_0p25.size() > 1) {
+            sort(UCTTauIso_tauveto_0p25.begin(), UCTTauIso_tauveto_0p25.end(), SortObject_MaxPt());
+            rate_UCTTauIso_tauveto_0p25->Fill(UCTTauIso_tauveto_0p25[1]);
+        }
+        if (UCTTauIso_tauveto_0p2.size() > 1) {
+            sort(UCTTauIso_tauveto_0p2.begin(), UCTTauIso_tauveto_0p2.end(), SortObject_MaxPt());
+            rate_UCTTauIso_tauveto_0p2->Fill(UCTTauIso_tauveto_0p2[1]);
+        }
+
+        if (UCTTauIso_tauveto_0p1.size() > 1) {
+            sort(UCTTauIso_tauveto_0p1.begin(), UCTTauIso_tauveto_0p1.end(), SortObject_MaxPt());
+            rate_UCTTauIso_tauveto_0p1->Fill(UCTTauIso_tauveto_0p1[1]);
+        }
+
+
+
     } // end loop over rate
 
 }
