@@ -48,8 +48,8 @@ process.demo = cms.EDAnalyzer('EfficiencyRate_L1Tau',
                               srcHLTCaloTowers=cms.InputTag('hltTowerMakerForPF'),
                               srcL1UpgradeTaus=cms.InputTag('UCT2015Producer', 'RelaxedTauUnpacked'),
                               srcL1UpgradeIsoTaus=cms.InputTag('UCT2015Producer', 'IsolatedTauUnpacked'), #taus below 60 GeV will have isolation applied
-                              srcL1UpgradeTaus4x8=cms.InputTag('UCT2015Producer4x8', 'RelaxedTauUnpacked'),
-                              srcL1UpgradeIsoTaus4x8=cms.InputTag('UCT2015Producer4x8', 'IsolatedTauUnpacked') #taus below 60 GeV will have isolation applied
+                              srcL1UpgradeTaus4x8=cms.InputTag('UCT2015Producer', 'RelaxedTauUnpacked'),
+                              srcL1UpgradeIsoTaus4x8=cms.InputTag('UCT2015Producer', 'IsolatedTauUnpacked') #taus below 60 GeV will have isolation applied
                               )
 
 if isDoingRate:
