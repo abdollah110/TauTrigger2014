@@ -108,7 +108,7 @@ def doCommulative(num, denum, marStyle, marColor, type):
     commul = TH1F(str(num), "", 200, 0, 200)
     commul.SetBinContent(1,1)  # first bin should be set to 1 ==> means that if you do not cut on L1 rate is 1
     for ii in range(2, 200):
-        commul.SetBinContent(ii , (num.Integral(ii, 200) * 1.0) * (360213/32192) / 45000000.);
+        commul.SetBinContent(ii , (num.Integral(ii, 200) * 1.0) * (360213/32192) / 45000000. *  .70);
 #        commul.SetBinContent(ii , (num.Integral(ii, 200) * 1.0) * (498086/64780) / 45000000.);
     AddCostumMarker(commul, 0.000001, 1.2, 1.1, marStyle, marColor, "L1 #tau_{pT} [GeV]", type)
     return commul
