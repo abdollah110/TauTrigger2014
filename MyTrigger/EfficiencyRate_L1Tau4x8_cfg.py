@@ -36,7 +36,7 @@ else:
 
 
 
-process.demo = cms.EDAnalyzer('EfficiencyRate_L1Tau',
+process.demo = cms.EDAnalyzer('EfficiencyRate_L1Tau4x8',
                               #rhoCenNeutralTight=cms.InputTag("kt6PFJetsCentralNeutralTight", "rho")
                               srcIsData=cms.bool(isDoingRate),
                               srcGenParticle=cms.InputTag("genParticles"),
