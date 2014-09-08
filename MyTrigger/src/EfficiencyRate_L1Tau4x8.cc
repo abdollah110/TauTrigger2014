@@ -479,10 +479,12 @@ void EfficiencyRate_L1Tau4x8::analyze(const edm::Event& iEvent, const edm::Event
 
             float jetEt = uctIsotau->getFloat("associatedJetPt", -4);
             float tauEt = uctIsotau->getFloat("associatedRegionEt", -4);
-//            cout << "tau Veto bit for ucttau is = " << uctIsotau->getInt("associated4x4Tau", -4) << endl;
+            //            cout << "tau Veto bit for ucttau is = " << uctIsotau->getInt("associated4x4Tau", -4) << endl;
             float tauIso = (jetEt - tauEt) / tauEt;
-            int tauIsoVetoBit = uctIsotau->getInt("associated4x4Tau", -4) == 0;
 
+            bool tauIsoVetoBit_2 = uctIsotau->getInt("tauVeto", -4) == 0;
+            bool tauIsoVetoBit = (uctIsotau->getInt("associated4x4Tau", -4) == 0) && tauIsoVetoBit_2;
+            
             UCTTauNoEtaIso.push_back(uctIsotau->pt());
             if (fabs(uctIsotau->eta()) < 2.17) UCTTauIso.push_back(uctIsotau->pt());
             if (fabs(uctIsotau->eta()) < 2.17 && tauIso < 1.0) UCTTauIso1p0.push_back(uctIsotau->pt());
